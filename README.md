@@ -27,6 +27,8 @@ git clone https://github.com/wjwwood/serial.git
 cd serial
 make
 sudo make install
+# ?
+sudo cp -r /tmp/usr/local/include/* /usr/local/include
 
 # vcpkg
 git clone https://github.com/Microsoft/vcpkg.git
