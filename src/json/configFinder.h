@@ -5,6 +5,7 @@
 #pragma once
 #include <filesystem>
 #include <fstream>
+#include <optional>
 
 
 namespace fs = std::filesystem;
