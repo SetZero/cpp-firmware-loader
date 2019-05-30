@@ -19,7 +19,6 @@ This Libary will load your Firmware to any Device supported by the
 It is reccomended to use [vcpkg](https://github.com/microsoft/vcpkg/) or [Conan](https://conan.io/) for most of the dependencies.
 We will use **vcpkg** for this example.
 
-**Ubuntu:**
 ```
 # vcpkg
 git clone https://github.com/Microsoft/vcpkg.git
