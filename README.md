@@ -6,7 +6,7 @@ This Libary will load your Firmware to any Device supported by the
 ## Dependencies:
 
 **Required:**
-* [Serial](https://github.com/wjwwood/serial)
+* [Asio](https://think-async.com/Asio/)
 * [Poco](https://pocoproject.org/)
 * [Clara](https://github.com/catchorg/Clara)
 * [Intel Hex Class](https://github.com/codinghead/Intel-HEX-Class)
@@ -21,15 +21,6 @@ We will use **vcpkg** for this example.
 
 **Ubuntu:**
 ```
-# Serial
-sudo apt install catkin
-git clone https://github.com/wjwwood/serial.git
-cd serial
-make
-sudo make install
-# ?
-sudo cp -r /tmp/usr/local/include/* /usr/local/include
-
 # vcpkg
 git clone https://github.com/Microsoft/vcpkg.git
 cd vcpkg
@@ -40,6 +31,9 @@ cd vcpkg
 
 # Poco
 ./vcpkg install poco
+
+# Asio
+./vcpkg install asio
 
 # Catch (Optional)
 ./vcpkg install catch
