@@ -1,11 +1,19 @@
 #include <iostream>
 #include <Poco/JSON/ParseHandler.h>
+#include <Poco/Environment.h>
 #include <catch.hpp>
 #include <clara.hpp>
 #include <asio.hpp>
 
-int main() {
+#include "src/commandline/parse.h"
+#include "src/utils/enum_constants.h"
+
+int main(int argc, const char* argv[]) {
     Poco::JSON::ParseHandler handler;
-    std::cout << "Hello, World!" << std::endl;
+
+    Parse<OSTypes::Linux>{argc, argv};
+    std::cout << Poco::Environment::osDisplayName() << std::endl;
+    std::cout << Poco::Environment::processorCount() << std::endl;
+    std::cout << Poco::Environment::os() << std::endl;
     return 0;
 }
