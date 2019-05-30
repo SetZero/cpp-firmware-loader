@@ -7,6 +7,7 @@
 
 #include "src/commandline/parse.h"
 #include "src/utils/enum_constants.h"
+#include "src/json//deviceParser.h"
 
 int main(int argc, const char* argv[]) {
     Poco::JSON::ParseHandler handler;

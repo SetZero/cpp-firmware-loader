@@ -1,0 +1,38 @@
+{
+  "device": {
+    "general": {
+      "id":   "atmega328p",
+      "vendor": "Microchip",
+      "arch": "AVR",
+      "subarch": "ATMega",
+      "name": "Atmega328p"
+    },
+    "flash": {
+      "total": "32KB",
+      "available": "30KB"
+    },
+    "eeprom": {
+      "total": "1KB",
+      "available": "1023B"
+    }
+  },
+  "serial": {
+    "general": {
+      "mode": "8N1",
+      "bytesPerBurst": 10
+    },
+    "write": {
+      "eepromBurstDelay": "100ms",
+      "flashBurstDelay": "10ms"
+    },
+    "sync": {
+      "syncByteAmount": 3,
+      "syncByte": "0xCC",
+      "preamble": "0x55",
+      "resyncAfterBurst": "true"
+    }
+  },
+  "Binary": {
+    "format": "Intel Hex"
+  }
+}
