@@ -15,16 +15,16 @@ public:
     Parse(int argc, const char* argv[]) noexcept {
         auto cli = clara::Opt(configLocation, "config" )
                 ["-c"]["--config"]
-                        ("Manually specify the config file location");
+                        ("Manually specify the config file location")
 			| clara::Opt(deviceName, "device")
 				["-d"]["--device"]
 						("Set the device name")
 			| clara::Opt(deviceName, "binary")
 				["-b"]["--binary"]
-				("Binary File to Flash to the chip")
+				("Binary File to Flash to the chip");
 
         auto result = cli.parse( clara::Args( argc, argv ) );
-    }cde 
+    }
 };
 
 
