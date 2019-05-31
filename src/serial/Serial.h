@@ -18,7 +18,7 @@ enum class SerialMode {
 template<SerialMode mode>
 class Serial {
 public:
-    Serial(const std::string& device, const int baudrate) noexcept : pimpl{std::make_unique<SerialImpl>(device, baudrate)} { }
+    explicit Serial(const std::string& device, const unsigned int baudrate) noexcept : pimpl{std::make_unique<SerialImpl>(device, baudrate)} { }
 
 #ifdef __cpp_concepts
     template<SerialMode pMode = mode> requires mode == SerialMode::TXOnly || mode == SerialMode::Duplex
