@@ -20,7 +20,10 @@ int main(int argc, const char* argv[]) {
 
     std::cout << clParser.port() << std::endl;
     Serial<SerialMode::Duplex> serial{clParser.port(), clParser.baud()};
-    serial.writeData({(std::byte)0xCC, (std::byte)0xCC, (std::byte)0xCC, (std::byte)0x55, (std::byte)0x41, (std::byte)0x42, (std::byte)0x43, (std::byte)0x44});
+    serial.writeData({(std::byte)0xCC, (std::byte)0xCC, (std::byte)0xCC, (std::byte)0x55,
+		(std::byte)0x41, (std::byte)0x42, (std::byte)0x43, (std::byte)0x44,
+		(std::byte)0x45, (std::byte)0x46, (std::byte)0x47, (std::byte)0x48,
+		});
     std::cout << "Waiting for data... " << std::endl;
     std::cout << serial.reciveByte() << std::endl;
 
@@ -37,5 +40,6 @@ int main(int argc, const char* argv[]) {
 
     std::cout << Poco::Environment::osDisplayName() << std::endl;
     std::cout << Poco::Environment::processorCount() << std::endl;
+
     return 0;
 }
