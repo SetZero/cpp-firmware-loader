@@ -4,7 +4,14 @@ project(firmware-loader)
 set(CONFIG_FOLDER "config_files")
 
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_FLAGS "-fconcepts -Wall -Wextra -Wshadow -Wfloat-conversion -Wsign-conversion -Wsign-compare -Wmissing-field-initializers -fno-threadsafe-statics")
+
+if(WIN32)
+	set(CMAKE_CXX_FLAGS "/O2 /W4")
+endif(WIN32)
+
+if(UNIX)
+	set(CMAKE_CXX_FLAGS "-fconcepts -Wall -Wextra -Wshadow -Wfloat-conversion -Wsign-conversion -Wsign-compare -Wmissing-field-initializers -fno-threadsafe-statics")
+endif(UNIX)
 
 find_package(Poco COMPONENTS JSON XML CONFIG REQUIRED)
 
