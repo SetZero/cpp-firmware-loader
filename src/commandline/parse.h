@@ -61,6 +61,10 @@ public:
         return showHelp;
     }
 
+    explicit operator bool() const {
+        return !showHelp;
+    }
+
     friend auto operator<<( std::ostream &os, Parse const &parse ) -> std::ostream& {
         if(parse.showHelp) {
             os << parse.cli;

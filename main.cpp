@@ -9,10 +9,11 @@
 #include "src/utils/enum_constants.h"
 #include "src/json//deviceParser.h"
 #include "src/json/configFinder.h"
+#include "src/serial/Serial.h"
 
 int main(int argc, const char* argv[]) {
     Parse clParser{argc, argv};
-    if(clParser.help()) {
+    if(!clParser) {
         std::cout << clParser;
         return 0;
     }
