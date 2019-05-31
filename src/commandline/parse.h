@@ -61,6 +61,10 @@ public:
         return showHelp;
     }
 
+    [[nodiscard]] bool baud() const noexcept {
+        return baudrate;
+    }
+
     explicit operator bool() const {
         return !showHelp;
     }

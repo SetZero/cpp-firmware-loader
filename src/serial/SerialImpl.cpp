@@ -5,7 +5,6 @@
 #include "SerialImpl.h"
 
 SerialImpl::SerialImpl(std::string device, int baudrate) : mDevice{std::move(device)}, mBaudrate{baudrate} {
-
 }
 
 void SerialImpl::writeData(std::byte data) {

@@ -19,6 +19,7 @@ int main(int argc, const char* argv[]) {
     }
 
     std::cout << clParser.port() << std::endl;
+    Serial<SerialMode::Duplex>{clParser.port(), clParser.baud()};
 
     Poco::JSON::ParseHandler handler;
 

@@ -7,6 +7,7 @@
 
 #include <string>
 #include <vector>
+#include <asio.hpp>
 
 class SerialImpl {
 public:
@@ -22,6 +23,7 @@ public:
 private:
     const std::string mDevice;
     const int mBaudrate;
+    //asio::serial_port mPort;
 };
 
 
