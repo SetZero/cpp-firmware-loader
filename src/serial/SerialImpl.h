@@ -13,11 +13,13 @@ class SerialImpl {
 public:
     SerialImpl(std::string device, int baudrate);
 
+    ~SerialImpl();
+
     void writeData(std::byte data);
 
     void writeData(std::vector<std::byte> data);
 
-    std::byte reciveByte();
+    std::string reciveByte();
 
     std::vector<std::byte> reciveBytes();
 private:

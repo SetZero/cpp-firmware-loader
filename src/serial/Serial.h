@@ -43,7 +43,7 @@ public:
 #else
     template<typename U = int, typename = std::enable_if_t<mode == SerialMode::RXOnly || mode == SerialMode::Duplex, int>>
 #endif
-    std::byte reciveByte() {
+    std::string reciveByte() {
         return pimpl->reciveByte();
     }
 
