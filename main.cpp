@@ -11,6 +11,8 @@
 #include "src/json/configFinder.h"
 #include "src/serial/Serial.h"
 
+#define DEBUG_BUILD true
+
 int main(int argc, const char* argv[]) {
     Parse clParser{argc, argv};
     if(!clParser) {
@@ -24,8 +26,20 @@ int main(int argc, const char* argv[]) {
 		(std::byte)0x41, (std::byte)0x42, (std::byte)0x43, (std::byte)0x44,
 		(std::byte)0x45, (std::byte)0x46, (std::byte)0x47, (std::byte)0x48,
 		});
+
+#ifdef DEBUG_BUILD
+	std::cout << "====[ DEBUG ] ====" << std::endl;
+	std::cout << "System Information" << std::endl;
+	std::cout << "OS: " << Poco::Environment::osDisplayName() << std::endl;
+	std::cout << "Core Count: " << Poco::Environment::processorCount() << std::endl;
+
     std::cout << "Waiting for data... " << std::endl;
-    std::cout << serial.reciveByte() << std::endl;
+	for (size_t i = 0; i < 8; i++) {
+		std::cout << serial.reciveByte() << std::endl;
+	}
+
+	std::cout << "==================" << std::endl;
+#endif
 
     Poco::JSON::ParseHandler handler;
 
@@ -38,8 +52,7 @@ int main(int argc, const char* argv[]) {
         std::cout << "ID: " << parser.getID() << std::endl;
     }
 
-    std::cout << Poco::Environment::osDisplayName() << std::endl;
-    std::cout << Poco::Environment::processorCount() << std::endl;
 
+	while(true) {}
     return 0;
 }
