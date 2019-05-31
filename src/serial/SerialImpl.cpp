@@ -5,9 +5,15 @@
 #include "SerialImpl.h"
 
 SerialImpl::SerialImpl(std::string device, int baudrate) : mDevice{device}, mBaudrate{baudrate}, mPort{mIOService, device} {
-    asio::serial_port_base::baud_rate BAUD(9600);
+    asio::serial_port_base::baud_rate baud(9600);
+    asio::serial_port_base::character_size bitsize(8);
+    asio::serial_port_base::parity parity(asio::serial_port_base::parity::none);
+    asio::serial_port_base::stop_bits stopbits(asio::serial_port_base::stop_bits::one);
 
-    mPort.set_option(BAUD);
+    mPort.set_option(baud);
+    mPort.set_option(bitsize);
+    mPort.set_option(parity);
+    mPort.set_option(stopbits);
 }
 
 SerialImpl::~SerialImpl() {
