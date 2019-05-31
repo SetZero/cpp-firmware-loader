@@ -41,7 +41,7 @@ public:
         return fileLocation;
     }
 
-    [[nodiscard]] std::optional<const std::string> getFileContents() const noexcept {
+    [[nodiscard]] const std::optional<const std::string> getFileContents() const noexcept {
         try {
             std::ifstream file{fileLocation->string()};
             std::stringstream buffer;

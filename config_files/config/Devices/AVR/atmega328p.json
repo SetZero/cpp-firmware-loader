@@ -19,7 +19,9 @@
   "serial": {
     "general": {
       "mode": "8N1",
-      "bytesPerBurst": 10
+      "bytesPerBurst": 10,
+      "minBaudrate": 9600,
+      "maxBaudrate": 57600
     },
     "write": {
       "eepromBurstDelay": "100ms",
