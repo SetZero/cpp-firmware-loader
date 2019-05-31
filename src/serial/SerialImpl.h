@@ -11,7 +11,7 @@
 
 class SerialImpl {
 public:
-    SerialImpl(std::string device, int baudrate);
+    SerialImpl(std::string device, unsigned int baudrate);
 
     ~SerialImpl();
 
@@ -24,7 +24,7 @@ public:
     std::vector<std::byte> reciveBytes();
 private:
     const std::string mDevice;
-    const int mBaudrate;
+    const unsigned int mBaudrate;
     asio::io_service mIOService;
     asio::serial_port mPort;
 };

@@ -12,7 +12,7 @@ private:
 	std::string deviceName;
     std::string comPortLocation;
     std::string binaryLocation;
-    int baudrate = 9600;
+    unsigned int baudrate = 9600;
     bool showHelp = false;
     clara::Parser cli;
 public:
@@ -61,7 +61,7 @@ public:
         return showHelp;
     }
 
-    [[nodiscard]] bool baud() const noexcept {
+    [[nodiscard]] unsigned int baud() const noexcept {
         return baudrate;
     }
 
