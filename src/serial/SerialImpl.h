@@ -23,7 +23,8 @@ public:
 private:
     const std::string mDevice;
     const int mBaudrate;
-    //asio::serial_port mPort;
+    asio::io_service mIOService;
+    asio::serial_port mPort;
 };
 
 
