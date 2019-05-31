@@ -17,10 +17,10 @@ private:
 
     std::optional<fs::path> fileLocation;
 public:
-    ConfigFinder(const std::string& deviceName) {
-        fileLocation = findFile(deviceName + CONFIG_SUFFIX, CONFIG_FOLDER);
+    ConfigFinder(const std::string& deviceName) : fileLocation{findFile(deviceName + CONFIG_SUFFIX, CONFIG_FOLDER)} {
     }
-    [[nodiscard]] std::optional<const fs::path> findFile(const std::string& filename, const std::string& folder) noexcept {
+
+    [[nodiscard]] const std::optional<const fs::path> findFile(const std::string& filename, const std::string& folder) noexcept {
 
         try {
             for (const auto &entry : fs::directory_iterator(folder)) {
