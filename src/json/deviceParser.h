@@ -4,7 +4,7 @@ namespace json = Poco::JSON;
 
 class DeviceParser {
 public:
-	DeviceParser(const std::string& json) {
+	explicit DeviceParser(const std::string& json) {
         json::Parser parser;
         parsedJSON = parser.parse(json);
     }
