@@ -11,7 +11,8 @@
 #include "src/json/configFinder.h"
 #include "src/serial/Serial.h"
 
-#define DEBUG_BUILD false
+
+#define DEBUG_BUILD true
 
 int main(int argc, const char* argv[]) {
     Parse clParser{argc, argv};
@@ -21,6 +22,13 @@ int main(int argc, const char* argv[]) {
     }
 
     Serial<SerialMode::Duplex> serial{clParser.port(), clParser.baud()};
+	if (!serial.isOpen()) {
+		std::cout << *serial.errorMessage() << std::endl;
+#ifdef _MSC_VER
+		while (true) {}
+#endif
+		return 0;
+	}
 
     serial.writeData({(std::byte)0xCC, (std::byte)0xCC, (std::byte)0xCC, (std::byte)0x55,
 		(std::byte)0x41, (std::byte)0x42, (std::byte)0x43, (std::byte)0x44,
@@ -35,7 +43,7 @@ int main(int argc, const char* argv[]) {
 
     std::cout << "Waiting for data... " << std::endl;
 	for (size_t i = 0; i < 8; i++) {
-		std::cout << serial.reciveByte() << std::endl;
+		std::cout << *serial.reciveByte() << std::endl;
 	}
 	std::cout << "==================" << std::endl;
 #endif
@@ -51,7 +59,9 @@ int main(int argc, const char* argv[]) {
         std::cout << "ID: " << parser.getID() << std::endl;
     }
 
+#ifdef _MSC_VER
+	while (true) {}
+#endif
 
-	while(true) {}
     return 0;
 }

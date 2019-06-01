@@ -4,43 +4,75 @@
 
 #include "SerialImpl.h"
 
-SerialImpl::SerialImpl(std::string device, unsigned int baudrate) : mDevice{device}, mBaudrate{baudrate}, mPort{mIOService, device} {
+SerialImpl::SerialImpl(std::string device, unsigned int baudrate) : mDevice{ device }, mBaudrate{ baudrate } {
+	try {
+		mPort = std::make_unique<asio::serial_port>(mIOService, device);
+	}
+	catch (std::runtime_error& e) {
+		mErrorMessage = e.what();
+		return;
+	}
+	mOpen = true;
+
+
     asio::serial_port_base::baud_rate baud(baudrate);
     asio::serial_port_base::character_size bitsize(8);
     asio::serial_port_base::parity parity(asio::serial_port_base::parity::none);
     asio::serial_port_base::stop_bits stopbits(asio::serial_port_base::stop_bits::one);
 
-    mPort.set_option(baud);
-    mPort.set_option(bitsize);
-    mPort.set_option(parity);
-    mPort.set_option(stopbits);
+    mPort->set_option(baud);
+    mPort->set_option(bitsize);
+    mPort->set_option(parity);
+    mPort->set_option(stopbits);
 }
 
 SerialImpl::~SerialImpl() {
     mIOService.stop();
-    mPort.close();
+	if (mOpen) {
+		mPort->close();
+	}
 }
 
 void SerialImpl::writeData(std::byte data) {
-    asio::write(mPort, asio::buffer({data}, 1));
-    mIOService.poll();
+	if (mOpen) {
+		asio::write(*mPort, asio::buffer({ data }, 1));
+		mIOService.poll();
+	}
 }
 
 void SerialImpl::writeData(std::vector<std::byte> data) {
-    asio::write(mPort, asio::buffer(data, data.size()));
-    mIOService.poll();
+	if (mOpen) {
+		asio::write(*mPort, asio::buffer(data, data.size()));
+		mIOService.poll();
+	}
 }
 
-std::string SerialImpl::reciveByte() {
-    mIOService.poll();
-    asio::streambuf readbuf;
-    asio::read(mPort, readbuf, asio::transfer_exactly(1));
-    return std::string{asio::buffers_begin(readbuf.data()), asio::buffers_end(readbuf.data())};
+std::optional<std::string> SerialImpl::reciveByte() {
+	if (mOpen) {
+		mIOService.poll();
+		asio::streambuf readbuf;
+		asio::read(*mPort, readbuf, asio::transfer_exactly(1));
+		return std::string{ asio::buffers_begin(readbuf.data()), asio::buffers_end(readbuf.data()) };
+	}
+	return std::nullopt;
 }
 
 std::vector<std::byte> SerialImpl::reciveBytes() {
-    mIOService.poll();
-    return std::vector<std::byte>();
+	if (mOpen) {
+		mIOService.poll();
+		return std::vector<std::byte>();
+	}
+	return {};
+}
+
+bool SerialImpl::isOpen() const
+{
+	return mOpen;
+}
+
+std::optional<std::string> const& SerialImpl::errorMessage() const
+{
+	return mErrorMessage;
 }
 
 

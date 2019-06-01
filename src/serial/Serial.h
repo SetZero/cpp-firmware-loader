@@ -20,6 +20,13 @@ class Serial {
 public:
     explicit Serial(const std::string& device, const unsigned int baudrate) : pimpl{std::make_unique<SerialImpl>(device, baudrate)} { }
 
+	[[nodiscard]] std::optional<std::string> const& errorMessage() const {
+		return pimpl->errorMessage();
+	}
+
+	[[nodiscard]] bool isOpen() const {
+		return pimpl->isOpen();
+	}
 #ifdef __cpp_concepts
     template<SerialMode pMode = mode> requires mode == SerialMode::TXOnly || mode == SerialMode::Duplex
 #else
@@ -43,7 +50,7 @@ public:
 #else
     template<typename U = int, typename = std::enable_if_t<mode == SerialMode::RXOnly || mode == SerialMode::Duplex, int>>
 #endif
-    std::string reciveByte() {
+	std::optional<std::string> reciveByte() {
         return pimpl->reciveByte();
     }
 

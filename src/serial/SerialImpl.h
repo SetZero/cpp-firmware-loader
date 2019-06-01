@@ -7,6 +7,8 @@
 
 #include <string>
 #include <vector>
+#include <memory>
+#include <optional>
 #include <asio.hpp>
 
 class SerialImpl {
@@ -19,14 +21,20 @@ public:
 
     void writeData(std::vector<std::byte> data);
 
-    std::string reciveByte();
+	std::optional<std::string> reciveByte();
 
     std::vector<std::byte> reciveBytes();
+
+	[[nodiscard]] bool isOpen() const;
+
+	[[nodiscard]] std::optional<std::string> const& errorMessage() const;
 private:
     const std::string mDevice;
     const unsigned int mBaudrate;
     asio::io_service mIOService;
-    asio::serial_port mPort;
+    std::unique_ptr<asio::serial_port> mPort = nullptr;
+	bool mOpen = false;
+	std::optional<std::string> mErrorMessage;
 };
 
 
