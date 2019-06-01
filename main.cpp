@@ -11,7 +11,7 @@
 #include "src/json/configFinder.h"
 #include "src/serial/Serial.h"
 
-#define DEBUG_BUILD true
+#define DEBUG_BUILD false
 
 int main(int argc, const char* argv[]) {
     Parse clParser{argc, argv};
@@ -27,7 +27,7 @@ int main(int argc, const char* argv[]) {
 		(std::byte)0x45, (std::byte)0x46, (std::byte)0x47, (std::byte)0x48,
 		});
 
-#ifdef DEBUG_BUILD
+#if DEBUG_BUILD
 	std::cout << "====[ DEBUG ] ====" << std::endl;
 	std::cout << "System Information" << std::endl;
 	std::cout << "OS: " << Poco::Environment::osDisplayName() << std::endl;
@@ -37,7 +37,6 @@ int main(int argc, const char* argv[]) {
 	for (size_t i = 0; i < 8; i++) {
 		std::cout << serial.reciveByte() << std::endl;
 	}
-
 	std::cout << "==================" << std::endl;
 #endif
 
