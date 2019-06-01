@@ -17,7 +17,7 @@ private:
 
     std::optional<fs::path> fileLocation;
 public:
-    ConfigFinder(const std::string& deviceName) : fileLocation{findFile(deviceName + CONFIG_SUFFIX, CONFIG_FOLDER)} {
+    explicit ConfigFinder(const std::string& deviceName) : fileLocation{findFile(deviceName + CONFIG_SUFFIX, CONFIG_FOLDER)} {
     }
 
     [[nodiscard]] const std::optional<const fs::path> findFile(const std::string& filename, const std::string& folder) noexcept {
