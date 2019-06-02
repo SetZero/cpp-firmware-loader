@@ -5,7 +5,7 @@
 #pragma once
 #include <memory>
 #include <string>
-#include <vector>
+#include <string>
 #include "SerialImpl.h"
 
 enum class SerialMode {
@@ -41,7 +41,7 @@ public:
 #else
     template<typename U = int, typename = std::enable_if_t<mode == SerialMode::TXOnly || mode == SerialMode::Duplex, int>>
 #endif
-    void writeData(std::vector<std::byte> data) {
+    void writeData(std::basic_string<std::byte> data) {
         pimpl->writeData(data);
     }
 
@@ -59,7 +59,7 @@ public:
 #else
     template<typename U = int, typename = std::enable_if_t<mode == SerialMode::RXOnly || mode == SerialMode::Duplex, int>>
 #endif
-    std::vector<std::byte> reciveBytes() {
+    std::basic_string<std::byte> reciveBytes() {
         return pimpl->reciveBytes();
     }
 private:

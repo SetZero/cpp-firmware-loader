@@ -6,7 +6,7 @@
 
 
 #include <string>
-#include <vector>
+#include <string>
 #include <memory>
 #include <optional>
 #include <asio.hpp>
@@ -19,11 +19,11 @@ public:
 
     void writeData(std::byte data);
 
-    void writeData(std::vector<std::byte> data);
+    void writeData(std::basic_string<std::byte> data);
 
 	std::optional<std::string> reciveByte();
 
-    std::vector<std::byte> reciveBytes();
+	std::basic_string<std::byte> reciveBytes();
 
 	[[nodiscard]] bool isOpen() const;
 

@@ -12,6 +12,7 @@
 #include "src/json//deviceParser.h"
 #include "src/json/configFinder.h"
 #include "src/serial/Serial.h"
+#include "src/units/Byte.h"
 
 
 #define DEBUG_BUILD true
