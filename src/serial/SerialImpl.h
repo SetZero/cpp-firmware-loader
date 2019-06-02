@@ -32,7 +32,7 @@ private:
     const std::string mDevice;
     const unsigned int mBaudrate;
     asio::io_service mIOService;
-    std::unique_ptr<asio::serial_port> mPort = nullptr;
+    asio::serial_port mPort;
 	bool mOpen = false;
 	std::optional<std::string> mErrorMessage;
 };
