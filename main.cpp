@@ -33,7 +33,7 @@ int main(int argc, const char* argv[]) {
 	}
 	std::this_thread::sleep_for(std::chrono::milliseconds(100)); // preventing odd serial behaviour
 																 // It might be possible that this
-																 // can be removed later, if sw serial
+																 // can be removed later, if hw serial
 																 // is disabled ?
 
     serial.writeData({(std::byte)0xCC, (std::byte)0xCC, (std::byte)0xCC, (std::byte)0x55,
