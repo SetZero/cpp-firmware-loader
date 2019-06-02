@@ -1,4 +1,6 @@
 #include <iostream>
+#include <chrono>
+#include <thread>
 #include <Poco/JSON/ParseHandler.h>
 #include <Poco/Environment.h>
 #include <catch.hpp>
@@ -29,6 +31,10 @@ int main(int argc, const char* argv[]) {
 #endif
 		return 0;
 	}
+	std::this_thread::sleep_for(std::chrono::milliseconds(100)); // preventing odd serial behaviour
+																 // It might be possible that this
+																 // can be removed later, if sw serial
+																 // is disabled ?
 
     serial.writeData({(std::byte)0xCC, (std::byte)0xCC, (std::byte)0xCC, (std::byte)0x55,
 		(std::byte)0x41, (std::byte)0x42, /*(std::byte)0x43, (std::byte)0x44,*/
@@ -42,7 +48,7 @@ int main(int argc, const char* argv[]) {
 	std::cout << "Core Count: " << Poco::Environment::processorCount() << std::endl;
 
     std::cout << "Waiting for data... " << std::endl;
-	for (size_t i = 0; i < 8; i++) {
+	for (size_t i = 0; i < 2; i++) {
 		std::cout << *serial.reciveByte() << std::endl;
 	}
 	std::cout << "==================" << std::endl;
