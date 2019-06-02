@@ -31,8 +31,8 @@ int main(int argc, const char* argv[]) {
 	}
 
     serial.writeData({(std::byte)0xCC, (std::byte)0xCC, (std::byte)0xCC, (std::byte)0x55,
-		(std::byte)0x41, (std::byte)0x42, (std::byte)0x43, (std::byte)0x44,
-		(std::byte)0x45, (std::byte)0x46, (std::byte)0x47, (std::byte)0x48,
+		(std::byte)0x41, (std::byte)0x42, /*(std::byte)0x43, (std::byte)0x44,*/
+		//(std::byte)0x45, (std::byte)0x46, (std::byte)0x47, (std::byte)0x48,
 		});
 
 #if DEBUG_BUILD
