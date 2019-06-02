@@ -34,7 +34,7 @@
       "resyncAfterBurst": "true"
     }
   },
-  "Binary": {
+  "binary": {
     "format": "Intel Hex"
   }
 }

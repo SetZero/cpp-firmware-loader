@@ -24,6 +24,16 @@ int main(int argc, const char* argv[]) {
         return 0;
     }
 
+    ConfigFinder config{clParser.device()};
+    if(auto& location = config.getFileLocation()) {
+        std::cout << "File Location: " << location->string() << std::endl;
+    }
+    if(auto& content = config.getFileContents()) {
+        DeviceParser parser{*content};
+        std::cout << parser.getJSONValue("/serial/sync/syncByte") << std::endl;
+        std::cout << parser.getJSONValue("/serial/sync/preamble") << std::endl;
+    }
+
     Serial<SerialMode::Duplex> serial{clParser.port(), clParser.baud()};
 	if (!serial.isOpen()) {
 		std::cout << *serial.errorMessage() << std::endl;
@@ -38,9 +48,12 @@ int main(int argc, const char* argv[]) {
 																 // is disabled ?
 
     serial.writeData({(std::byte)0xCC, (std::byte)0xCC, (std::byte)0xCC, (std::byte)0x55,
-		(std::byte)0x41, (std::byte)0x42, /*(std::byte)0x43, (std::byte)0x44,*/
-		//(std::byte)0x45, (std::byte)0x46, (std::byte)0x47, (std::byte)0x48,
+		(std::byte)0x41, (std::byte)0x42
 		});
+
+    using namespace CustomDataTypes::ComputerScience::literals;
+
+    auto mb = 128_kB;
 
 #if DEBUG_BUILD
 	std::cout << "====[ DEBUG ] ====" << std::endl;
@@ -54,17 +67,6 @@ int main(int argc, const char* argv[]) {
 	}
 	std::cout << "==================" << std::endl;
 #endif
-
-    Poco::JSON::ParseHandler handler;
-
-    ConfigFinder config{clParser.device()};
-    if(auto& location = config.getFileLocation()) {
-        std::cout << "File Location: " << location->string() << std::endl;
-    }
-    if(auto& content = config.getFileContents()) {
-        DeviceParser parser{*content};
-        std::cout << "ID: " << parser.getID() << std::endl;
-    }
 
 #ifdef _MSC_VER
 	while (true) {}
