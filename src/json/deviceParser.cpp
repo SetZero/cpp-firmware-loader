@@ -39,4 +39,16 @@ namespace parser {
         }
         return returnValue;
     }
+
+    std::byte DeviceParser::getJSONByteValue(const std::string &value) {
+        auto tmpValue = getJsonAsString(value);
+        unsigned int tmp;
+
+        if (Poco::NumberParser::tryParseHex(tmpValue, tmp)) {
+            return static_cast<std::byte>(tmp);
+        }
+        else {
+            return static_cast<std::byte>(Poco::NumberParser::parse(tmpValue));
+        }
+    }
 }

@@ -19,20 +19,9 @@ namespace parser {
             return static_cast<T>(Poco::NumberParser::parse(tmpValue));
         }
 
-
         [[nodiscard]] const std::string getJsonAsString(const std::string& value);
 
-        [[nodiscard]] std::byte getJSONByteValue(const std::string& value) {
-            auto tmpValue = getJsonAsString(value);
-            unsigned int tmp;
-
-            if (Poco::NumberParser::tryParseHex(tmpValue, tmp)) {
-                return static_cast<std::byte>(tmp);
-            }
-            else {
-                return static_cast<std::byte>(Poco::NumberParser::parse(tmpValue));
-            }
-        }
+        [[nodiscard]] std::byte getJSONByteValue(const std::string& value);
     private:
         [[nodiscard]]  const std::vector<std::string> getPathValue(const std::string& value);
 
