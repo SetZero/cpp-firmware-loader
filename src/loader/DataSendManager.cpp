@@ -57,7 +57,7 @@ void DataSendManager::bufferedWrite(std::byte data) noexcept {
     }
 }
 
-DataSendManager &operator<<(DataSendManager &parse, std::byte data) {
+DataSendManager& operator<<(DataSendManager &parse, std::byte data) {
     parse.bufferedWrite(data);
     return parse;
 }
