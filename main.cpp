@@ -13,9 +13,11 @@
 #include "src/json/configFinder.h"
 #include "src/serial/Serial.h"
 #include "src/units/Byte.h"
+#include "src/json/ConfigManager.h"
+#include "src/loader/DataSendManager.h"
 
 
-#define DEBUG_BUILD true
+#define DEBUG_BUILD false
 
 int main(int argc, const char* argv[]) {
     Parse clParser{argc, argv};
@@ -23,33 +25,23 @@ int main(int argc, const char* argv[]) {
         std::cout << clParser;
         return 0;
     }
-
-    ConfigFinder config{clParser.device()};
-    if(auto& location = config.getFileLocation()) {
-        std::cout << "File Location: " << location->string() << std::endl;
-    }
-    if(auto& content = config.getFileContents()) {
-        DeviceParser parser{*content};
-        std::cout << parser.getJSONValue("/serial/sync/syncByte") << std::endl;
-        std::cout << parser.getJSONValue("/serial/sync/preamble") << std::endl;
-    }
-
-    Serial<SerialMode::Duplex> serial{clParser.port(), clParser.baud()};
-	if (!serial.isOpen()) {
-		std::cout << *serial.errorMessage() << std::endl;
+    ConfigManager configManager{clParser.device()};
+    DataSendManager sendManager{configManager, clParser.port(), clParser.baud()};
+	if (!sendManager.isOpen()) {
+		std::cout << *sendManager.errorMessage() << std::endl;
 #ifdef _MSC_VER
 		while (true) {}
 #endif
 		return 0;
 	}
-	std::this_thread::sleep_for(std::chrono::milliseconds(100)); // preventing odd serial behaviour
+	//std::this_thread::sleep_for(std::chrono::milliseconds(100)); // preventing odd serial behaviour
 																 // It might be possible that this
 																 // can be removed later, if hw serial
 																 // is disabled ?
 
-    serial.writeData({(std::byte)0xCC, (std::byte)0xCC, (std::byte)0xCC, (std::byte)0x55,
-		(std::byte)0x41, (std::byte)0x42
-		});
+    //serial.writeData({(std::byte)0xCC, (std::byte)0xCC, (std::byte)0xCC, (std::byte)0x55,
+	//	(std::byte)0x41, (std::byte)0x42
+	//	});
 
     using namespace CustomDataTypes::ComputerScience::literals;
 
