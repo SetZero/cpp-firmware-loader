@@ -5,6 +5,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <iterator>
 #include "../serial/Serial.h"
 #include "../json/ConfigManager.h"
 
@@ -14,6 +15,7 @@ public:
     [[nodiscard]] bool isOpen() const noexcept;
     [[nodiscard]] std::optional<std::string> const& errorMessage() const noexcept;
     void bufferedWrite(std::vector<std::byte> data) noexcept;
+	void flush() noexcept;
 private:
 	void sync() noexcept;
 

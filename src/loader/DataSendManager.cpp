@@ -34,6 +34,11 @@ void DataSendManager::bufferedWrite(std::vector<decltype(mBuffer)::value_type> d
 	}
 }
 
+void DataSendManager::flush() noexcept {
+	const auto remainingBit = mManager.bytesPerBurst() - mBuffer.size();
+	std::fill_n(std::back_inserter(mBuffer), remainingBit, 0xFF);
+}
+
 void DataSendManager::sync() noexcept {
 	if (mSerial.isOpen()) {
 		for (size_t i = 0; i < mManager.syncByteAmount(); i++) {
