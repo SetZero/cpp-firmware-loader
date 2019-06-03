@@ -12,6 +12,7 @@
 class DataSendManager {
 public:
     DataSendManager(const ConfigManager& manager, const std::string& device, const unsigned int baudrate);
+	~DataSendManager();
     [[nodiscard]] bool isOpen() const noexcept;
     [[nodiscard]] std::optional<std::string> const& errorMessage() const noexcept;
     void bufferedWrite(std::vector<std::byte> data) noexcept;
