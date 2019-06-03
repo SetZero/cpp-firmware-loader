@@ -16,9 +16,12 @@ public:
     [[nodiscard]] bool isOpen() const noexcept;
     [[nodiscard]] std::optional<std::string> const& errorMessage() const noexcept;
     void bufferedWrite(std::vector<std::byte> data) noexcept;
+    void bufferedWrite(std::byte data) noexcept;
 	void flush() noexcept;
+    friend DataSendManager& operator<<( DataSendManager& parse,  std::byte data);
 private:
 	void sync() noexcept;
+	void sendBuffer() noexcept;
 
     Serial<SerialMode::TXOnly> mSerial;
     const ConfigManager& mManager;

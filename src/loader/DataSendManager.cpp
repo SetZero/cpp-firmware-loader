@@ -29,20 +29,16 @@ std::optional<std::string> const &DataSendManager::errorMessage() const noexcept
 void DataSendManager::bufferedWrite(std::vector<decltype(mBuffer)::value_type> data) noexcept {
     mBuffer.insert(std::begin(mBuffer), std::begin(data), std::end(data));
     while(mBuffer.size() >= mManager.bytesPerBurst()) {
-        std::vector<decltype(mBuffer)::value_type> tmp;
-        auto it = std::next(std::begin(mBuffer), static_cast<long>(mManager.bytesPerBurst()));
-        std::move(mBuffer.begin(), it, std::back_inserter(tmp));
-
-        mBuffer.erase(std::begin(mBuffer), it);
-		sync();
-		mSerial.writeData(tmp);
+        sendBuffer();
 	}
 }
 
 void DataSendManager::flush() noexcept {
 	const auto remainingBit = mManager.bytesPerBurst() - mBuffer.size();
-	std::fill_n(std::back_inserter(mBuffer), remainingBit, static_cast<std::byte>(0xFF));
-	bufferedWrite({});
+	if(remainingBit < mManager.bytesPerBurst()) {
+        std::fill_n(std::back_inserter(mBuffer), remainingBit, static_cast<std::byte>(0xFF));
+        sendBuffer();
+    }
 }
 
 void DataSendManager::sync() noexcept {
@@ -52,4 +48,26 @@ void DataSendManager::sync() noexcept {
 		}
 		mSerial.writeData(mManager.preamble());
 	}
+}
+
+void DataSendManager::bufferedWrite(std::byte data) noexcept {
+    mBuffer.push_back(data);
+    if(mBuffer.size() >= mManager.bytesPerBurst()) {
+        sendBuffer();
+    }
+}
+
+DataSendManager &operator<<(DataSendManager &parse, std::byte data) {
+    parse.bufferedWrite(data);
+    return parse;
+}
+
+void DataSendManager::sendBuffer() noexcept {
+    std::vector<decltype(mBuffer)::value_type> tmp;
+    auto it = std::next(std::begin(mBuffer), static_cast<long>(mManager.bytesPerBurst()));
+    std::move(mBuffer.begin(), it, std::back_inserter(tmp));
+
+    mBuffer.erase(std::begin(mBuffer), it);
+    sync();
+    mSerial.writeData(tmp);
 }

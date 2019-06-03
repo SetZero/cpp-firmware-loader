@@ -52,6 +52,7 @@ int main(int argc, const char* argv[]) {
 				static_cast<std::byte>(0x4c),
 				static_cast<std::byte>(0x4d)
 			});
+		sendManager << static_cast<std::byte>(0x4e) << static_cast<std::byte>(0x4f);
 		sendManager.flush();
 	}
 
