@@ -9,6 +9,7 @@
 #include <string>
 #include <memory>
 #include <optional>
+#include <vector>
 #include <asio.hpp>
 
 class SerialImpl {
@@ -19,11 +20,11 @@ public:
 
     void writeData(std::byte data);
 
-    void writeData(std::basic_string<std::byte> data);
+    void writeData(std::vector<std::byte> data);
 
 	std::optional<std::string> reciveByte();
 
-	std::basic_string<std::byte> reciveBytes();
+	std::vector<std::byte> reciveBytes();
 
 	[[nodiscard]] bool isOpen() const;
 

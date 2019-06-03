@@ -43,7 +43,7 @@ void SerialImpl::writeData(std::byte data) {
 	}
 }
 
-void SerialImpl::writeData(std::basic_string<std::byte> data) {
+void SerialImpl::writeData(std::vector<std::byte> data) {
 	if (mOpen) {
 		asio::write(mPort, asio::buffer(data, data.size()));
 		mIOService.poll();
@@ -60,10 +60,10 @@ std::optional<std::string> SerialImpl::reciveByte() {
 	return std::nullopt;
 }
 
-std::basic_string<std::byte> SerialImpl::reciveBytes() {
+std::vector<std::byte> SerialImpl::reciveBytes() {
 	if (mOpen) {
 		mIOService.poll();
-		return std::basic_string<std::byte>();
+		return std::vector<std::byte>();
 	}
 	return {};
 }

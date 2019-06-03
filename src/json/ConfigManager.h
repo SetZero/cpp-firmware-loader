@@ -23,7 +23,7 @@ private:
     static constexpr auto SYNC_BYTE = "/serial/sync/syncByte";
     static constexpr auto PREAMBLE = "/serial/sync/preamble";
     static constexpr auto SYNC_BYTE_AMOUNT =  "/serial/sync/syncByteAmount";
-    static constexpr auto BYTES_PER_BURST =  "/serial/generak/bytesPerBurst";
+    static constexpr auto BYTES_PER_BURST =  "/serial/general/bytesPerBurst";
 };
 
 

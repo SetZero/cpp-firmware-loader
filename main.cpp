@@ -1,3 +1,6 @@
+
+#define DEBUG_BUILD false
+
 #include <iostream>
 #include <chrono>
 #include <thread>
@@ -17,7 +20,6 @@
 #include "src/loader/DataSendManager.h"
 
 
-#define DEBUG_BUILD false
 
 int main(int argc, const char* argv[]) {
     Parse clParser{argc, argv};
@@ -35,6 +37,21 @@ int main(int argc, const char* argv[]) {
 		return 0;
 	} else {
 		std::cout << "Connection to " << clParser.port() << " successful!" << std::endl;
+		sendManager.bufferedWrite({
+				static_cast<std::byte>(0x41),
+				static_cast<std::byte>(0x42),
+				static_cast<std::byte>(0x43),
+				static_cast<std::byte>(0x44),
+				static_cast<std::byte>(0x45),
+				static_cast<std::byte>(0x46),
+				static_cast<std::byte>(0x47),
+				static_cast<std::byte>(0x48),
+				static_cast<std::byte>(0x49),
+				static_cast<std::byte>(0x4a),
+				static_cast<std::byte>(0x4b),
+				static_cast<std::byte>(0x4c),
+				static_cast<std::byte>(0x4d)
+			});
 	}
 	//std::this_thread::sleep_for(std::chrono::milliseconds(100)); // preventing odd serial behaviour
 																 // It might be possible that this

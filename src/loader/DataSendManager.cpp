@@ -5,7 +5,10 @@
 #include "DataSendManager.h"
 
 DataSendManager::DataSendManager(const ConfigManager& manager, const std::string& device, const unsigned int baudrate) : 
-	mSerial{ device, baudrate }, mManager{ std::move(manager) }, mOpen{ mSerial.isOpen() } {}
+	mSerial{ device, baudrate }, mManager{ std::move(manager) }, mOpen{ mSerial.isOpen() } 
+{
+	std::this_thread::sleep_for(std::chrono::milliseconds(100));
+}
 
 bool DataSendManager::isOpen() const noexcept {
     return mOpen;
@@ -18,17 +21,15 @@ std::optional<std::string> const &DataSendManager::errorMessage() const noexcept
 
 void DataSendManager::bufferedWrite(std::vector<decltype(mBuffer)::value_type> data) noexcept {
     mBuffer.insert(std::begin(mBuffer), std::begin(data), std::end(data));
-    if(mBuffer.size() < mManager.bytesPerBurst()) {
+    while(mBuffer.size() >= mManager.bytesPerBurst()) {
         std::vector<decltype(mBuffer)::value_type> tmp;
         auto it = std::next(std::begin(mBuffer), static_cast<long>(mManager.bytesPerBurst()));
         std::move(mBuffer.begin(), it, std::back_inserter(tmp));
 
         mBuffer.erase(std::begin(mBuffer), it);
-
-        for(auto& val : tmp) {
-            std::cout << std::hex << static_cast<unsigned int>(val) << std::endl;
-        }
-    }
+		sync();
+		mSerial.writeData(tmp);
+	}
 }
 
 void DataSendManager::sync() noexcept {
