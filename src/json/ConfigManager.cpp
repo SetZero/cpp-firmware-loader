@@ -7,18 +7,18 @@
 ConfigManager::ConfigManager(const std::string &deviceName) {
     ConfigFinder config{deviceName};
     if(auto& content = config.getFileContents()) {
-        mParser = std::make_unique<DeviceParser>(*content);
+        mParser = std::make_unique<parser::DeviceParser>(*content);
     } else {
         throw std::runtime_error("Unable to locate Config File!");
     }
 }
 
 [[nodiscard]] std::byte ConfigManager::syncByte() const noexcept {
-    return static_cast<std::byte>(mParser->getJSONValue<std::byte>(SYNC_BYTE));
+    return mParser->getJSONByteValue(SYNC_BYTE);
 }
 
 [[nodiscard]] std::byte ConfigManager::preamble() const noexcept {
-    return static_cast<std::byte>(mParser->getJSONValue<std::byte>(PREAMBLE));
+    return mParser->getJSONByteValue(PREAMBLE);
 }
 
 std::size_t ConfigManager::syncByteAmount() const noexcept {

@@ -18,7 +18,7 @@ public:
     [[nodiscard]] std::size_t syncByteAmount() const noexcept;
     [[nodiscard]] std::size_t bytesPerBurst() const noexcept;
 private:
-    std::unique_ptr<DeviceParser> mParser;
+    std::unique_ptr<parser::DeviceParser> mParser;
 
     static constexpr auto SYNC_BYTE = "/serial/sync/syncByte";
     static constexpr auto PREAMBLE = "/serial/sync/preamble";

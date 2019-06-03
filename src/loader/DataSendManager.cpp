@@ -20,7 +20,7 @@ void DataSendManager::bufferedWrite(std::vector<decltype(mBuffer)::value_type> d
     mBuffer.insert(std::begin(mBuffer), std::begin(data), std::end(data));
     if(mBuffer.size() < mManager.bytesPerBurst()) {
         std::vector<decltype(mBuffer)::value_type> tmp;
-        auto it = std::next(std::begin(mBuffer), static_cast<unsigned long>(mManager.bytesPerBurst()));
+        auto it = std::next(std::begin(mBuffer), static_cast<long>(mManager.bytesPerBurst()));
         std::move(mBuffer.begin(), it, std::back_inserter(tmp));
 
         mBuffer.erase(std::begin(mBuffer), it);

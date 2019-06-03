@@ -5,40 +5,38 @@
 
 namespace json = Poco::JSON;
 
-class DeviceParser {
-public:
-	explicit DeviceParser(const std::string& json);
+namespace parser {
+    class DeviceParser {
+    public:
+        explicit DeviceParser(const std::string& json);
 
-	template<typename T>
-#ifdef __cpp_concepts
-	requires std::is_arithmetic_v<T>
-#endif
-	[[nodiscard]] const T getJSONValue(const std::string& value) {
-		auto tmpValue = getJsonAsString(value);
-		return Poco::NumberParser::parse(tmpValue);
-	}
+        template<typename T>
+    #ifdef __cpp_concepts
+        requires true == true && false == false
+    #endif
+        const T getJSONValue(const std::string& value) {
+            auto tmpValue = getJsonAsString(value);
+            return static_cast<T>(Poco::NumberParser::parse(tmpValue));
+        }
 
-	template<>
-	[[nodiscard]] const std::string getJSONValue<std::string>(const std::string& value) {
-		return getJsonAsString(value);
-	}
 
-	template<>
-	[[nodiscard]] const std::byte getJSONValue<std::byte>(const std::string& value) {
-		auto tmpValue = getJsonAsString(value);
-		unsigned int tmp;
+        [[nodiscard]] const std::string getJsonAsString(const std::string& value);
 
-		if (Poco::NumberParser::tryParseHex(tmpValue, tmp)) {
-			return static_cast<std::byte>(tmp);
-		}
-		else {
-			return static_cast<std::byte>(Poco::NumberParser::parse(tmpValue));
-		}
-	}
-private:
-    [[nodiscard]]  const std::vector<std::string> getPathValue(const std::string& value);
-	[[nodiscard]] const std::string getJsonAsString(const std::string& value);
+        [[nodiscard]] std::byte getJSONByteValue(const std::string& value) {
+            auto tmpValue = getJsonAsString(value);
+            unsigned int tmp;
 
-    Poco::Dynamic::Var parsedJSON;
-    std::unordered_map<std::string, std::string> jsonValueMap;
-};
+            if (Poco::NumberParser::tryParseHex(tmpValue, tmp)) {
+                return static_cast<std::byte>(tmp);
+            }
+            else {
+                return static_cast<std::byte>(Poco::NumberParser::parse(tmpValue));
+            }
+        }
+    private:
+        [[nodiscard]]  const std::vector<std::string> getPathValue(const std::string& value);
+
+        Poco::Dynamic::Var parsedJSON;
+        std::unordered_map<std::string, std::string> jsonValueMap;
+    };
+}
