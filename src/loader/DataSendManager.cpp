@@ -7,6 +7,8 @@
 DataSendManager::DataSendManager(const ConfigManager& manager, const std::string& device, const unsigned int baudrate) : 
 	mSerial{ device, baudrate }, mManager{ std::move(manager) }, mOpen{ mSerial.isOpen() } 
 {
+    // preventing odd serial behaviour. It might be possible that this
+    // can be removed later, if hw serial is disabled ?
 	std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 

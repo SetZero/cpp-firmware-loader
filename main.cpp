@@ -53,14 +53,6 @@ int main(int argc, const char* argv[]) {
 				static_cast<std::byte>(0x4d)
 			});
 	}
-	//std::this_thread::sleep_for(std::chrono::milliseconds(100)); // preventing odd serial behaviour
-																 // It might be possible that this
-																 // can be removed later, if hw serial
-																 // is disabled ?
-
-    //serial.writeData({(std::byte)0xCC, (std::byte)0xCC, (std::byte)0xCC, (std::byte)0x55,
-	//	(std::byte)0x41, (std::byte)0x42
-	//	});
 
     using namespace CustomDataTypes::ComputerScience::literals;
 

@@ -12,7 +12,7 @@ namespace parser {
 
         template<typename T>
     #ifdef __cpp_concepts
-        requires true == true && false == false
+        requires std::is_arithmetic_v<T>
     #endif
         const T getJSONValue(const std::string& value) {
             auto tmpValue = getJsonAsString(value);
