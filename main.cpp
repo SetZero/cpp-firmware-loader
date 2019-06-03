@@ -33,6 +33,8 @@ int main(int argc, const char* argv[]) {
 		while (true) {}
 #endif
 		return 0;
+	} else {
+		std::cout << "Connection to " << clParser.port() << " successful!" << std::endl;
 	}
 	//std::this_thread::sleep_for(std::chrono::milliseconds(100)); // preventing odd serial behaviour
 																 // It might be possible that this

@@ -1,6 +1,7 @@
 #pragma once
 #include <Poco/JSON/Parser.h>
 #include <regex>
+#include <string>
 
 namespace json = Poco::JSON;
 
@@ -9,26 +10,35 @@ public:
 	explicit DeviceParser(const std::string& json);
 
 	template<typename T>
-    [[nodiscard]] const T getJSONValue(const std::string& value) {
-        T returnValue;
-        //auto search = jsonValueMap.find(value);
+#ifdef __cpp_concepts
+	requires std::is_arithmetic_v<T>
+#endif
+	[[nodiscard]] const T getJSONValue(const std::string& value) {
+		auto tmpValue = getJsonAsString(value);
+		return Poco::NumberParser::parse(tmpValue);
+	}
 
-        //if(search == jsonValueMap.end()) {
-            Poco::Dynamic::Var jValue = parsedJSON.extract<json::Object::Ptr>();
-            for (auto &str : getPathValue(value)) {
-                auto jObj = jValue.extract<json::Object::Ptr>();
-                jValue = jObj->get(str);
-            }
-        //    jsonValueMap.insert({value, jValue.toString()});
-            returnValue = jValue;
-        //} else {
-        //    returnValue = search->second;
-        //}
-        return returnValue;
-    }
+	template<>
+	[[nodiscard]] const std::string getJSONValue<std::string>(const std::string& value) {
+		return getJsonAsString(value);
+	}
+
+	template<>
+	[[nodiscard]] const std::byte getJSONValue<std::byte>(const std::string& value) {
+		auto tmpValue = getJsonAsString(value);
+		unsigned int tmp;
+
+		if (Poco::NumberParser::tryParseHex(tmpValue, tmp)) {
+			return static_cast<std::byte>(tmp);
+		}
+		else {
+			return static_cast<std::byte>(Poco::NumberParser::parse(tmpValue));
+		}
+	}
 private:
     [[nodiscard]]  const std::vector<std::string> getPathValue(const std::string& value);
+	[[nodiscard]] const std::string getJsonAsString(const std::string& value);
 
     Poco::Dynamic::Var parsedJSON;
-//    std::unordered_map<std::string, std::string> jsonValueMap;
+    std::unordered_map<std::string, std::string> jsonValueMap;
 };

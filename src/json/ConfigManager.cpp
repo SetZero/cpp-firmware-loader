@@ -14,11 +14,11 @@ ConfigManager::ConfigManager(const std::string &deviceName) {
 }
 
 [[nodiscard]] std::byte ConfigManager::syncByte() const noexcept {
-    return static_cast<std::byte>(mParser->getJSONValue<unsigned int>(SYNC_BYTE));
+    return static_cast<std::byte>(mParser->getJSONValue<std::byte>(SYNC_BYTE));
 }
 
 [[nodiscard]] std::byte ConfigManager::preamble() const noexcept {
-    return static_cast<std::byte>(mParser->getJSONValue<unsigned int>(PREAMBLE));
+    return static_cast<std::byte>(mParser->getJSONValue<std::byte>(PREAMBLE));
 }
 
 std::size_t ConfigManager::syncByteAmount() const noexcept {

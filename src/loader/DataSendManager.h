@@ -15,6 +15,8 @@ public:
     [[nodiscard]] std::optional<std::string> const& errorMessage() const noexcept;
     void bufferedWrite(std::vector<std::byte> data) noexcept;
 private:
+	void sync() noexcept;
+
     Serial<SerialMode::TXOnly> mSerial;
     const ConfigManager& mManager;
     std::deque<std::byte> mBuffer;
