@@ -38,21 +38,21 @@ int main(int argc, const char* argv[]) {
 	} else {
 		std::cout << "Connection to " << clParser.port() << " successful!" << std::endl;
 		sendManager.bufferedWrite({
-				static_cast<std::byte>(0x41),
-				static_cast<std::byte>(0x42),
-				static_cast<std::byte>(0x43),
-				static_cast<std::byte>(0x44),
-				static_cast<std::byte>(0x45),
-				static_cast<std::byte>(0x46),
-				static_cast<std::byte>(0x47),
-				static_cast<std::byte>(0x48),
-				static_cast<std::byte>(0x49),
-				static_cast<std::byte>(0x4a),
-				static_cast<std::byte>(0x4b),
-				static_cast<std::byte>(0x4c),
-				static_cast<std::byte>(0x4d)
-			});
-		sendManager << static_cast<std::byte>(0x4e) << static_cast<std::byte>(0x4f);
+				std::byte{0x41},
+				std::byte{0x42},
+				std::byte{0x43},
+				std::byte{0x44},
+				std::byte{0x45},
+				std::byte{0x46},
+				std::byte{0x47},
+				std::byte{0x48},
+				std::byte{0x49},
+				std::byte{0x4a},
+				std::byte{0x4b},
+				std::byte{0x4c},
+				std::byte{0x4d}
+		});
+		sendManager << std::byte{ 0x4e } << std::byte{ 0x4f };
 		sendManager.flush();
 	}
 
