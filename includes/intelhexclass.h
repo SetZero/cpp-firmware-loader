@@ -753,7 +753,14 @@ public:
 	***********************************************************************/
 	unsigned long currentAddress()
 	{
-		return ihIterator->first;
+		if (ihIterator != ihContent.end()) {
+			return ihIterator->first;
+		} else {
+			auto tmpIterator = ihIterator;
+			auto returnValue = (--ihIterator)->first + 1;
+			ihIterator = tmpIterator;
+			return returnValue;
+		}
 	}
 
 	/**********************************************************************/
