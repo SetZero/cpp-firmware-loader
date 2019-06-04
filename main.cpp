@@ -18,7 +18,7 @@
 #include "src/units/Byte.h"
 #include "src/json/ConfigManager.h"
 #include "src/loader/DataSendManager.h"
-
+#include "includes/intelhexclass.h"
 
 
 int main(int argc, const char* argv[]) {
@@ -27,6 +27,15 @@ int main(int argc, const char* argv[]) {
         std::cout << clParser;
         return 0;
     }
+
+    std::ifstream intelHexInput;
+    intelhex hex;
+    intelHexInput.open("firmware/main328p.hex", ifstream::in);
+    intelHexInput >> hex;
+    std::cout << "Final address is 0x" << std::setw(2) << std::setfill('0') << std::uppercase << std::hex << hex.currentAddress() << std::endl;
+    std::cout << "File size: " << std::dec << hex.currentAddress() << " Bytes" << std::endl;
+
+
     ConfigManager configManager{clParser.device()};
     DataSendManager sendManager{configManager, clParser.port(), clParser.baud()};
 	if (!sendManager.isOpen()) {

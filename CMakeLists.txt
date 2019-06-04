@@ -15,7 +15,7 @@ endif(UNIX)
 
 find_package(Poco COMPONENTS JSON XML CONFIG REQUIRED)
 
-add_executable(firmware-loader main.cpp src/commandline/parse.h src/utils/enum_constants.h src/utils/EnvironmentChecks.h src/json/deviceParser.h src/json/configFinder.h src/serial/Serial.h src/serial/SerialImpl.cpp src/serial/SerialImpl.h src/json/configFinder.cpp src/json/deviceParser.cpp src/loader/DataSendManager.cpp src/loader/DataSendManager.h src/json/ConfigManager.cpp src/json/ConfigManager.h)
+add_executable(firmware-loader main.cpp src/commandline/parse.h src/utils/enum_constants.h src/utils/EnvironmentChecks.h src/json/deviceParser.h src/json/configFinder.h src/serial/Serial.h src/serial/SerialImpl.cpp src/serial/SerialImpl.h src/json/configFinder.cpp src/json/deviceParser.cpp src/loader/DataSendManager.cpp src/loader/DataSendManager.h src/json/ConfigManager.cpp src/json/ConfigManager.h includes/intelhexclass.h includes/intelhexclass.cpp)
 target_link_libraries(firmware-loader Poco::JSON Poco::XML)
 
 add_custom_command(TARGET firmware-loader PRE_BUILD
