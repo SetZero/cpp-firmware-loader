@@ -755,11 +755,13 @@ public:
 	{
 		if (ihIterator != ihContent.end()) {
 			return ihIterator->first;
-		} else {
+		} else if(ihIterator != ihContent.begin()) {
 			auto tmpIterator = ihIterator;
 			auto returnValue = (--ihIterator)->first + 1;
 			ihIterator = tmpIterator;
 			return returnValue;
+		} else {
+			return 0;
 		}
 	}
 
