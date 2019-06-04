@@ -19,6 +19,7 @@
 #include "src/json/ConfigManager.h"
 #include "src/loader/DataSendManager.h"
 #include "includes/intelhexclass.h"
+#include "src/loader/HexReader.h"
 
 
 int main(int argc, const char* argv[]) {
@@ -28,16 +29,12 @@ int main(int argc, const char* argv[]) {
         return 0;
     }
 
-    std::ifstream intelHexInput;
-    intelhex hex;
-    intelHexInput.open("firmware/main328p.hex", ifstream::in);
-    intelHexInput >> hex;
-    std::cout << "Final address is 0x" << std::setw(2) << std::setfill('0') << std::uppercase << std::hex << hex.currentAddress() << std::endl;
-    std::cout << "File size: " << std::dec << hex.currentAddress() << " Bytes" << std::endl;
-
 
     ConfigManager configManager{clParser.device()};
     DataSendManager sendManager{configManager, clParser.port(), clParser.baud()};
+
+    using namespace CustomDataTypes::ComputerScience::literals;
+    HexReader reader{clParser.binary(), 32_kB};
 	if (!sendManager.isOpen()) {
 		std::cout << *sendManager.errorMessage() << std::endl;
 #ifdef _MSC_VER
@@ -64,10 +61,6 @@ int main(int argc, const char* argv[]) {
 		sendManager << std::byte{ 0x4e } << std::byte{ 0x4f };
 		sendManager.flush();
 	}
-
-    using namespace CustomDataTypes::ComputerScience::literals;
-
-    auto mb = 128_kB;
 
 #if DEBUG_BUILD
 	std::cout << "====[ DEBUG ] ====" << std::endl;
