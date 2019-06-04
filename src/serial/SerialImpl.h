@@ -15,8 +15,11 @@
 class SerialImpl {
 public:
     SerialImpl(std::string device, unsigned int baudrate);
-
     ~SerialImpl();
+	SerialImpl(const SerialImpl& a) = delete;
+	SerialImpl& operator=(SerialImpl other) = delete;
+	SerialImpl(SerialImpl&& o) = delete;
+	SerialImpl& operator=(SerialImpl&& other) = delete;
 
     void writeData(std::byte data);
 

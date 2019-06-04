@@ -14,12 +14,12 @@ SerialImpl::SerialImpl(std::string device, unsigned int baudrate) : mDevice{ dev
 	}
 	mOpen = true;
 
-
-    asio::serial_port_base::baud_rate baud(baudrate);
-    asio::serial_port_base::character_size bitsize(8);
-    asio::serial_port_base::parity parity(asio::serial_port_base::parity::none);
-    asio::serial_port_base::stop_bits stopbits(asio::serial_port_base::stop_bits::one);
-	asio::serial_port_base::flow_control flowcontrol(asio::serial_port_base::flow_control::none);
+	using serial = asio::serial_port_base;
+	serial::baud_rate baud(baudrate);
+	serial::character_size bitsize(8);
+	serial::parity parity(serial::parity::none);
+	serial::stop_bits stopbits(serial::stop_bits::one);
+	serial::flow_control flowcontrol(serial::flow_control::none);
 
     mPort.set_option(baud);
     mPort.set_option(bitsize);
