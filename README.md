@@ -2,7 +2,8 @@
 
 This Libary will load your Firmware to any Device supported by the 
 [C++ Generic Bootloader](https://github.com/SetZero/avr-cpp-bootloader) via Serial.
-[Trello Board](https://trello.com/b/vcsWHWL1/firmware-loader)
+
+Additional information for planned features: [Trello Board](https://trello.com/b/vcsWHWL1/firmware-loader)
 
 ## Dependencies:
 
