@@ -31,10 +31,13 @@ const std::optional<const fs::path> ConfigFinder::getFileLocation() const noexce
 
 const std::optional<const std::string> ConfigFinder::getFileContents() const noexcept {
         try {
-            std::ifstream file{fileLocation->string()};
-            std::stringstream buffer;
-            buffer << file.rdbuf();
-            return buffer.str();
+			if (fileLocation) {
+				std::ifstream file{ fileLocation->string() };
+				std::stringstream buffer;
+				buffer << file.rdbuf();
+				return buffer.str();
+			}
+			return std::nullopt;
         } catch (std::ios_base::failure& fail) {}
         return std::nullopt;
     }

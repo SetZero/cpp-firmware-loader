@@ -1,7 +1,8 @@
 # C++ Generic Firmware Loader
 
 This Libary will load your Firmware to any Device supported by the 
-[C++ Generic Bootloader](https://github.com/SetZero/cpp-firmware-loader) via Serial.
+[C++ Generic Bootloader](https://github.com/SetZero/avr-cpp-bootloader) via Serial.
+[Trello Board](https://trello.com/b/vcsWHWL1/firmware-loader)
 
 ## Dependencies:
 
@@ -38,7 +39,7 @@ cd vcpkg
 ./vcpkg install catch
 ```
 
-Aftr this append 
+After this append 
 ```
 -DCMAKE_TOOLCHAIN_FILE=**path/to/vcpkg.cmake**
 ```

@@ -7,6 +7,7 @@
 
 #include <string>
 #include <memory>
+#include "../units/Byte.h"
 #include "configFinder.h"
 #include "deviceParser.h"
 
@@ -16,14 +17,16 @@ public:
     [[nodiscard]] std::byte syncByte() const noexcept;
     [[nodiscard]] std::byte preamble() const noexcept;
     [[nodiscard]] std::size_t syncByteAmount() const noexcept;
-    [[nodiscard]] std::size_t bytesPerBurst() const noexcept;
+	[[nodiscard]] std::size_t bytesPerBurst() const noexcept;
+	[[nodiscard]] CustomDataTypes::ComputerScience::byte availableFlash() const noexcept;
 private:
     std::unique_ptr<parser::DeviceParser> mParser;
 
     static constexpr auto SYNC_BYTE = "/serial/sync/syncByte";
     static constexpr auto PREAMBLE = "/serial/sync/preamble";
     static constexpr auto SYNC_BYTE_AMOUNT =  "/serial/sync/syncByteAmount";
-    static constexpr auto BYTES_PER_BURST =  "/serial/general/bytesPerBurst";
+	static constexpr auto BYTES_PER_BURST = "/serial/general/bytesPerBurst";
+	static constexpr auto AVAILABLE_FLASH = "/device/flash/available";
 };
 
 

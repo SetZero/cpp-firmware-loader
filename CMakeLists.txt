@@ -22,7 +22,7 @@ target_link_libraries(${PROJECT_NAME} Poco::JSON Poco::XML)
 
 add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E remove_directory
-        $<TARGET_FILE_DIR:${PROJECT_NAME}>)
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>/${CONFIG_FOLDER})
 
 add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
