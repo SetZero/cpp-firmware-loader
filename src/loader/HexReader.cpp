@@ -6,7 +6,7 @@
 
 HexReader::HexReader(const std::string &fileLocation, const HexReader::byte &maxSize) {
     std::ifstream intelHexInput;
-    intelHexInput.open(fileLocation, ifstream::in);
+    intelHexInput.open(fileLocation, std::ifstream::in);
 	if (intelHexInput.good()) {
 		intelHexInput >> hex;
 		byte fileSize = HexReader::byte{ static_cast<long>(hex.currentAddress()) };

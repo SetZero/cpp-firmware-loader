@@ -73,7 +73,7 @@
 
 #include "intelhexclass.h"
 
-using namespace std;
+//using namespace std;
 
 /******************************************************************************/
 /*! Possible record types for Intel HEX file.
@@ -93,10 +93,10 @@ enum intelhexRecordType {
 /*******************************************************************************
 * Converts a 2 char string to its HEX value
 *******************************************************************************/
-unsigned char intelhex::stringToHex(string value)
+unsigned char intelhex::stringToHex(std::string value)
 {
 	unsigned char returnValue = 0;
-	string::iterator valueIterator;
+	std::string::iterator valueIterator;
 
 	if (value.length() == 2)
 	{
@@ -125,7 +125,7 @@ unsigned char intelhex::stringToHex(string value)
 			else
 			{
 				/* Error occured - non-HEX value found                        */
-				string message;
+				std::string message;
 
 				message = "Can't convert byte 0x" + value + " @ 0x" +
 					ulToHexString(segmentBaseAddress) + " to hex.";
@@ -142,7 +142,7 @@ unsigned char intelhex::stringToHex(string value)
 	else
 	{
 		/* Error occured - more or less than two nibbles in the string        */
-		string message;
+		std::string message;
 
 		message = value + " @ 0x" + ulToHexString(segmentBaseAddress) +
 			" isn't an 8-bit value.";
@@ -156,9 +156,9 @@ unsigned char intelhex::stringToHex(string value)
 /*******************************************************************************
 * Converts an unsigned long to a string in HEX format
 *******************************************************************************/
-string intelhex::ulToHexString(unsigned long value)
+std::string intelhex::ulToHexString(unsigned long value)
 {
-	string returnString;
+	std::string returnString;
 	char localString[50];
 
 	returnString.erase();
@@ -177,9 +177,9 @@ string intelhex::ulToHexString(unsigned long value)
 /*******************************************************************************
 * Converts an unsigned long to a string in DEC format
 *******************************************************************************/
-string intelhex::ulToString(unsigned long value)
+std::string intelhex::ulToString(unsigned long value)
 {
-	string returnString;
+	std::string returnString;
 	char localString[50];
 
 	returnString.erase();
@@ -197,9 +197,9 @@ string intelhex::ulToString(unsigned long value)
 /*******************************************************************************
 * Converts an unsigned char to a string in HEX format
 *******************************************************************************/
-string intelhex::ucToHexString(unsigned char value)
+std::string intelhex::ucToHexString(unsigned char value)
 {
-	string returnString;
+	std::string returnString;
 	char localString[50];
 
 	returnString.erase();
@@ -218,9 +218,9 @@ string intelhex::ucToHexString(unsigned char value)
 /*******************************************************************************
 * Adds a warning to the list of warning messages
 *******************************************************************************/
-void intelhex::addWarning(string warningMessage)
+void intelhex::addWarning(std::string warningMessage)
 {
-	string localMessage;
+	std::string localMessage;
 
 	/* Build the message and push the warning message onto the list           */
 	localMessage += ulToString(msgWarning.noOfWarnings + 1) + " Warning: "
@@ -235,9 +235,9 @@ void intelhex::addWarning(string warningMessage)
 /*******************************************************************************
 * Adds an error to the list of error messages
 *******************************************************************************/
-void intelhex::addError(string errorMessage)
+void intelhex::addError(std::string errorMessage)
 {
-	string localMessage;
+	std::string localMessage;
 
 	/* Build the message and push the error message onto the list             */
 	localMessage += ulToString(msgError.noOfErrors + 1) + " Error: "
@@ -254,10 +254,10 @@ void intelhex::addError(string errorMessage)
 *******************************************************************************/
 void intelhex::decodeDataRecord(unsigned char recordLength,
 	unsigned long loadOffset,
-	string::const_iterator data)
+	std::string::const_iterator data)
 {
 	/* Variable to store a byte of the record as a two char string            */
-	string sByteRead;
+	std::string sByteRead;
 
 	/* Variable to store the byte of the record as an u.char                  */
 	unsigned char byteRead;
@@ -279,7 +279,7 @@ void intelhex::decodeDataRecord(unsigned char recordLength,
 		byteRead = stringToHex(sByteRead);
 
 		ihReturn = ihContent.insert(
-			pair<unsigned long, unsigned char>(segmentBaseAddress, byteRead));
+			std::pair<unsigned long, unsigned char>(segmentBaseAddress, byteRead));
 
 		if (ihReturn.second == false)
 		{
@@ -287,7 +287,7 @@ void intelhex::decodeDataRecord(unsigned char recordLength,
 			/* write, this is only a warning                                  */
 			if (ihReturn.first->second == byteRead)
 			{
-				string message;
+				std::string message;
 
 				message = "Location 0x" + ulToHexString(segmentBaseAddress) +
 					" already contains data 0x" + sByteRead;
@@ -297,7 +297,7 @@ void intelhex::decodeDataRecord(unsigned char recordLength,
 			/* Otherwise this is an error                                     */
 			else
 			{
-				string message;
+				std::string message;
 
 				message = "Couldn't add 0x" + sByteRead + " @ 0x" +
 					ulToHexString(segmentBaseAddress) +
@@ -316,14 +316,14 @@ void intelhex::decodeDataRecord(unsigned char recordLength,
 /*******************************************************************************
 * Input Stream for Intel HEX File Decoding (friend function)
 *******************************************************************************/
-istream& operator>>(istream& dataIn, intelhex& ihLocal)
+std::istream& operator>>(std::istream& dataIn, intelhex& ihLocal)
 {
 	// Create a string to store lines of Intel Hex info
-	string ihLine;
+	std::string ihLine;
 	/* Create a string to store a single byte of Intel HEX info               */
-	string ihByte;
+	std::string ihByte;
 	// Create an iterator for this variable
-	string::iterator ihLineIterator;
+	std::string::iterator ihLineIterator;
 	// Create a line counter
 	unsigned long lineCounter = 0;
 	// Variable to hold a single byte (two chars) of data
@@ -361,7 +361,7 @@ istream& operator>>(istream& dataIn, intelhex& ihLocal)
 			if (*ihLineIterator != ':')
 			{
 				/* Add some warning code here                                 */
-				string message;
+				std::string message;
 
 				message = "Line without record mark ':' found @ line " +
 					ihLocal.ulToString(lineCounter);
@@ -415,7 +415,7 @@ istream& operator>>(istream& dataIn, intelhex& ihLocal)
 				}
 				else
 				{
-					string message;
+					std::string message;
 
 					message = "Odd number of characters in line " +
 						ihLocal.ulToString(lineCounter);
@@ -478,8 +478,8 @@ istream& operator>>(istream& dataIn, intelhex& ihLocal)
 						ihLineIterator);
 					if (ihLocal.verbose == true)
 					{
-						cout << "Data Record begining @ 0x" <<
-							ihLocal.ulToHexString(loadOffset) << endl;
+						std::cout << "Data Record begining @ 0x" <<
+							ihLocal.ulToHexString(loadOffset) << std::endl;
 					}
 					break;
 
@@ -492,7 +492,7 @@ istream& operator>>(istream& dataIn, intelhex& ihLocal)
 					}
 					else
 					{
-						string message;
+						std::string message;
 
 						message = "Additional End Of File record @ line " +
 							ihLocal.ulToString(lineCounter) +
@@ -503,7 +503,7 @@ istream& operator>>(istream& dataIn, intelhex& ihLocal)
 					/* Generate error if there were                       */
 					if (ihLocal.verbose == true)
 					{
-						cout << "End of File" << endl;
+						std::cout << "End of File" << std::endl;
 					}
 					break;
 
@@ -540,7 +540,7 @@ istream& operator>>(istream& dataIn, intelhex& ihLocal)
 					else
 					{
 						/* Note the error                                 */
-						string message;
+						std::string message;
 
 						message = "Extended Segment Address @ line " +
 							ihLocal.ulToString(lineCounter) +
@@ -550,9 +550,9 @@ istream& operator>>(istream& dataIn, intelhex& ihLocal)
 					}
 					if (ihLocal.verbose == true)
 					{
-						cout << "Ext. Seg. Address found: 0x" <<
+						std::cout << "Ext. Seg. Address found: 0x" <<
 							ihLocal.ulToHexString(ihLocal.segmentBaseAddress)
-							<< endl;
+							<< std::endl;
 					}
 
 					break;
@@ -610,7 +610,7 @@ istream& operator>>(istream& dataIn, intelhex& ihLocal)
 					/* exists                                             */
 					else if (ihLocal.startSegmentAddress.exists == true)
 					{
-						string message;
+						std::string message;
 
 						message = "Start Segment Address record appears again @ line " +
 							ihLocal.ulToString(lineCounter) +
@@ -622,7 +622,7 @@ istream& operator>>(istream& dataIn, intelhex& ihLocal)
 					/* exists as they should be mutually exclusive        */
 					if (ihLocal.startLinearAddress.exists == true)
 					{
-						string message;
+						std::string message;
 
 						message = "Start Segment Address record found @ line " +
 							ihLocal.ulToString(lineCounter) +
@@ -634,7 +634,7 @@ istream& operator>>(istream& dataIn, intelhex& ihLocal)
 					/* expected                                           */
 					if (recordLength != 4)
 					{
-						string message;
+						std::string message;
 
 						message = "Start Segment Address @ line " +
 							ihLocal.ulToString(lineCounter) +
@@ -644,11 +644,11 @@ istream& operator>>(istream& dataIn, intelhex& ihLocal)
 					}
 					if (ihLocal.verbose == true)
 					{
-						cout << "Start Seg. Address - CS 0x" <<
+						std::cout << "Start Seg. Address - CS 0x" <<
 							ihLocal.ulToHexString(ihLocal.startSegmentAddress.csRegister) <<
 							" IP 0x" <<
 							ihLocal.ulToHexString(ihLocal.startSegmentAddress.ipRegister)
-							<< endl;
+							<< std::endl;
 					}
 					break;
 
@@ -687,7 +687,7 @@ istream& operator>>(istream& dataIn, intelhex& ihLocal)
 						/* Note the error                                 */
 						//cout << "Error in Ext. Lin. Address" << endl;
 
-						string message;
+						std::string message;
 
 						message = "Extended Linear Address @ line " +
 							ihLocal.ulToString(lineCounter) +
@@ -697,9 +697,9 @@ istream& operator>>(istream& dataIn, intelhex& ihLocal)
 					}
 					if (ihLocal.verbose == true)
 					{
-						cout << "Ext. Lin. Address 0x" <<
+						std::cout << "Ext. Lin. Address 0x" <<
 							ihLocal.ulToHexString(ihLocal.segmentBaseAddress)
-							<< endl;
+							<< std::endl;
 					}
 
 					break;
@@ -761,7 +761,7 @@ istream& operator>>(istream& dataIn, intelhex& ihLocal)
 					/* exists                                             */
 					else if (ihLocal.startLinearAddress.exists == true)
 					{
-						string message;
+						std::string message;
 
 						message = "Start Linear Address record appears again @ line " +
 							ihLocal.ulToString(lineCounter) +
@@ -773,7 +773,7 @@ istream& operator>>(istream& dataIn, intelhex& ihLocal)
 					/* exists as they should be mutually exclusive        */
 					if (ihLocal.startSegmentAddress.exists == true)
 					{
-						string message;
+						std::string message;
 
 						message = "Start Linear Address record found @ line " +
 							ihLocal.ulToString(lineCounter) +
@@ -785,7 +785,7 @@ istream& operator>>(istream& dataIn, intelhex& ihLocal)
 					/* expected                                           */
 					if (recordLength != 4)
 					{
-						string message;
+						std::string message;
 
 						message = "Start Linear Address @ line " +
 							ihLocal.ulToString(lineCounter) +
@@ -795,9 +795,9 @@ istream& operator>>(istream& dataIn, intelhex& ihLocal)
 					}
 					if (ihLocal.verbose == true)
 					{
-						cout << "Start Lin. Address - EIP 0x" <<
+						std::cout << "Start Lin. Address - EIP 0x" <<
 							ihLocal.ulToHexString(ihLocal.startLinearAddress.eipRegister)
-							<< endl;
+							<< std::endl;
 					}
 					break;
 
@@ -805,12 +805,12 @@ istream& operator>>(istream& dataIn, intelhex& ihLocal)
 					/* Handle the error here                              */
 					if (ihLocal.verbose == true)
 					{
-						cout << "Unknown Record @ line " <<
-							ihLocal.ulToString(lineCounter) << endl;
+						std::cout << "Unknown Record @ line " <<
+							ihLocal.ulToString(lineCounter) << std::endl;
 					}
 
 
-					string message;
+					std::string message;
 
 					message = "Unknown Intel HEX record @ line " +
 						ihLocal.ulToString(lineCounter);
@@ -823,7 +823,7 @@ istream& operator>>(istream& dataIn, intelhex& ihLocal)
 			else
 			{
 				/* Note that the checksum contained an error                  */
-				string message;
+				std::string message;
 
 				message = "Checksum error @ line " +
 					ihLocal.ulToString(lineCounter) +
@@ -839,7 +839,7 @@ istream& operator>>(istream& dataIn, intelhex& ihLocal)
 
 	if (ihLocal.verbose == true)
 	{
-		cout << "Decoded " << lineCounter << " lines from file." << endl;
+		std::cout << "Decoded " << lineCounter << " lines from file." << std::endl;
 	}
 
 	return(dataIn);
@@ -848,14 +848,14 @@ istream& operator>>(istream& dataIn, intelhex& ihLocal)
 /*******************************************************************************
 * Output Stream for Intel HEX File Encoding (friend function)
 *******************************************************************************/
-ostream& operator<<(ostream& dataOut, intelhex& ihLocal)
+std::ostream& operator<<(std::ostream& dataOut, intelhex& ihLocal)
 {
 	/* Stores the address offset needed by the linear/segment address records */
 	unsigned long addressOffset;
 	/* Iterator into the ihContent - where the addresses & data are stored    */
-	map<unsigned long, unsigned char>::iterator ihIterator;
+	std::map<unsigned long, unsigned char>::iterator ihIterator;
 	/* Holds string that represents next record to be written                 */
-	string thisRecord;
+	std::string thisRecord;
 	/* Checksum calculation variable                                          */
 	unsigned char checksum;
 
@@ -910,12 +910,12 @@ ostream& operator<<(ostream& dataOut, intelhex& ihLocal)
 		}
 
 		/* Output the record                                                  */
-		dataOut << thisRecord << endl;
+		dataOut << thisRecord << std::endl;
 
 		/* Now loop through all the available data and insert into file       */
 		/* with maximum 16 bytes per line, and making sure to keep the        */
 		/* segment base address up to date                                    */
-		vector<unsigned char> recordData;
+		std::vector<unsigned char> recordData;
 		unsigned long previousAddress;
 		unsigned long currentAddress;
 		unsigned long loadOffset;
@@ -952,7 +952,7 @@ ostream& operator<<(ostream& dataOut, intelhex& ihLocal)
 					thisRecord += ihLocal.ucToHexString(0x00 - (checksum & 0xFF));
 
 					/* Output the record                                      */
-					dataOut << thisRecord << endl;
+					dataOut << thisRecord << std::endl;
 				}
 			}
 			/* ...otherwise assume segment mode                               */
@@ -982,7 +982,7 @@ ostream& operator<<(ostream& dataOut, intelhex& ihLocal)
 					thisRecord += ihLocal.ucToHexString(0x00 - (checksum & 0xFF));
 
 					/* Output the record                                      */
-					dataOut << thisRecord << endl;
+					dataOut << thisRecord << std::endl;
 				}
 			}
 
@@ -1026,7 +1026,7 @@ ostream& operator<<(ostream& dataOut, intelhex& ihLocal)
 			/* Now we should have some data to encode; check first            */
 			if (recordData.size() > 0)
 			{
-				vector<unsigned char>::iterator itData;
+				std::vector<unsigned char>::iterator itData;
 				unsigned char dataByte;
 
 				/* Start building data record                                 */
@@ -1061,7 +1061,7 @@ ostream& operator<<(ostream& dataOut, intelhex& ihLocal)
 				thisRecord += ihLocal.ucToHexString(0x00 - (checksum & 0xFF));
 
 				/* Now write the record                                       */
-				dataOut << thisRecord << endl;
+				dataOut << thisRecord << std::endl;
 			}
 		}
 	}
@@ -1098,7 +1098,7 @@ ostream& operator<<(ostream& dataOut, intelhex& ihLocal)
 		thisRecord += ihLocal.ucToHexString(0x00 - (checksum & 0xFF));
 
 		/* Now write the record                                               */
-		dataOut << thisRecord << endl;
+		dataOut << thisRecord << std::endl;
 	}
 
 	/* If there is a linear start address, output the data                    */
@@ -1133,11 +1133,11 @@ ostream& operator<<(ostream& dataOut, intelhex& ihLocal)
 		thisRecord += ihLocal.ucToHexString(0x00 - (checksum & 0xFF));
 
 		/* Now write the record                                               */
-		dataOut << thisRecord << endl;
+		dataOut << thisRecord << std::endl;
 	}
 
 	/* Whatever happened, we can always output the EOF record                 */
-	dataOut << ":00000001FF" << endl;
+	dataOut << ":00000001FF" << std::endl;
 
 	return (dataOut);
 }

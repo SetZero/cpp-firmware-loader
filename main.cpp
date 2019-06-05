@@ -18,7 +18,6 @@
 #include "src/units/Byte.h"
 #include "src/json/ConfigManager.h"
 #include "src/loader/DataSendManager.h"
-#include "includes/intelhexclass.h"
 #include "src/loader/HexReader.h"
 
 
@@ -29,12 +28,11 @@ int main(int argc, const char* argv[]) {
         return 0;
     }
 
+	using namespace CustomDataTypes::ComputerScience::literals;
+	HexReader reader{ clParser.binary(), 32_kB };
 
     ConfigManager configManager{clParser.device()};
     DataSendManager sendManager{configManager, clParser.port(), clParser.baud()};
-
-    using namespace CustomDataTypes::ComputerScience::literals;
-    HexReader reader{clParser.binary(), 32_kB};
 	if (!sendManager.isOpen()) {
 		std::cout << *sendManager.errorMessage() << std::endl;
 #ifdef _MSC_VER
