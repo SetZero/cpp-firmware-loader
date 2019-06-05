@@ -29,7 +29,6 @@ int main(int argc, const char* argv[]) {
     }
 
 	using namespace CustomDataTypes::ComputerScience::literals;
-	HexReader reader{ clParser.binary(), 32_kB };
 
     ConfigManager configManager{clParser.device()};
     DataSendManager sendManager{configManager, clParser.port(), clParser.baud()};
@@ -40,6 +39,9 @@ int main(int argc, const char* argv[]) {
 #endif
 		return 0;
 	} else {
+
+		HexReader reader{ clParser.binary(), 32_kB };
+		reader.writeToStream(sendManager);
 		std::cout << "Connection to " << clParser.port() << " successful!" << std::endl;
 		sendManager.bufferedWrite({
 				std::byte{0x41},

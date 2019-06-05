@@ -5,6 +5,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <fstream>
 #include <iterator>
 #include "../serial/Serial.h"
 #include "../json/ConfigManager.h"
@@ -19,7 +20,7 @@ public:
     void bufferedWrite(std::vector<std::byte> data) noexcept;
     void bufferedWrite(std::byte data) noexcept;
 	void flush() noexcept;
-    friend DataSendManager& operator<<( DataSendManager& parse,  std::byte data);
+	friend DataSendManager& operator<<(DataSendManager& parse, std::byte data);
 private:
 	void sync() noexcept;
 	void sendBuffer() noexcept;

@@ -23,3 +23,15 @@ HexReader::HexReader(const std::string &fileLocation, const HexReader::byte &max
 		std::cout << "Failed to open: " << fileLocation << std::endl;
 	}
 }
+
+void HexReader::writeToStream(DataSendManager& manager) {
+	for (auto& v : std::as_const(hex)) {
+		//manager.bufferedWrite();
+		std::cout << std::dec << v.first << ": 0x" << std::hex << (int)v.second << std::endl;
+	}
+}
+
+DataSendManager& operator<<(DataSendManager& sender, const HexReader& reader)
+{
+	return sender;
+}

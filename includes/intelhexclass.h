@@ -155,6 +155,11 @@ private:
 	***********************************************************************/
 	unsigned long segmentBaseAddress;
 
+
+	using iterator = decltype(ihContent)::iterator;
+	using const_iterator = decltype(ihContent)::const_iterator;
+
+
 	/**********************************************************************/
 	/*! \brief Stores the content of the CS/IP Registers, if used.
 	*
@@ -560,7 +565,7 @@ public:
 	* \note This function has no effect if no file has been as yet decoded
 	* and no data has been inserted into memory.
 	***********************************************************************/
-	void begin()
+	void gotoStart()
 	{
 		if (ihContent.size() != 0)
 		{
@@ -580,13 +585,33 @@ public:
 	* \note This function has no effect if no file has been as yet decoded
 	* and no data has been inserted into memory.
 	***********************************************************************/
-	void end()
+	void gotoEnd()
 	{
 		if (!ihContent.empty())
 		{
 			ihIterator = ihContent.end();
 			--ihIterator;
 		}
+	}
+
+	decltype(ihContent)::const_iterator begin() const
+	{
+		return ihContent.begin();
+	}
+
+	decltype(ihContent)::const_iterator cbegin() const
+	{
+		return ihContent.cbegin();
+	}
+
+	decltype(ihContent)::const_iterator end() const
+	{
+		return ihContent.end();
+	}
+
+	decltype(ihContent)::const_iterator cend() const
+	{
+		return ihContent.cend();
 	}
 
 	/**********************************************************************/

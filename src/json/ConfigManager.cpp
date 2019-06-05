@@ -26,5 +26,13 @@ std::size_t ConfigManager::syncByteAmount() const noexcept {
 }
 
 std::size_t ConfigManager::bytesPerBurst() const noexcept {
+	auto flash = mParser->getJsonAsString(AVAILABLE_FLASH);
+
     return mParser->getJSONValue<std::size_t>(BYTES_PER_BURST);
+}
+
+CustomDataTypes::ComputerScience::byte ConfigManager::availableFlash() const noexcept
+{
+	//TODO
+	return CustomDataTypes::ComputerScience::byte(1);
 }
