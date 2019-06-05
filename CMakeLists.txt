@@ -1,5 +1,7 @@
+SET(PROJECT_NAME firmware-loader)
+
 cmake_minimum_required(VERSION 3.14)
-project(firmware-loader)
+project(${PROJECT_NAME})
 
 set(CONFIG_FOLDER "config_files")
 
@@ -15,9 +17,13 @@ endif(UNIX)
 
 find_package(Poco COMPONENTS JSON XML CONFIG REQUIRED)
 
-add_executable(firmware-loader main.cpp src/commandline/parse.h src/utils/enum_constants.h src/utils/EnvironmentChecks.h src/json/deviceParser.h src/json/configFinder.h src/serial/Serial.h src/serial/SerialImpl.cpp src/serial/SerialImpl.h src/json/configFinder.cpp src/json/deviceParser.cpp src/loader/DataSendManager.cpp src/loader/DataSendManager.h src/json/ConfigManager.cpp src/json/ConfigManager.h includes/intelhexclass.h includes/intelhexclass.cpp src/loader/HexReader.cpp src/loader/HexReader.h)
-target_link_libraries(firmware-loader Poco::JSON Poco::XML)
+add_executable(${PROJECT_NAME} main.cpp src/commandline/parse.h src/utils/enum_constants.h src/utils/EnvironmentChecks.h src/json/deviceParser.h src/json/configFinder.h src/serial/Serial.h src/serial/SerialImpl.cpp src/serial/SerialImpl.h src/json/configFinder.cpp src/json/deviceParser.cpp src/loader/DataSendManager.cpp src/loader/DataSendManager.h src/json/ConfigManager.cpp src/json/ConfigManager.h includes/intelhexclass.h includes/intelhexclass.cpp src/loader/HexReader.cpp src/loader/HexReader.h)
+target_link_libraries(${PROJECT_NAME} Poco::JSON Poco::XML)
 
-add_custom_command(TARGET firmware-loader PRE_BUILD
+add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
+        COMMAND ${CMAKE_COMMAND} -E remove_directory
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>)
+
+add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${CMAKE_SOURCE_DIR}/${CONFIG_FOLDER} $<TARGET_FILE_DIR:firmware-loader>)
+        ${CMAKE_SOURCE_DIR}/${CONFIG_FOLDER} $<TARGET_FILE_DIR:${PROJECT_NAME}>)

@@ -17,6 +17,8 @@ HexReader::HexReader(const std::string &fileLocation, const HexReader::byte &max
 		if (fileSize < maxSize) {
 			std::cout << "Fit!" << std::endl;
 		}
+		std::cout << "Errors: " << hex.getNoErrors() << std::endl;
+		std::cout << "Warnings: " << hex.getNoWarnings() << std::endl;
 	} else {
 		std::cout << "Failed to open: " << fileLocation << std::endl;
 	}
