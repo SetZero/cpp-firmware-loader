@@ -13,6 +13,31 @@ ConfigManager::ConfigManager(const std::string &deviceName) {
     }
 }
 
+const std::string& ConfigManager::id() const noexcept
+{
+	return mParser->getJsonAsString(DEVICE_ID);
+}
+
+const std::string& ConfigManager::vendor() const noexcept
+{
+	return mParser->getJsonAsString(DEVICE_VENDOR);
+}
+
+const std::string& ConfigManager::arch() const noexcept
+{
+	return mParser->getJsonAsString(DEVICE_ARCH);
+}
+
+const std::string& ConfigManager::subarch() const noexcept
+{
+	return mParser->getJsonAsString(DEVICE_SUBARCH);
+}
+
+const std::string& ConfigManager::name() const noexcept
+{
+	return mParser->getJsonAsString(DEVICE_NAME);
+}
+
 [[nodiscard]] std::byte ConfigManager::syncByte() const noexcept {
     return mParser->getJSONByteValue(SYNC_BYTE);
 }
@@ -31,7 +56,7 @@ std::size_t ConfigManager::bytesPerBurst() const noexcept {
     return mParser->getJSONValue<std::size_t>(BYTES_PER_BURST);
 }
 
-CustomDataTypes::ComputerScience::byte ConfigManager::availableFlash() const noexcept
+const CustomDataTypes::ComputerScience::byte& ConfigManager::availableFlash() const noexcept
 {
 	//TODO
 	return CustomDataTypes::ComputerScience::byte(1);
