@@ -13,27 +13,27 @@ ConfigManager::ConfigManager(const std::string &deviceName) {
     }
 }
 
-const std::string& ConfigManager::id() const noexcept
+const std::string ConfigManager::id() const noexcept
 {
 	return mParser->getJsonAsString(DEVICE_ID);
 }
 
-const std::string& ConfigManager::vendor() const noexcept
+const std::string ConfigManager::vendor() const noexcept
 {
 	return mParser->getJsonAsString(DEVICE_VENDOR);
 }
 
-const std::string& ConfigManager::arch() const noexcept
+const std::string ConfigManager::arch() const noexcept
 {
 	return mParser->getJsonAsString(DEVICE_ARCH);
 }
 
-const std::string& ConfigManager::subarch() const noexcept
+const std::string ConfigManager::subarch() const noexcept
 {
 	return mParser->getJsonAsString(DEVICE_SUBARCH);
 }
 
-const std::string& ConfigManager::name() const noexcept
+const std::string ConfigManager::name() const noexcept
 {
 	return mParser->getJsonAsString(DEVICE_NAME);
 }

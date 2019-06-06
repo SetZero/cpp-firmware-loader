@@ -16,11 +16,11 @@
 class ConfigManager {
 public:
     ConfigManager(const std::string& deviceName);
-	[[nodiscard]] const std::string& id() const noexcept;
-	[[nodiscard]] const std::string& vendor() const noexcept;
-	[[nodiscard]] const std::string& arch() const noexcept;
-	[[nodiscard]] const std::string& subarch() const noexcept;
-	[[nodiscard]] const std::string& name() const noexcept;
+	[[nodiscard]] const std::string id() const noexcept;
+	[[nodiscard]] const std::string vendor() const noexcept;
+	[[nodiscard]] const std::string arch() const noexcept;
+	[[nodiscard]] const std::string subarch() const noexcept;
+	[[nodiscard]] const std::string name() const noexcept;
 	[[nodiscard]] const CustomDataTypes::ComputerScience::byte& availableFlash() const noexcept;
 
     [[nodiscard]] std::byte syncByte() const noexcept;

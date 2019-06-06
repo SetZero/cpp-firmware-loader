@@ -31,6 +31,7 @@ int main(int argc, const char* argv[]) {
 	using namespace CustomDataTypes::ComputerScience::literals;
 
     ConfigManager configManager{clParser.device()};
+    std::cout << "Device: " << configManager.vendor() << " " << configManager.arch() << " [" << configManager.subarch() << "]" << ", " << configManager.name() << std::endl;
     DataSendManager sendManager{configManager, clParser.port(), clParser.baud()};
 	if (!sendManager.isOpen()) {
 		std::cout << *sendManager.errorMessage() << std::endl;
