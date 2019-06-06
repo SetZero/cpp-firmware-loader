@@ -45,6 +45,7 @@
 #include <iostream>
 #include <map>
 #include <list>
+#include <utility>
 
 /*******************************************************************************
 *                                    EXTERNS
@@ -369,7 +370,48 @@ private:
 	***********************************************************************/
 	void addError(std::string errorMessage);
 
+	struct HexData {
+		const unsigned long address;
+		const unsigned char data;
+	};
+
 public:
+	class const_iterator : public std::iterator<std::input_iterator_tag,
+		HexData,
+		HexData,
+		const HexData*,
+		HexData
+	> {
+	private:
+		decltype(ihContent)::const_iterator mIterator;
+	public:
+		explicit const_iterator(decltype(ihContent) content) : mIterator(content.begin()) {}
+		const const_iterator& operator++() const { mIterator++; return *this; }
+		const const_iterator operator++(int) const { const_iterator retval = *this; ++(*this); return retval; }
+		bool operator==(const_iterator other) const { return mIterator == other.mIterator; }
+		bool operator!=(const_iterator other) const { return !(*this == other); }
+		HexData operator*() const { return HexData{ mIterator->first, mIterator->second }; }
+	};
+
+	decltype(ihContent)::const_iterator begin() const
+	{
+		return ihContent.begin();
+	}
+
+	decltype(ihContent)::const_iterator cbegin() const
+	{
+		return ihContent.cbegin();
+	}
+
+	decltype(ihContent)::const_iterator end() const
+	{
+		return ihContent.end();
+	}
+
+	decltype(ihContent)::const_iterator cend() const
+	{
+		return ihContent.cend();
+	}
 	/**********************************************************************/
 	/*! \brief intelhex Class Constructor.
 	*
@@ -592,26 +634,6 @@ public:
 			ihIterator = ihContent.end();
 			--ihIterator;
 		}
-	}
-
-	decltype(ihContent)::const_iterator begin() const
-	{
-		return ihContent.begin();
-	}
-
-	decltype(ihContent)::const_iterator cbegin() const
-	{
-		return ihContent.cbegin();
-	}
-
-	decltype(ihContent)::const_iterator end() const
-	{
-		return ihContent.end();
-	}
-
-	decltype(ihContent)::const_iterator cend() const
-	{
-		return ihContent.cend();
 	}
 
 	/**********************************************************************/
