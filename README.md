@@ -11,7 +11,7 @@ Additional information for planned features: [Trello Board](https://trello.com/b
 * [Asio](https://think-async.com/Asio/)
 * [Poco](https://pocoproject.org/)
 * [Clara](https://github.com/catchorg/Clara)
-* [Intel Hex Class](https://github.com/codinghead/Intel-HEX-Class)
+* [Intel Hex Class (Fork)](https://github.com/SetZero/Intel-HEX-Class)
 
 **Optional:**
 * [Catch2](https://github.com/catchorg/Catch2) (for testing)
