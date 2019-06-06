@@ -25,9 +25,9 @@ HexReader::HexReader(const std::string &fileLocation, const HexReader::byte &max
 }
 
 void HexReader::writeToStream(DataSendManager& manager) {
-	for (auto& v : std::as_const(hex)) {
+	for (const auto& v : std::as_const(hex)) {
 		//manager.bufferedWrite();
-		std::cout << std::dec << v.first << ": 0x" << std::hex << (int)v.second << std::endl;
+		std::cout << std::dec << v.address << ": 0x" << std::hex << (int)v.data << std::endl;
 	}
 }
 
