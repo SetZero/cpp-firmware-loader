@@ -20,10 +20,10 @@ namespace parser {
             unsigned int tmp;
 
             if (Poco::NumberParser::tryParseHex(tmpValue, tmp)) {
-                return T{tmp};
+                return static_cast<T>(tmp);
             }
             else {
-                return T{Poco::NumberParser::parse(tmpValue)};
+                return static_cast<T>(Poco::NumberParser::parse(tmpValue));
             }
             //auto tmpValue = getJsonAsString(value);
             //return T{Poco::NumberParser::parse(tmpValue)};

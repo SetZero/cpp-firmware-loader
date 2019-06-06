@@ -172,7 +172,7 @@ namespace firmware::json::config {
         ConfigManager(const std::string &deviceName);
 
         template<JsonOptions value>
-        [[nodiscard]] DeviceOptions<value>::type getJSONValue() const noexcept {
+        [[nodiscard]] typename DeviceOptions<value>::type getJSONValue() const noexcept {
             using optionStruct = DeviceOptions<value>;
             if constexpr (std::is_same_v<typename optionStruct::type, std::string>) {
                 return mParser->getJsonAsString(optionStruct::jsonKey);
