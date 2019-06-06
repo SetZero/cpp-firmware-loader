@@ -2,6 +2,7 @@
 #include <Poco/JSON/Parser.h>
 #include <regex>
 #include <string>
+#include <type_traits>
 
 namespace json = Poco::JSON;
 
@@ -12,11 +13,20 @@ namespace parser {
 
         template<typename T>
     #ifdef __cpp_concepts
-        requires std::is_arithmetic_v<T>
+        requires std::is_arithmetic_v<T> || std::is_same_v<T, std::byte>
     #endif
         const T getJSONValue(const std::string& value) {
             auto tmpValue = getJsonAsString(value);
-            return static_cast<T>(Poco::NumberParser::parse(tmpValue));
+            unsigned int tmp;
+
+            if (Poco::NumberParser::tryParseHex(tmpValue, tmp)) {
+                return T{tmp};
+            }
+            else {
+                return T{Poco::NumberParser::parse(tmpValue)};
+            }
+            //auto tmpValue = getJsonAsString(value);
+            //return T{Poco::NumberParser::parse(tmpValue)};
         }
 
         [[nodiscard]] const std::string getJsonAsString(const std::string& value);

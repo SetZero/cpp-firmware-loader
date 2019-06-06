@@ -14,14 +14,18 @@
 #include "../units/Byte.h"
 #include "DataSendManager.h"
 
-class HexReader {
-public:
-    using byte = CustomDataTypes::ComputerScience::byte;
-    HexReader(const std::string& fileLocation, const byte& maxSize);
-	void writeToStream(DataSendManager& manager);
-private:
-    intelhex hex;
-};
+namespace firmware::utils {
+    class HexReader {
+    public:
+        using byte = CustomDataTypes::ComputerScience::byte;
 
-DataSendManager& operator<<(DataSendManager& sender, const HexReader& reader);
+        HexReader(const std::string &fileLocation, const byte &maxSize);
 
+        void writeToStream(serial::DataSendManager &manager);
+
+    private:
+        intelhex hex;
+    };
+
+    serial::DataSendManager &operator<<(serial::DataSendManager &sender, const HexReader &reader);
+}

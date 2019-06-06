@@ -30,9 +30,13 @@ int main(int argc, const char* argv[]) {
 
 	using namespace CustomDataTypes::ComputerScience::literals;
 
-    ConfigManager configManager{clParser.device()};
-    std::cout << "Device: " << configManager.vendor() << " " << configManager.arch() << " [" << configManager.subarch() << "]" << ", " << configManager.name() << std::endl;
-    DataSendManager sendManager{configManager, clParser.port(), clParser.baud()};
+    firmware::json::config::ConfigManager configManager{clParser.device()};
+    std::cout << "Device: " << configManager.getJSONValue<firmware::json::config::JsonOptions::deviceVendor>()
+    << " " << configManager.getJSONValue<firmware::json::config::JsonOptions::deviceArch>()
+    << " [" << configManager.getJSONValue<firmware::json::config::JsonOptions::deviceSubArch>()
+    << "]" << ", " << configManager.getJSONValue<firmware::json::config::JsonOptions::deviceName>()
+    << std::endl;
+    firmware::serial::DataSendManager sendManager{configManager, clParser.port(), clParser.baud()};
 	if (!sendManager.isOpen()) {
 		std::cout << *sendManager.errorMessage() << std::endl;
 #ifdef _MSC_VER
@@ -41,7 +45,7 @@ int main(int argc, const char* argv[]) {
 		return 0;
 	} else {
 
-		HexReader reader{ clParser.binary(), 32_kB };
+		firmware::utils::HexReader reader{ clParser.binary(), 32_kB };
 		reader.writeToStream(sendManager);
 		std::cout << "Connection to " << clParser.port() << " successful!" << std::endl;
 		sendManager.bufferedWrite({
