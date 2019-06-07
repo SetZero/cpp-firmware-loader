@@ -10,11 +10,10 @@ namespace firmware::utils {
         intelHexInput.open(fileLocation, std::ifstream::in);
         if (intelHexInput.good()) {
             intelHexInput >> hex;
-            byte fileSize = HexReader::byte{static_cast<long>(hex.currentAddress())};
-            std::cout << "File size: " << fileSize << std::endl;
-            if (fileSize > maxSize) {
+            mFileSize = HexReader::byte{static_cast<long>(hex.currentAddress())};
+            if (mFileSize > maxSize) {
                 std::stringstream ss;
-                ss << "Unable to write " << fileSize << " in the available space of " << maxSize;
+                ss << "Unable to write " << mFileSize << " in the available space of " << maxSize;
                 mErrorMessage = ss.str();
                 return;
             }

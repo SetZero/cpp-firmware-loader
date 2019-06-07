@@ -63,6 +63,11 @@ int main(int argc, const char* argv[]) {
 		if(!reader) {
             std::cout << *reader.errorMessage();
 		}
+
+		auto maxAvail = configManager.getJSONValue<jsonOpts::deviceFlashAvailable>();
+        std::cout << "Used " << reader.getFileSize() << " / " << maxAvail
+		        << " (" << (static_cast<long double>(reader.getFileSize()) /
+		        static_cast<long double>(static_cast<decltype(reader.getFileSize())>(maxAvail).count())) << "%)" << std::endl;
         sendManager << reader;
 		sendManager.flush();
 	}

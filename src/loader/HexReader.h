@@ -26,6 +26,8 @@ namespace firmware::utils {
 
         [[nodiscard]] const std::optional<std::string>& errorMessage() const noexcept;
 
+        [[nodiscard]] constexpr byte getFileSize() const noexcept { return mFileSize; }
+
         void writeToStream(serial::DataSendManager &manager) const;
 
         friend serial::DataSendManager& operator<<(serial::DataSendManager& sender, const HexReader& reader);
@@ -33,6 +35,7 @@ namespace firmware::utils {
         intelhex hex;
         bool mCanWrite = false;
         std::optional<std::string> mErrorMessage;
+        byte mFileSize{0};
     };
 
 }
