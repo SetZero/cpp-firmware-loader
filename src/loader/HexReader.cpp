@@ -15,22 +15,40 @@ namespace firmware::utils {
             std::cout << "Final address is 0x" << std::setw(2) << std::setfill('0') << std::uppercase << std::hex
                       << hex.currentAddress() << std::dec << std::endl;
             std::cout << "File size: " << fileSize << std::endl;
-            std::cout << "Max size: " << maxSize << std::endl;
-            if (fileSize < maxSize) {
-                std::cout << "Fit!" << std::endl;
+            if (fileSize > maxSize) {
+                std::stringstream ss;
+                ss << "Unable to write " << fileSize << " in the available space of " << maxSize;
+                mErrorMessage = ss.str();
+                return;
             }
-            std::cout << "Errors: " << hex.getNoErrors() << std::endl;
-            std::cout << "Warnings: " << hex.getNoWarnings() << std::endl;
+            if(hex.getNoErrors() > 0) {
+                std::stringstream ss;
+                ss << "There were " << hex.getNoErrors() << " errors while parsing the hex file!";
+                mErrorMessage = ss.str();
+                return;
+            }
         } else {
-            std::cout << "Failed to open: " << fileLocation << std::endl;
+            std::stringstream ss;
+            ss << "Failed to open: " << fileLocation;
+            mErrorMessage = ss.str();
+            return;
         }
+        mCanWrite = true;
     }
 
     void HexReader::writeToStream(serial::DataSendManager &manager) {
+        if(!mCanWrite) return;
         for (const auto &v : std::as_const(hex)) {
-            //manager.bufferedWrite();
             std::cout << std::dec << v.address << ": 0x" << std::hex << (int) v.data << std::endl;
         }
+    }
+
+    HexReader::operator bool() const noexcept {
+        return mCanWrite;
+    }
+
+    const std::optional<std::string>& HexReader::errorMessage() const noexcept {
+        return mErrorMessage;
     }
 
     serial::DataSendManager &operator<<(serial::DataSendManager &sender, const HexReader &reader) {

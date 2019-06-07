@@ -17,6 +17,8 @@ namespace parser {
     #endif
         const T getJSONValue(const std::string& value) {
             auto tmpValue = getJsonAsString(value);
+
+
             unsigned int tmp;
 
             if (Poco::NumberParser::tryParseHex(tmpValue, tmp)) {

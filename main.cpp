@@ -32,10 +32,10 @@ int main(int argc, const char* argv[]) {
 
     firmware::json::config::ConfigManager configManager{clParser.device()};
     std::cout << "Device: " << configManager.getJSONValue<firmware::json::config::JsonOptions::deviceVendor>()
-    << " " << configManager.getJSONValue<firmware::json::config::JsonOptions::deviceArch>()
-    << " [" << configManager.getJSONValue<firmware::json::config::JsonOptions::deviceSubArch>()
-    << "]" << ", " << configManager.getJSONValue<firmware::json::config::JsonOptions::deviceName>()
-    << std::endl;
+        << " " << configManager.getJSONValue<firmware::json::config::JsonOptions::deviceArch>()
+        << " [" << configManager.getJSONValue<firmware::json::config::JsonOptions::deviceSubArch>()
+        << "]" << ", " << configManager.getJSONValue<firmware::json::config::JsonOptions::deviceName>()
+        << std::endl;
     firmware::serial::DataSendManager sendManager{configManager, clParser.port(), clParser.baud()};
 	if (!sendManager.isOpen()) {
 		std::cout << *sendManager.errorMessage() << std::endl;
@@ -44,10 +44,13 @@ int main(int argc, const char* argv[]) {
 #endif
 		return 0;
 	} else {
-
+        std::cout << "Connection to " << clParser.port() << " successful!" << std::endl;
 		firmware::utils::HexReader reader{ clParser.binary(), 32_kB };
+		if(!reader) {
+            std::cout << *reader.errorMessage();
+		}
+
 		reader.writeToStream(sendManager);
-		std::cout << "Connection to " << clParser.port() << " successful!" << std::endl;
 		sendManager.bufferedWrite({
 				std::byte{0x41},
 				std::byte{0x42},

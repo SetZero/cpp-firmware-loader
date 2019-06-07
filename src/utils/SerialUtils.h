@@ -9,7 +9,7 @@ namespace serial::utils {
     struct SerialConfiguration {
         unsigned int dataBits;
         bool parityBit;
-        unsigned int stopBit;
+        float stopBits;
     };
 
     enum class BinaryFormats {
