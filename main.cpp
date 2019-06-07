@@ -59,28 +59,11 @@ int main(int argc, const char* argv[]) {
             std::cout << "Unknown Format!" << std::endl;
             return 0;
         }
-		firmware::utils::HexReader reader{ clParser.binary(), 32_kB };
+		firmware::utils::HexReader reader{ clParser.binary(), configManager.getJSONValue<jsonOpts::deviceFlashAvailable>() };
 		if(!reader) {
             std::cout << *reader.errorMessage();
 		}
-
-		reader.writeToStream(sendManager);
-		sendManager.bufferedWrite({
-				std::byte{0x41},
-				std::byte{0x42},
-				std::byte{0x43},
-				std::byte{0x44},
-				std::byte{0x45},
-				std::byte{0x46},
-				std::byte{0x47},
-				std::byte{0x48},
-				std::byte{0x49},
-				std::byte{0x4a},
-				std::byte{0x4b},
-				std::byte{0x4c},
-				std::byte{0x4d}
-		});
-		sendManager << std::byte{ 0x4e } << std::byte{ 0x4f };
+        sendManager << reader;
 		sendManager.flush();
 	}
 

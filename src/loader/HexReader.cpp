@@ -33,10 +33,10 @@ namespace firmware::utils {
         mCanWrite = true;
     }
 
-    void HexReader::writeToStream(serial::DataSendManager &manager) {
+    void HexReader::writeToStream(serial::DataSendManager &manager) const {
         if(!mCanWrite) return;
-        for (const auto &v : std::as_const(hex)) {
-            std::cout << std::dec << v.address << ": 0x" << std::hex << (int) v.data << std::endl;
+        for (const auto& data : std::as_const(hex)) {
+            manager.bufferedWrite(static_cast<std::byte>(data.data));
         }
     }
 
@@ -49,6 +49,7 @@ namespace firmware::utils {
     }
 
     serial::DataSendManager &operator<<(serial::DataSendManager &sender, const HexReader &reader) {
+        reader.writeToStream(sender);
         return sender;
     }
 }

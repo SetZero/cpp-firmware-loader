@@ -139,6 +139,7 @@ namespace utils {
 		case 'H':
 			return { 100, 1 };
 		case 'k':
+        case 'K':
 			return { 1000, 1 };
 		case 'M':
 			return { 1000000, 1 };

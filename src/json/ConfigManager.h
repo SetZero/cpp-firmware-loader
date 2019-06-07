@@ -15,6 +15,7 @@
 #include "configFinder.h"
 #include "deviceParser.h"
 #include "../utils/SerialUtils.h"
+#include "../units/parse/unitParser.h"
 
 using namespace std::literals::string_view_literals;
 namespace firmware::json::config {
@@ -86,20 +87,21 @@ namespace firmware::json::config {
         struct DeviceOptions<JsonOptions::deviceFlashTotal> {
             static constexpr auto jsonKey = "/device/flash/total";
             using type = CustomDataTypes::ComputerScience::byte;
-            static constexpr auto converter = [](const std::string& input) noexcept { return input; };
+            static constexpr auto converter = [](const std::string& input) noexcept { return *CustomDataTypes::parseUnit<type>(input); };
         };
 
         template<>
         struct DeviceOptions<JsonOptions::deviceFlashAvailable> {
             static constexpr auto jsonKey = "/device/flash/available";
             using type = CustomDataTypes::ComputerScience::byte;
-            static constexpr auto converter = [](const std::string& input) noexcept { return input; };
+            static constexpr auto converter = [](const std::string& input) noexcept { return *CustomDataTypes::parseUnit<type>(input); };
         };
 
         template<>
         struct DeviceOptions<JsonOptions::deviceEEPROMTotal> {
             static constexpr auto jsonKey = "/device/eeprom/total";
             using type = CustomDataTypes::ComputerScience::byte;
+            //TODO: return byte...
             static constexpr auto converter = [](const std::string& input) noexcept { return input; };
         };
 

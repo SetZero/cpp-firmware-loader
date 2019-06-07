@@ -17,8 +17,8 @@ namespace CustomDataTypes {
 	template<template<typename, typename> typename D, typename Rep, std::intmax_t Num, std::intmax_t Denom>
 	class SIUnit<D<Rep, std::ratio<Num, Denom>>, Rep, std::ratio<Num, Denom>> {
 		using Derived = D<Rep, std::ratio<Num, Denom>>;
-		using value_type = Rep;
 	public:
+        using value_type = Rep;
 		//constexpr SIUnit() noexcept = default;
 
 		//template<typename oC, typename = std::enable_if_t<is_template_same_v<C, oC>>>

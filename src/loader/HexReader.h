@@ -26,13 +26,13 @@ namespace firmware::utils {
 
         [[nodiscard]] const std::optional<std::string>& errorMessage() const noexcept;
 
-        void writeToStream(serial::DataSendManager &manager);
+        void writeToStream(serial::DataSendManager &manager) const;
 
+        friend serial::DataSendManager& operator<<(serial::DataSendManager& sender, const HexReader& reader);
     private:
         intelhex hex;
         bool mCanWrite = false;
         std::optional<std::string> mErrorMessage;
     };
 
-    serial::DataSendManager &operator<<(serial::DataSendManager &sender, const HexReader &reader);
 }
