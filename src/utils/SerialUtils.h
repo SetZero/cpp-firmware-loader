@@ -13,7 +13,8 @@ namespace serial::utils {
     };
 
     enum class BinaryFormats {
-        IntelHex
+        IntelHex,
+        Unknown
     };
 }
 

@@ -11,9 +11,6 @@ namespace firmware::utils {
         if (intelHexInput.good()) {
             intelHexInput >> hex;
             byte fileSize = HexReader::byte{static_cast<long>(hex.currentAddress())};
-
-            std::cout << "Final address is 0x" << std::setw(2) << std::setfill('0') << std::uppercase << std::hex
-                      << hex.currentAddress() << std::dec << std::endl;
             std::cout << "File size: " << fileSize << std::endl;
             if (fileSize > maxSize) {
                 std::stringstream ss;

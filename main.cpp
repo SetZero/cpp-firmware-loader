@@ -22,6 +22,8 @@
 
 
 int main(int argc, const char* argv[]) {
+    using jsonOpts = firmware::json::config::JsonOptions;
+
     Parse clParser{argc, argv};
     if(!clParser) {
         std::cout << clParser;
@@ -31,20 +33,32 @@ int main(int argc, const char* argv[]) {
 	using namespace CustomDataTypes::ComputerScience::literals;
 
     firmware::json::config::ConfigManager configManager{clParser.device()};
-    std::cout << "Device: " << configManager.getJSONValue<firmware::json::config::JsonOptions::deviceVendor>()
-        << " " << configManager.getJSONValue<firmware::json::config::JsonOptions::deviceArch>()
-        << " [" << configManager.getJSONValue<firmware::json::config::JsonOptions::deviceSubArch>()
-        << "]" << ", " << configManager.getJSONValue<firmware::json::config::JsonOptions::deviceName>()
+    std::cout << "Device: " << configManager.getJSONValue<jsonOpts::deviceVendor>()
+        << " " << configManager.getJSONValue<jsonOpts::deviceArch>()
+        << " [" << configManager.getJSONValue<jsonOpts::deviceSubArch>()
+        << "]" << ", " << configManager.getJSONValue<jsonOpts::deviceName>()
         << std::endl;
+
+    if (clParser.baud() < configManager.getJSONValue<jsonOpts::serialMinBaudRate>() &&
+        clParser.baud() > configManager.getJSONValue<jsonOpts::serialMaxBaudRate>()) 
+    {
+        std::cout << "Given Baudrate is not within the allowed min and/or max\n\r";
+        std::cout << "Allowed Minimum: " << configManager.getJSONValue<jsonOpts::serialMinBaudRate>() << "\n\r";
+        std::cout << "Allowed Maximum: " << configManager.getJSONValue<jsonOpts::serialMaxBaudRate>() << "\n\r";
+        std::cout << "Given Value: " << clParser.baud();
+        return 0;
+    }
+
     firmware::serial::DataSendManager sendManager{configManager, clParser.port(), clParser.baud()};
 	if (!sendManager.isOpen()) {
 		std::cout << *sendManager.errorMessage() << std::endl;
-#ifdef _MSC_VER
-		while (true) {}
-#endif
 		return 0;
 	} else {
         std::cout << "Connection to " << clParser.port() << " successful!" << std::endl;
+        if (configManager.getJSONValue<jsonOpts::binaryFormat>() == serial::utils::BinaryFormats::Unknown) {
+            std::cout << "Unknown Format!" << std::endl;
+            return 0;
+        }
 		firmware::utils::HexReader reader{ clParser.binary(), 32_kB };
 		if(!reader) {
             std::cout << *reader.errorMessage();

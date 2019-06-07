@@ -12,9 +12,9 @@
 #include <type_traits>
 #include <optional>
 #include "../units/Byte.h"
-#include "../utils/SerialUtils.h"
 #include "configFinder.h"
 #include "deviceParser.h"
+#include "../utils/SerialUtils.h"
 
 using namespace std::literals::string_view_literals;
 namespace firmware::json::config {
@@ -201,6 +201,13 @@ namespace firmware::json::config {
         struct DeviceOptions<JsonOptions::binaryFormat> {
             static constexpr auto jsonKey = "/binary/format";
             using type = serial::utils::BinaryFormats;
+            static constexpr auto converter = [](std::string input) noexcept {
+                std::transform(input.begin(), input.end(), input.begin(), ::tolower);
+                if (input == "intel hex") {
+                    return type::IntelHex;
+                }
+                return type::Unknown;
+            };
         };
     }
 
