@@ -158,14 +158,14 @@ namespace firmware::json::config {
         struct DeviceOptions<JsonOptions::serialEEPROMBurstDelay> {
             static constexpr auto jsonKey = "/serial/write/eepromBurstDelay";
             using type = std::chrono::nanoseconds;
-            static constexpr auto converter = [](const std::string& input) noexcept { return input; };
+            static constexpr auto converter = [](const std::string& input) noexcept { return  *CustomDataTypes::parseUnit<type>(input);; };
         };
 
         template<>
         struct DeviceOptions<JsonOptions::serialFlashBurstDelay> {
             static constexpr auto jsonKey = "/serial/write/flashBurstDelay";
             using type = std::chrono::nanoseconds;
-            static constexpr auto converter = [](const std::string& input) noexcept { return input; };
+            static constexpr auto converter = [](const std::string& input) noexcept { return  *CustomDataTypes::parseUnit<type>(input);; };
         };
 
         template<>
@@ -232,6 +232,6 @@ namespace firmware::json::config {
             }
         }
     private:
-        std::unique_ptr<parser::DeviceParser> mParser;
+        std::unique_ptr<parser::DeviceParser> mParser = nullptr;
     };
 }

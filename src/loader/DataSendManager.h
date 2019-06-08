@@ -7,6 +7,8 @@
 #include <vector>
 #include <fstream>
 #include <iterator>
+#include <chrono>
+#include <thread>
 #include "../serial/Serial.h"
 #include "../json/ConfigManager.h"
 

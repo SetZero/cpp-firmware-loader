@@ -63,7 +63,7 @@ public:
         return pimpl->reciveBytes();
     }
 private:
-    const std::unique_ptr<SerialImpl> pimpl;
+    const std::unique_ptr<SerialImpl> pimpl = nullptr;
 };
 
 

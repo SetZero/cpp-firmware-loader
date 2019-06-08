@@ -33,9 +33,9 @@ namespace firmware::utils {
         friend serial::DataSendManager& operator<<(serial::DataSendManager& sender, const HexReader& reader);
     private:
         intelhex hex;
-        bool mCanWrite = false;
-        std::optional<std::string> mErrorMessage;
-        byte mFileSize{0};
+        bool mCanWrite{ false };
+        std::optional<std::string> mErrorMessage{ std::nullopt };
+        byte mFileSize{ 0 };
     };
 
 }

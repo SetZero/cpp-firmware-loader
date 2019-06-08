@@ -34,11 +34,11 @@ public:
 	[[nodiscard]] std::optional<std::string> const& errorMessage() const;
 private:
     const std::string mDevice;
-    const unsigned int mBaudrate;
+    const unsigned int mBaudrate = 9600;
     asio::io_service mIOService;
     asio::serial_port mPort;
 	bool mOpen = false;
-	std::optional<std::string> mErrorMessage;
+	std::optional<std::string> mErrorMessage = std::nullopt;
 };
 
 

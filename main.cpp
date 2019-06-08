@@ -19,6 +19,7 @@
 #include "src/json/ConfigManager.h"
 #include "src/loader/DataSendManager.h"
 #include "src/loader/HexReader.h"
+#include "src/utils/utils.h"
 
 
 int main(int argc, const char* argv[]) {
@@ -31,6 +32,7 @@ int main(int argc, const char* argv[]) {
     }
 
 	using namespace CustomDataTypes::ComputerScience::literals;
+    using namespace utils::printable;
 
     firmware::json::config::ConfigManager configManager{clParser.device()};
     std::cout << "Device: " << configManager.getJSONValue<jsonOpts::deviceVendor>()
@@ -70,6 +72,7 @@ int main(int argc, const char* argv[]) {
 		        static_cast<long double>(static_cast<decltype(reader.getFileSize())>(maxAvail).count())) << "%)" << std::endl;
         sendManager << reader;
 		sendManager.flush();
+        std::cout << "Finished Transmission" << std::endl;
 	}
 
 #if DEBUG_BUILD

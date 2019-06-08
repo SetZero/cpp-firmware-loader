@@ -5,6 +5,7 @@
 #include <Poco/NumberParser.h>
 #include <iostream>
 #include "../../utils/RatioLookup.h"
+#include "../..//utils/utils.h"
 
 namespace CustomDataTypes {
     template<typename T>
@@ -33,8 +34,9 @@ namespace CustomDataTypes {
                 case 3:
                     if (unit_match[i].length() > 0) {
                         unit = unit_match[i].str();
-                        if (unit == T::abr_value) {
-                            returnValue = T{ static_cast<T::value_type>((unit_val * prefix.first) / prefix.second) };
+                        if (unit == utils::periodic_printable<T>::name) {
+                            using period_type = utils::periodic_info<T>::period;
+                            returnValue = T{ static_cast<utils::periodic_info<T>::rep>((unit_val * prefix.first * period_type::den) / (prefix.second * period_type::num)) };
                         }
                     }
                     break;

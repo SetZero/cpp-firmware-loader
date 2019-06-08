@@ -70,5 +70,6 @@ namespace firmware::serial {
         mBuffer.erase(std::begin(mBuffer), it);
         sync();
         mSerial.writeData(tmp);
+        std::this_thread::sleep_for(mManager.getJSONValue<json::config::JsonOptions::serialFlashBurstDelay>());
     }
 }
