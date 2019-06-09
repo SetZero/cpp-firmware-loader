@@ -40,7 +40,8 @@ namespace firmware::json::config {
         serialPreamble,
         serialResyncAfterBurst,
         serialSyncByte,
-        binaryFormat
+        binaryFormat,
+        unusedFlashByte
     };
 
     namespace {
@@ -210,6 +211,13 @@ namespace firmware::json::config {
                 }
                 return type::Unknown;
             };
+        };
+
+        template<>
+        struct DeviceOptions < JsonOptions::unusedFlashByte> {
+            static constexpr auto jsonKey = "/binary/unusedFlashByte";
+            using type = std::byte;
+            static constexpr const auto converter = [](const std::string& input) noexcept { return input; };
         };
     }
 

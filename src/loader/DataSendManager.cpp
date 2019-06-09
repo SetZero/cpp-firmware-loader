@@ -36,7 +36,7 @@ namespace firmware::serial {
     void DataSendManager::flush() noexcept {
         const auto remainingBit = mManager.getJSONValue<json::config::JsonOptions::serialBytesPerBurst>() - mBuffer.size();
         if (remainingBit < mManager.getJSONValue<json::config::JsonOptions::serialBytesPerBurst>()) {
-            std::fill_n(std::back_inserter(mBuffer), remainingBit, static_cast<std::byte>(0xFF));
+            std::fill_n(std::back_inserter(mBuffer), remainingBit, mManager.getJSONValue<json::config::JsonOptions::unusedFlashByte>());
             sendBuffer();
         }
     }

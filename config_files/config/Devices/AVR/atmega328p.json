@@ -35,6 +35,7 @@
     }
   },
   "binary": {
-    "format": "Intel Hex"
+    "format": "Intel Hex",
+    "unusedFlashByte":  "0xFF"
   }
 }
