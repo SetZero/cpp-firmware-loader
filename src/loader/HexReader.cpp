@@ -34,6 +34,7 @@ namespace firmware::utils {
 
     void HexReader::writeToStream(serial::DataSendManager &manager) const {
         if(!mCanWrite) return;
+        //TODO: write metadata first!
         for (const auto& data : std::as_const(hex)) {
             manager.bufferedWrite(static_cast<std::byte>(data.data));
         }

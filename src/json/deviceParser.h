@@ -21,7 +21,7 @@ namespace parser {
 
             unsigned int tmp;
 
-            if (Poco::NumberParser::tryParseHex(tmpValue, tmp)) {
+            if (tmpValue.rfind("0x", 0) == 0 && Poco::NumberParser::tryParseHex(tmpValue, tmp)) {
                 return static_cast<T>(tmp);
             }
             else {
