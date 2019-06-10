@@ -8,6 +8,7 @@
 #include <optional>
 #include <iostream>
 #include  <sstream>
+#include "../utils/expected.h"
 
 
 namespace fs = std::filesystem;
@@ -17,15 +18,15 @@ private:
     static constexpr auto CONFIG_FOLDER = "config/";
     static constexpr auto CONFIG_SUFFIX = ".json";
 
-    std::optional<fs::path> fileLocation;
+    utils::expected<const fs::path, const std::string> fileLocation;
 public:
     explicit ConfigFinder(const std::string& deviceName);
 
-    [[nodiscard]] const std::optional<const fs::path> findFile(const std::string& filename, const std::string& folder) noexcept;
+    [[nodiscard]] const utils::expected<const fs::path, const std::string> findFile(const std::string& filename, const std::string& folder) noexcept;
 
-    [[nodiscard]] const std::optional<const fs::path> getFileLocation() const noexcept;
+    [[nodiscard]] const utils::expected<const fs::path, const std::string> getFileLocation() const noexcept;
 
-    [[nodiscard]] const std::optional<const std::string> getFileContents() const noexcept;
+    [[nodiscard]] const utils::expected<const std::string, const std::string> getFileContents() const noexcept;
 };
 
 

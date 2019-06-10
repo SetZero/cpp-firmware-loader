@@ -9,7 +9,7 @@ namespace firmware::json::config {
         if (auto &content = config.getFileContents()) {
             mParser = std::make_unique<parser::DeviceParser>(*content);
         } else {
-            throw std::runtime_error("Unable to locate Config File!");
+            throw std::runtime_error(content.error());
         }
     }
 }

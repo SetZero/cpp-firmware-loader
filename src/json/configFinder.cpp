@@ -6,7 +6,7 @@
 
 ConfigFinder::ConfigFinder(const std::string &deviceName) : fileLocation{findFile(deviceName + CONFIG_SUFFIX, CONFIG_FOLDER)} {}
 
-const std::optional<const fs::path>
+const utils::expected<const fs::path, const std::string>
 ConfigFinder::findFile(const std::string &filename, const std::string &folder) noexcept {
 
     try {
@@ -19,17 +19,22 @@ ConfigFinder::findFile(const std::string &filename, const std::string &folder) n
             }
         }
     } catch(fs::filesystem_error& err) {
-        std::cerr << "Unable to Open: " << folder << std::endl;
-        return std::nullopt;
+        std::stringstream ss;
+        ss << "Unable to Open: " << folder;
+        return utils::unexpected(ss.str());
     }
-    return std::nullopt;
+    return  utils::make_unexpected("An Unknown Error occured");
 }
 
-const std::optional<const fs::path> ConfigFinder::getFileLocation() const noexcept {
-    return fileLocation;
+const utils::expected<const fs::path, const std::string> ConfigFinder::getFileLocation() const noexcept {
+    if (fileLocation) {
+        return *fileLocation;
+    } else {
+        return  utils::make_unexpected("File Location is empty! Maybe you didn't load the location?");
+    }
 }
 
-const std::optional<const std::string> ConfigFinder::getFileContents() const noexcept {
+const utils::expected<const std::string, const std::string> ConfigFinder::getFileContents() const noexcept {
         try {
 			if (fileLocation) {
 				std::ifstream file{ fileLocation->string() };
@@ -37,8 +42,13 @@ const std::optional<const std::string> ConfigFinder::getFileContents() const noe
 				buffer << file.rdbuf();
 				return buffer.str();
 			}
-			return std::nullopt;
-        } catch (std::ios_base::failure& fail) {}
-        return std::nullopt;
+            std::stringstream ss;
+            ss << "Can't load content of an non-existent file! Error: \n" << fileLocation.error();
+            return  utils::make_unexpected(ss.str());
+        } catch (std::ios_base::failure& fail) {
+            std::stringstream ss;
+            ss << "The following error occured during file read operation:\n" << fail.what();
+            return utils::make_unexpected(ss.str());
+        }
     }
 
