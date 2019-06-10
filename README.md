@@ -12,6 +12,7 @@ Additional information for planned features: [Trello Board](https://trello.com/b
 * [Poco](https://pocoproject.org/)
 * [Clara](https://github.com/catchorg/Clara)
 * [Intel Hex Class (Fork)](https://github.com/SetZero/Intel-HEX-Class)
+* [expected](https://github.com/TartanLlama/expected)
 
 **Optional:**
 * [Catch2](https://github.com/catchorg/Catch2) (for testing)
