@@ -11,8 +11,8 @@
 namespace CustomDataTypes {
     //TODO: Add support for eg KiB
     template<typename T>
-    utils::expected<T, const std::string> parseUnit(const std::string& value) {
-        utils::expected<T, const std::string> returnValue = utils::make_unexpected("There was an error specifying an Unit!");
+    std::optional<T> parseUnit(const std::string& value) {
+        std::optional<T> returnValue = std::nullopt;
         try {
             static std::regex unit_regex(
                 R"(([-+]?[0-9]*\.?[0-9]+)\s?(a|f|p|n|u|m|c|d|D|h|k|K|M|T|P|E)?([A-Z0-9a-z!"#$%&'()*+,.\/:;<=>?@\[\] ^_`{|}~-]+)?)",
@@ -48,11 +48,7 @@ namespace CustomDataTypes {
                     }
                 }
             }
-        } catch (std::exception& e) {
-            std::stringstream ss;
-            ss << "There was an error while parsing an unit: \n" << e.what();
-            returnValue = utils::make_unexpected(ss.str());
-        }
+        } catch (std::exception& e) {}
 
         return returnValue;
     }

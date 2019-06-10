@@ -19,7 +19,7 @@ namespace CustomDataTypes {
 		using Derived = D<Rep, std::ratio<Num, Denom>>;
 	public:
         using value_type = Rep;
-		//constexpr SIUnit() noexcept = default;
+		constexpr SIUnit() noexcept = default;
 
 		//template<typename oC, typename = std::enable_if_t<is_template_same_v<C, oC>>>
 		//constexpr SIUnit(const oC& si) noexcept : internalRepresentation(si.internalRepresentation) {}

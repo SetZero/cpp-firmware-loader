@@ -131,6 +131,7 @@ namespace firmware::json::config {
                     float stop = Poco::NumberParser::parse(stopBit);
                     return type{data, parity, stop};
                 }
+                return type{0, false, 0};
             };
         };
 
@@ -227,10 +228,10 @@ namespace firmware::json::config {
 
         template<JsonOptions value>
 #ifdef __cpp_concepts
-        requires requires{
+        /*requires requires{
            DeviceOptions<value>::jsonKey;
            DeviceOptions<value>::converter;
-        }
+        }*/
 #endif
         [[nodiscard]] typename DeviceOptions<value>::type getJSONValue() const noexcept {
             using optionStruct = DeviceOptions<value>;
@@ -238,7 +239,7 @@ namespace firmware::json::config {
                 return mParser->getJsonAsString(optionStruct::jsonKey);
             }  else {
                 auto tmpValue = optionStruct::converter(mParser->getJsonAsString(optionStruct::jsonKey));
-                if constexpr(!std::is_same_v<std::decay_t<decltype(tmpValue)>, optionStruct::type>) {
+                if constexpr(!std::is_same_v<std::decay_t<decltype(tmpValue)>, typename optionStruct::type>) {
                     return mParser->getJSONValue<typename optionStruct::type>(optionStruct::jsonKey);
                 } else {
                     return tmpValue;

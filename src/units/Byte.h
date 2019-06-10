@@ -18,6 +18,7 @@ namespace CustomDataTypes::ComputerScience {
 		using parent_type = SIUnit<Byte<Rep, Period>, Rep, Period>;
 	public:
 		static constexpr std::string_view abr_value = "B";
+        constexpr explicit Byte() noexcept = default;
 		constexpr explicit Byte(Rep input) noexcept : parent_type{ input } {}
 	};
 
