@@ -223,7 +223,7 @@ namespace firmware::json::config {
 
     class ConfigManager {
     public:
-        ConfigManager(const std::string &deviceName);
+        explicit ConfigManager(const std::string &deviceName);
 
         template<JsonOptions value>
         [[nodiscard]] typename DeviceOptions<value>::type getJSONValue() const noexcept {
@@ -232,7 +232,7 @@ namespace firmware::json::config {
                 return mParser->getJsonAsString(optionStruct::jsonKey);
             }  else {
                 auto tmpValue = optionStruct::converter(mParser->getJsonAsString(optionStruct::jsonKey));
-                if constexpr(std::is_same_v<std::decay_t<decltype(tmpValue)>, std::string>) {
+                if constexpr(!std::is_same_v<std::decay_t<decltype(tmpValue)>, optionStruct::type>) {
                     return mParser->getJSONValue<typename optionStruct::type>(optionStruct::jsonKey);
                 } else {
                     return tmpValue;

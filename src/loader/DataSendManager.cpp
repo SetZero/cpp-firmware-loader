@@ -7,7 +7,7 @@
 namespace firmware::serial {
     DataSendManager::DataSendManager(const json::config::ConfigManager &manager, const std::string &device,
                                      const unsigned int baudrate) :
-            mSerial{device, baudrate}, mManager{std::move(manager)}, mOpen{mSerial.isOpen()} {
+            mSerial{device, baudrate, manager.getJSONValue<json::config::JsonOptions::serialMode>()}, mManager{std::move(manager)}, mOpen{mSerial.isOpen()} {
         // preventing odd serial behaviour. It might be possible that this
         // can be removed later, if hw serial is disabled ?
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -26,7 +26,7 @@ namespace firmware::serial {
     }
 
 
-    void DataSendManager::bufferedWrite(std::vector<decltype(mBuffer)::value_type> data) noexcept {
+    void DataSendManager::bufferedWrite(std::vector<decltype(mBuffer)::value_type> data) {
         mBuffer.insert(std::begin(mBuffer), std::begin(data), std::end(data));
         while (mBuffer.size() >= mManager.getJSONValue<json::config::JsonOptions::serialBytesPerBurst>()) {
             sendBuffer();
@@ -50,7 +50,7 @@ namespace firmware::serial {
         }
     }
 
-    void DataSendManager::bufferedWrite(std::byte data) noexcept {
+    void DataSendManager::bufferedWrite(std::byte data) {
         mBuffer.push_back(data);
         if (mBuffer.size() >= mManager.getJSONValue<json::config::JsonOptions::serialBytesPerBurst>()) {
             sendBuffer();
@@ -62,7 +62,7 @@ namespace firmware::serial {
         return parse;
     }
 
-    void DataSendManager::sendBuffer() noexcept {
+    void DataSendManager::sendBuffer() {
         std::vector<decltype(mBuffer)::value_type> tmp;
         auto it = std::next(std::begin(mBuffer), static_cast<long>(mManager.getJSONValue<json::config::JsonOptions::serialBytesPerBurst>()));
         std::move(mBuffer.begin(), it, std::back_inserter(tmp));

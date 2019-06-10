@@ -11,10 +11,11 @@
 #include <optional>
 #include <vector>
 #include <asio.hpp>
+#include "../utils/SerialUtils.h"
 
 class SerialImpl {
 public:
-    SerialImpl(std::string device, unsigned int baudrate);
+    SerialImpl(std::string device, unsigned int baudrate, serial::utils::SerialConfiguration config);
     ~SerialImpl();
 	SerialImpl(const SerialImpl& a) = delete;
 	SerialImpl& operator=(SerialImpl other) = delete;

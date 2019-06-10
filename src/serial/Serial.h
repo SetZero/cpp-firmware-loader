@@ -18,7 +18,7 @@ enum class SerialMode {
 template<SerialMode mode>
 class Serial {
 public:
-    explicit Serial(const std::string& device, const unsigned int baudrate) : pimpl{std::make_unique<SerialImpl>(device, baudrate)} { }
+    explicit Serial(const std::string& device, const unsigned int baudrate, serial::utils::SerialConfiguration config) : pimpl{std::make_unique<SerialImpl>(device, baudrate, config)} { }
 
 	[[nodiscard]] std::optional<std::string> const& errorMessage() const {
 		return pimpl->errorMessage();

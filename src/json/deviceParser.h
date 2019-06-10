@@ -40,4 +40,5 @@ namespace parser {
         Poco::Dynamic::Var parsedJSON;
         std::unordered_map<std::string, std::string> jsonValueMap;
     };
+
 }

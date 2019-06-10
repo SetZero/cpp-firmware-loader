@@ -24,9 +24,9 @@ namespace firmware::serial {
 
         [[nodiscard]] std::optional<std::string> const &errorMessage() const noexcept;
 
-        void bufferedWrite(std::vector<std::byte> data) noexcept;
+        void bufferedWrite(std::vector<std::byte> data);
 
-        void bufferedWrite(std::byte data) noexcept;
+        void bufferedWrite(std::byte data);
 
         void flush() noexcept;
 
@@ -35,7 +35,7 @@ namespace firmware::serial {
     private:
         void sync() noexcept;
 
-        void sendBuffer() noexcept;
+        void sendBuffer();
 
         Serial<SerialMode::TXOnly> mSerial;
         const json::config::ConfigManager &mManager;

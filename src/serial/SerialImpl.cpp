@@ -4,7 +4,8 @@
 
 #include "SerialImpl.h"
 
-SerialImpl::SerialImpl(std::string device, unsigned int baudrate) : mDevice{ device }, mBaudrate{ baudrate }, mPort{ mIOService } {
+SerialImpl::SerialImpl(std::string device, unsigned int baudrate, serial::utils::SerialConfiguration config) : 
+    mDevice{ device }, mBaudrate{ baudrate }, mPort{ mIOService } {
 	try {
 		mPort.open(device);
 	}
@@ -16,7 +17,7 @@ SerialImpl::SerialImpl(std::string device, unsigned int baudrate) : mDevice{ dev
 
 	using serial = asio::serial_port_base;
 	serial::baud_rate baud(baudrate);
-	serial::character_size bitsize(8);
+	serial::character_size bitsize(config.dataBits);
 	serial::parity parity(serial::parity::none);
 	serial::stop_bits stopbits(serial::stop_bits::one);
 	serial::flow_control flowcontrol(serial::flow_control::none);

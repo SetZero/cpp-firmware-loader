@@ -64,6 +64,7 @@ int main(int argc, const char* argv[]) {
 		firmware::utils::HexReader reader{ clParser.binary(), configManager.getJSONValue<jsonOpts::deviceFlashAvailable>() };
 		if(!reader) {
             std::cout << *reader.errorMessage();
+            return 0;
 		}
 
 		auto maxAvail = configManager.getJSONValue<jsonOpts::deviceFlashAvailable>();
