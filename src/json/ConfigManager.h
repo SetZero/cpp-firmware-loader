@@ -226,6 +226,12 @@ namespace firmware::json::config {
         explicit ConfigManager(const std::string &deviceName);
 
         template<JsonOptions value>
+#ifdef __cpp_concepts
+        requires requires{
+           DeviceOptions<value>::jsonKey;
+           DeviceOptions<value>::converter;
+        }
+#endif
         [[nodiscard]] typename DeviceOptions<value>::type getJSONValue() const noexcept {
             using optionStruct = DeviceOptions<value>;
             if constexpr (std::is_same_v<typename optionStruct::type, std::string>) {

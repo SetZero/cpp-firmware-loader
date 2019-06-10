@@ -8,6 +8,7 @@
 #include "../..//utils/utils.h"
 
 namespace CustomDataTypes {
+    //TODO: Add support for eg KiB
     template<typename T>
     std::optional<T> parseUnit(const std::string& value) {
         static std::regex unit_regex(
