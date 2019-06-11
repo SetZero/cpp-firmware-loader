@@ -6,6 +6,7 @@
 #include <chrono>
 #include <ratio>
 #include <string_view>
+#include <vector>
 #include "RatioLookup.h"
 
 namespace utils {
@@ -30,6 +31,40 @@ namespace utils {
     struct periodic_printable<std::chrono::duration<Rep, std::ratio<Nom, Denom>>> {
         static constexpr std::string_view name = "s";
     };
+
+   
+
+    template <typename T>
+    constexpr T ipow(T num, unsigned int pow)
+    {
+        return (pow >= sizeof(unsigned int) * 8) ? 0 :
+            pow == 0 ? 1 : num * ipow(num, pow - 1);
+    }
+
+    template<typename T>
+    [[nodiscard]] constexpr auto byteMaxValue(T byte) {
+        return ipow(2, byte * 8);
+    }
+
+    template<typename T>
+    [[nodiscard]] constexpr auto getBitCount() {
+        constexpr std::size_t bitCount = (std::is_same_v<T, std::byte> ? 8 : std::numeric_limits<T>::digits);
+        return bitCount;
+    }
+
+    template<typename T, typename U>
+    [[nodicard]] constexpr std::array<T, (getBitCount<U>() / getBitCount<T>())> splitNumer(U number) {
+        constexpr auto tBitCount = getBitCount<T>();
+        constexpr auto uBitCount = getBitCount<U>();
+        constexpr auto turns = (uBitCount / tBitCount);
+        std::array<T, turns> returnVector;
+        constexpr auto bitMask = ipow(2, tBitCount) - 1;
+
+        for (std::size_t i = 0; i < turns; i++) {
+            returnVector[i] = T{ (number >> (i * tBitCount)) & bitMask };
+        }
+        return returnVector;
+    }
 
     namespace printable {
         template<typename Rep, typename p>

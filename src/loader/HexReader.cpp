@@ -4,7 +4,7 @@
 
 #include "HexReader.h"
 
-namespace firmware::utils {
+namespace firmware::reader {
     HexReader::HexReader(const std::string &fileLocation, const HexReader::byte &maxSize) {
         std::ifstream intelHexInput;
         intelHexInput.open(fileLocation, std::ifstream::in);
@@ -35,6 +35,15 @@ namespace firmware::utils {
     void HexReader::writeToStream(serial::DataSendManager &manager) const {
         if(!mCanWrite) return;
         //TODO: write metadata first!
+        if (HexReader::byte{ utils::byteMaxValue(manager.bytesPerBurst()) } < mFileSize) {
+            std::cout << "Can't write filesize within one buffer length!" << std::endl;
+            return;
+        }
+        auto splitValue = utils::splitNumer<std::byte>(static_cast<std::size_t>(mFileSize));
+        for (std::size_t i = 0; i < manager.bytesPerBurst(); i++) {
+            manager.bufferedWrite(splitValue[i]);
+        }
+
         for (const auto& data : std::as_const(hex)) {
             manager.bufferedWrite(static_cast<std::byte>(data.data));
         }

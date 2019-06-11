@@ -13,9 +13,10 @@
 #include "../../includes/intelhexclass.h"
 #include "../json/ConfigManager.h"
 #include "../units/Byte.h"
+#include "../utils/utils.h"
 #include "DataSendManager.h"
 
-namespace firmware::utils {
+namespace firmware::reader {
     class HexReader {
     public:
         using byte = CustomDataTypes::ComputerScience::byte;

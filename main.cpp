@@ -61,7 +61,7 @@ int main(int argc, const char* argv[]) {
             std::cout << "Unknown Format!" << std::endl;
             return 0;
         }
-		firmware::utils::HexReader reader{ clParser.binary(), configManager.getJSONValue<jsonOpts::deviceFlashAvailable>() };
+		firmware::reader::HexReader reader{ clParser.binary(), configManager.getJSONValue<jsonOpts::deviceFlashAvailable>() };
 		if(!reader) {
             std::cout << *reader.errorMessage();
             return 0;

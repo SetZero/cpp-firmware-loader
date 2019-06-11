@@ -24,6 +24,8 @@ namespace firmware::serial {
 
         [[nodiscard]] std::optional<std::string> const &errorMessage() const noexcept;
 
+        [[nodiscard]] std::size_t const & bytesPerBurst() const noexcept;
+
         void bufferedWrite(std::vector<std::byte> data);
 
         void bufferedWrite(std::byte data);
@@ -41,6 +43,7 @@ namespace firmware::serial {
         const json::config::ConfigManager &mManager;
         std::deque<std::byte> mBuffer;
         bool mOpen = false;
+        const std::size_t mBytesPerBurst;
     };
 }
 

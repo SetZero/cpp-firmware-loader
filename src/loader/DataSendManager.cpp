@@ -7,7 +7,8 @@
 namespace firmware::serial {
     DataSendManager::DataSendManager(const json::config::ConfigManager &manager, const std::string &device,
                                      const unsigned int baudrate) :
-            mSerial{device, baudrate, manager.getJSONValue<json::config::JsonOptions::serialMode>()}, mManager{std::move(manager)}, mOpen{mSerial.isOpen()} {
+            mSerial{device, baudrate, manager.getJSONValue<json::config::JsonOptions::serialMode>()}, mManager{std::move(manager)}, 
+            mOpen{ mSerial.isOpen() }, mBytesPerBurst{ mManager.getJSONValue<json::config::JsonOptions::serialBytesPerBurst>() } {
         // preventing odd serial behaviour. It might be possible that this
         // can be removed later, if hw serial is disabled ?
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -23,6 +24,11 @@ namespace firmware::serial {
 
     std::optional<std::string> const &DataSendManager::errorMessage() const noexcept {
         return mSerial.errorMessage();
+    }
+
+    std::size_t const& DataSendManager::bytesPerBurst() const noexcept
+    {
+        return mBytesPerBurst;
     }
 
 
