@@ -14,6 +14,7 @@
 #include "../json/ConfigManager.h"
 #include "../units/Byte.h"
 #include "../utils/utils.h"
+#include "../utils/printUtils.h"
 #include "DataSendManager.h"
 
 namespace firmware::reader {

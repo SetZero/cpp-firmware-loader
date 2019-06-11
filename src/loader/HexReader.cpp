@@ -34,7 +34,6 @@ namespace firmware::reader {
 
     void HexReader::writeToStream(serial::DataSendManager &manager) const {
         if(!mCanWrite) return;
-        //TODO: write metadata first!
         if (HexReader::byte{ utils::byteMaxValue(manager.bytesPerBurst()) } < mFileSize) {
             std::cout << "Can't write filesize within one buffer length!" << std::endl;
             return;
@@ -44,9 +43,16 @@ namespace firmware::reader {
             manager.bufferedWrite(splitValue[i]);
         }
 
-        for (const auto& data : std::as_const(hex)) {
+        double counter = 0;
+        for (/*double counter = 0;*/const auto & data : std::as_const(hex)) {
+            auto percent = (counter / mFileSize.count()) * 100;
+            utils::printPercent(percent);
+
             manager.bufferedWrite(static_cast<std::byte>(data.data));
+            counter++;
         }
+        utils::printPercent(100);
+        std::cout << std::endl;
     }
 
     HexReader::operator bool() const noexcept {
