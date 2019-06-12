@@ -95,7 +95,14 @@ namespace firmware::json::config {
         struct DeviceOptions<JsonOptions::deviceFlashAvailable> {
             static constexpr auto jsonKey = "/device/flash/available";
             using type = CustomDataTypes::ComputerScience::byte;
-            static constexpr auto converter = [](const std::string& input) noexcept { return *CustomDataTypes::parseUnit<type>(input); };
+            static constexpr auto converter = [](const std::string& input) noexcept -> utils::expected<type, std::string> {
+                auto val = CustomDataTypes::parseUnit<type>(input);
+                if (val) {
+                    return { *val };
+                } else {
+                    return utils::make_unexpected("Fail?");
+                }
+            };
         };
 
         template<>
@@ -241,6 +248,9 @@ namespace firmware::json::config {
                 auto tmpValue = optionStruct::converter(mParser->getJsonAsString(optionStruct::jsonKey));
                 if constexpr(!std::is_same_v<std::decay_t<decltype(tmpValue)>, typename optionStruct::type>) {
                     return mParser->getJSONValue<typename optionStruct::type>(optionStruct::jsonKey);
+                } else if(std::is_same_v<std::decay_t<decltype(tmpValue)>, utils::expected<optionStruct::type, std::string>>) {
+                    std::cout << "Ex Type!" << std::endl;
+                    return *tmpValue;
                 } else {
                     return tmpValue;
                 }
