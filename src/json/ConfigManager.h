@@ -131,7 +131,7 @@ namespace firmware::json::config {
         struct DeviceOptions<JsonOptions::serialMode> {
             static constexpr auto jsonKey = "/serial/general/mode";
             using type = serial::utils::SerialConfiguration;
-            static constexpr auto converter = [](const std::string& input) {
+            static constexpr auto converter = [](const std::string& input) -> utils::expected<type, std::string> {
                 std::regex regex(R"(([0-9]+)(Y|N)([0-9]+.?(?:[0-9]+)?))", std::regex_constants::ECMAScript);
                 std::string::const_iterator searchStart(input.cbegin());
                 std::smatch matches;
@@ -148,13 +148,22 @@ namespace firmware::json::config {
                         parity = serial::utils::Parity::odd;
                     } else if (parityBit == "e") {
                         parity = serial::utils::Parity::even;
+                    } else {
+                        return utils::make_unexpected("Parity bit is not valid (possible values: n, o, e)");
                     }
 
-                    unsigned int data = static_cast<unsigned int>(Poco::NumberParser::parse(dataBit));
-                    float stop = Poco::NumberParser::parse(stopBit);
-                    return type{data, parity, stop};
+                    unsigned int data;
+                    if (!static_cast<unsigned int>(Poco::NumberParser::tryParseUnsigned(dataBit, data))) {
+                        return utils::make_unexpected("data bit is not a valid number");
+                    }
+                    double stop;
+                    if (!Poco::NumberParser::tryParseFloat(stopBit, stop)) {
+                        return utils::make_unexpected("stop bit is not a valid number");
+                    }
+
+                    return { type{data, parity, static_cast<float>(stop)} };
                 }
-                return type{0, serial::utils::Parity::unknown, 0};
+                return utils::make_unexpected("There was an error while parsing serialMode. Allowed Format example: 8N1 (8 data, no parity and 1 stop bit)");
             };
         };
 
@@ -279,6 +288,9 @@ namespace firmware::json::config {
                 if constexpr(!std::is_same_v<std::decay_t<decltype(tmpValue)>, typename optionStruct::type>) {
                     if constexpr(std::is_same_v<std::decay_t<decltype(tmpValue)>, utils::expected<typename optionStruct::type, std::string>>) {
                         //TODO: Error handling!
+                        if (!tmpValue) {
+                            std::cout << tmpValue.error() << std::endl;
+                        }
                         return *tmpValue;
                     } else {
                         return mParser->getJSONValue<typename optionStruct::type>(optionStruct::jsonKey);

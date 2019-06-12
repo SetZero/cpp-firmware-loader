@@ -79,19 +79,6 @@ int main(int argc, const char* argv[]) {
         std::cout << "Transmission took " << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1) << std::endl;
 	}
 
-#if DEBUG_BUILD
-	std::cout << "====[ DEBUG ] ====" << std::endl;
-	std::cout << "System Information" << std::endl;
-	std::cout << "OS: " << Poco::Environment::osDisplayName() << std::endl;
-	std::cout << "Core Count: " << Poco::Environment::processorCount() << std::endl;
-
-    std::cout << "Waiting for data... " << std::endl;
-	for (size_t i = 0; i < 2; i++) {
-		std::cout << *serial.reciveByte() << std::endl;
-	}
-	std::cout << "==================" << std::endl;
-#endif
-
 #ifdef _MSC_VER
 	while (true) {}
 #endif
