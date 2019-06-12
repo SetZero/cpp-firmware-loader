@@ -71,9 +71,11 @@ int main(int argc, const char* argv[]) {
         std::cout << "Used " << reader.getFileSize() << " / " << maxAvail
 		        << " (" << (static_cast<long double>(reader.getFileSize()) /
 		        static_cast<long double>(static_cast<decltype(reader.getFileSize())>(maxAvail).count())) << "%)" << std::endl;
+        auto t1 = std::chrono::high_resolution_clock::now();
         sendManager << reader;
 		sendManager.flush();
-        std::cout << "Finished Transmission" << std::endl;
+        auto t2 = std::chrono::high_resolution_clock::now();
+        std::cout << "Transmission took " << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1) << std::endl;
 	}
 
 #if DEBUG_BUILD
