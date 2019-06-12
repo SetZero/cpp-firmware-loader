@@ -53,14 +53,15 @@ namespace utils {
     }
 
     template<typename T, typename U>
-    [[nodicard]] constexpr std::array<T, (getBitCount<U>() / getBitCount<T>())> splitNumer(U number) {
+    [[nodiscard]] constexpr std::array<T, (getBitCount<U>() / getBitCount<T>())> splitNumer(U number) {
         constexpr auto tBitCount = getBitCount<T>();
         constexpr auto uBitCount = getBitCount<U>();
         constexpr auto turns = (uBitCount / tBitCount);
         constexpr auto bitMask = ipow(2, tBitCount) - 1;
-        std::array<T, turns> returnVector;
+        std::array<T, turns> returnVector{};
 
-        std::generate(returnVector.begin(), returnVector.end(), [&, i = 0]() mutable {
+        std::size_t i = 0;
+        std::generate(returnVector.begin(), returnVector.end(), [&]() mutable {
             return T( (number >> (i++ * tBitCount)) & bitMask );
         });
         return returnVector;
