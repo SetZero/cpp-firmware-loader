@@ -18,8 +18,8 @@ SerialImpl::SerialImpl(std::string device, unsigned int baudrate, serial::utils:
 	using serial = asio::serial_port_base;
 	serial::baud_rate baud(baudrate);
 	serial::character_size bitsize(config.dataBits);
-	serial::parity parity(serial::parity::none);
-	serial::stop_bits stopbits(serial::stop_bits::one);
+	serial::parity parity(convertParity(config.parityBit));
+	serial::stop_bits stopbits(convertStopBit(config.stopBits));
 	serial::flow_control flowcontrol(serial::flow_control::none);
 
     mPort.set_option(baud);
@@ -77,6 +77,21 @@ bool SerialImpl::isOpen() const
 std::optional<std::string> const& SerialImpl::errorMessage() const
 {
 	return mErrorMessage;
+}
+
+asio::serial_port_base::parity::type SerialImpl::convertParity(serial::utils::Parity parity)
+{
+    switch (parity) {
+    case serial::utils::Parity::even:
+        return asio::serial_port_base::parity::even;
+    case serial::utils::Parity::odd:
+        return asio::serial_port_base::parity::odd;
+    case serial::utils::Parity::none:
+        return asio::serial_port_base::parity::none;
+    case serial::utils::Parity::unknown:
+    default:
+        return asio::serial_port_base::parity::none;
+    }
 }
 
 

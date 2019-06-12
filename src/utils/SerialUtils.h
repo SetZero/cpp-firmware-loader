@@ -7,9 +7,16 @@
 #include <type_traits>
 
 namespace serial::utils {
+    enum class Parity {
+        odd,
+        even,
+        none,
+        unknown
+    };
+
     struct SerialConfiguration {
         unsigned int dataBits;
-        bool parityBit;
+        Parity parityBit;
         float stopBits;
     };
     static_assert(std::is_standard_layout_v< SerialConfiguration>, "Serial Config needs to be POD Type");

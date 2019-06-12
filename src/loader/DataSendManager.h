@@ -43,6 +43,7 @@ namespace firmware::serial {
         const json::config::ConfigManager &mManager;
         std::deque<std::byte> mBuffer;
         bool mOpen = false;
+        bool mSynced = false;
         const std::size_t mBytesPerBurst;
     };
 }

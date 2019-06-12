@@ -137,15 +137,24 @@ namespace firmware::json::config {
                 std::smatch matches;
                 while (regex_search(searchStart, input.cend(), matches, regex)) {
                     auto dataBit = matches[1];
-                    auto parityBit = matches[2];
+                    auto parityBit = matches[2].str();
                     auto stopBit = matches[3];
 
+                    std::transform(parityBit.begin(), parityBit.end(), parityBit.begin(), ::tolower);
+                    auto parity = serial::utils::Parity::unknown;
+                    if (parityBit == "n") {
+                        parity = serial::utils::Parity::none;
+                    } else if (parityBit == "o") {
+                        parity = serial::utils::Parity::odd;
+                    } else if (parityBit == "e") {
+                        parity = serial::utils::Parity::even;
+                    }
+
                     unsigned int data = static_cast<unsigned int>(Poco::NumberParser::parse(dataBit));
-                    bool parity = (parityBit == "Y");
                     float stop = Poco::NumberParser::parse(stopBit);
                     return type{data, parity, stop};
                 }
-                return type{0, false, 0};
+                return type{0, serial::utils::Parity::unknown, 0};
             };
         };
 

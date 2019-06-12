@@ -34,14 +34,7 @@ namespace firmware::reader {
 
     void HexReader::writeToStream(serial::DataSendManager &manager) const {
         if(!mCanWrite) return;
-        if (HexReader::byte{ utils::byteMaxValue(manager.bytesPerBurst()) } < mFileSize) {
-            std::cout << "Can't write filesize within one buffer length!" << std::endl;
-            return;
-        }
-        auto splitValue = utils::splitNumer<std::byte>(static_cast<std::intmax_t>(mFileSize));
-        for (std::size_t i = 0; i < manager.bytesPerBurst(); i++) {
-            manager.bufferedWrite(splitValue[i]);
-        }
+        sendMetadata(manager);
 
         double counter = 0;
         for (/*double counter = 0;*/const auto & data : std::as_const(hex)) {
@@ -52,6 +45,18 @@ namespace firmware::reader {
             manager.bufferedWrite(static_cast<std::byte>(data.data));
         }
         std::cout << std::endl;
+    }
+
+    void HexReader::sendMetadata(serial::DataSendManager& manager) const
+    {
+        if (HexReader::byte{ utils::byteMaxValue(manager.bytesPerBurst()) } < mFileSize) {
+            std::cout << "Can't write filesize within one buffer length!" << std::endl;
+            return;
+        }
+        auto splitValue = utils::splitNumer<std::byte>(static_cast<std::intmax_t>(mFileSize));
+        for (std::size_t i = 0; i < manager.bytesPerBurst(); i++) {
+            manager.bufferedWrite(splitValue[i]);
+        }
     }
 
     HexReader::operator bool() const noexcept {

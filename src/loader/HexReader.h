@@ -34,6 +34,9 @@ namespace firmware::reader {
 
         friend serial::DataSendManager& operator<<(serial::DataSendManager& sender, const HexReader& reader);
     private:
+
+        void sendMetadata(serial::DataSendManager& manager) const;
+
         intelhex hex;
         bool mCanWrite{ false };
         std::optional<std::string> mErrorMessage{ std::nullopt };
