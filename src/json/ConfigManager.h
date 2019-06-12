@@ -100,7 +100,7 @@ namespace firmware::json::config {
                 if (val) {
                     return { *val };
                 } else {
-                    return utils::make_unexpected("Fail?");
+                    return utils::make_unexpected("Unable to convert deviceFlashAvailable to byte value!");
                 }
             };
         };
@@ -247,10 +247,12 @@ namespace firmware::json::config {
             }  else {
                 auto tmpValue = optionStruct::converter(mParser->getJsonAsString(optionStruct::jsonKey));
                 if constexpr(!std::is_same_v<std::decay_t<decltype(tmpValue)>, typename optionStruct::type>) {
-                    return mParser->getJSONValue<typename optionStruct::type>(optionStruct::jsonKey);
-                } else if(std::is_same_v<std::decay_t<decltype(tmpValue)>, utils::expected<optionStruct::type, std::string>>) {
-                    std::cout << "Ex Type!" << std::endl;
-                    return *tmpValue;
+                    if constexpr(std::is_same_v<std::decay_t<decltype(tmpValue)>, utils::expected<typename optionStruct::type, std::string>>) {
+                        //TODO: Error handling!
+                        return *tmpValue;
+                    } else {
+                        return mParser->getJSONValue<typename optionStruct::type>(optionStruct::jsonKey);
+                    }
                 } else {
                     return tmpValue;
                 }
