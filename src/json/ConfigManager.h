@@ -88,7 +88,14 @@ namespace firmware::json::config {
         struct DeviceOptions<JsonOptions::deviceFlashTotal> {
             static constexpr auto jsonKey = "/device/flash/total";
             using type = CustomDataTypes::ComputerScience::byte;
-            static constexpr auto converter = [](const std::string& input) noexcept { return *CustomDataTypes::parseUnit<type>(input); };
+            static constexpr auto converter = [](const std::string& input) noexcept -> utils::expected<type, std::string> {
+                auto val = CustomDataTypes::parseUnit<type>(input);
+                if (val) {
+                    return { *val };
+                } else {
+                    return utils::make_unexpected("Unable to convert deviceFlashTotal to byte value!");
+                }
+            };
         };
 
         template<>
@@ -167,14 +174,28 @@ namespace firmware::json::config {
         struct DeviceOptions<JsonOptions::serialEEPROMBurstDelay> {
             static constexpr auto jsonKey = "/serial/write/eepromBurstDelay";
             using type = std::chrono::nanoseconds;
-            static constexpr auto converter = [](const std::string& input) noexcept { return  *CustomDataTypes::parseUnit<type>(input);; };
+            static constexpr auto converter = [](const std::string& input) noexcept -> utils::expected<type, std::string>  {
+                auto val = CustomDataTypes::parseUnit<type>(input);
+                if (val) {
+                    return { *val };
+                } else {
+                    return utils::make_unexpected("Unable to convert serialEEPROMBurstDelay to nanosecond value!");
+                }
+            };
         };
 
         template<>
         struct DeviceOptions<JsonOptions::serialFlashBurstDelay> {
             static constexpr auto jsonKey = "/serial/write/flashBurstDelay";
             using type = std::chrono::nanoseconds;
-            static constexpr auto converter = [](const std::string& input) noexcept { return  *CustomDataTypes::parseUnit<type>(input);; };
+            static constexpr auto converter = [](const std::string& input) noexcept -> utils::expected<type, std::string> {
+                auto val = CustomDataTypes::parseUnit<type>(input);
+                if (val) {
+                    return { *val };
+                } else {
+                    return utils::make_unexpected("Unable to convert serialFlashBurstDelay to nanosecond value!");
+                }
+            };
         };
 
         template<>
