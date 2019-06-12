@@ -57,12 +57,12 @@ namespace utils {
         constexpr auto tBitCount = getBitCount<T>();
         constexpr auto uBitCount = getBitCount<U>();
         constexpr auto turns = (uBitCount / tBitCount);
-        std::array<T, turns> returnVector;
         constexpr auto bitMask = ipow(2, tBitCount) - 1;
+        std::array<T, turns> returnVector;
 
-        for (std::size_t i = 0; i < turns; i++) {
-            returnVector[i] = T{ (number >> (i * tBitCount)) & bitMask };
-        }
+        std::generate(returnVector.begin(), returnVector.end(), [&, i = 0]() mutable {
+            return T( (number >> (i++ * tBitCount)) & bitMask );
+        });
         return returnVector;
     }
 

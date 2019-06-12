@@ -45,13 +45,12 @@ namespace firmware::reader {
 
         double counter = 0;
         for (/*double counter = 0;*/const auto & data : std::as_const(hex)) {
+            counter++;
             auto percent = (counter / mFileSize.count()) * 100;
             utils::printPercent(percent);
 
             manager.bufferedWrite(static_cast<std::byte>(data.data));
-            counter++;
         }
-        utils::printPercent(100);
         std::cout << std::endl;
     }
 
