@@ -11,7 +11,9 @@ namespace firmware::reader {
         if (intelHexInput.good()) {
             intelHexInput >> hex;
             mFileSize = HexReader::byte{static_cast<long>(hex.currentAddress())};
-            if (mFileSize > maxSize) {
+            mStartAddress = (*std::begin(hex)).address;
+
+            if (mFileSize + HexReader::byte{ static_cast<long>(mStartAddress) } > maxSize) {
                 std::stringstream ss;
                 ss << "Unable to write " << mFileSize << " in the available space of " << maxSize;
                 mErrorMessage = ss.str();

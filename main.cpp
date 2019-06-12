@@ -71,6 +71,7 @@ int main(int argc, const char* argv[]) {
         std::cout << "Used " << reader.getFileSize() << " / " << maxAvail
 		        << " (" << (static_cast<long double>(reader.getFileSize()) /
 		        static_cast<long double>(static_cast<decltype(reader.getFileSize())>(maxAvail).count())) << "%)" << std::endl;
+        std::cout << "Start Address: 0x" << std::hex << reader.getStartAddress() << std::dec << std::endl;
         auto t1 = std::chrono::high_resolution_clock::now();
         sendManager << reader;
 		sendManager.flush();

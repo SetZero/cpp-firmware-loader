@@ -30,6 +30,8 @@ namespace firmware::reader {
 
         [[nodiscard]] constexpr byte getFileSize() const noexcept { return mFileSize; }
 
+        [[nodiscard]] constexpr auto getStartAddress() const noexcept { return mStartAddress; }
+
         void writeToStream(serial::DataSendManager &manager) const;
 
         friend serial::DataSendManager& operator<<(serial::DataSendManager& sender, const HexReader& reader);
@@ -41,6 +43,7 @@ namespace firmware::reader {
         bool mCanWrite{ false };
         std::optional<std::string> mErrorMessage{ std::nullopt };
         byte mFileSize{ 0 };
+        std::size_t mStartAddress{ 0 };
     };
 
 }
