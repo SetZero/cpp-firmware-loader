@@ -39,6 +39,17 @@ namespace firmware::reader {
 
         void sendMetadata(serial::DataSendManager& manager) const;
 
+        template<typename T>
+#ifdef __cpp_concepts
+        template<typename T> requires std::is_arithmetic_v<T>
+#endif
+        void sendNumericValue(firmware::serial::DataSendManager& manager, const T& value) const {
+            auto splitValue = utils::splitNumer<std::byte>(value);
+            for (std::size_t i = 0; i < manager.bytesPerBurst(); i++) {
+                manager.bufferedWrite(splitValue[i]);
+            }
+        }
+
         intelhex hex;
         bool mCanWrite{ false };
         std::optional<std::string> mErrorMessage{ std::nullopt };
