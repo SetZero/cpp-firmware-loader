@@ -38,7 +38,7 @@ namespace firmware::reader {
             std::cout << "Can't write filesize within one buffer length!" << std::endl;
             return;
         }
-        auto splitValue = utils::splitNumer<std::byte>(static_cast<std::size_t>(mFileSize));
+        auto splitValue = utils::splitNumer<std::byte>(static_cast<std::intmax_t>(mFileSize));
         for (std::size_t i = 0; i < manager.bytesPerBurst(); i++) {
             manager.bufferedWrite(splitValue[i]);
         }
