@@ -19,7 +19,7 @@ namespace CustomDataTypes {
                 std::regex_constants::ECMAScript);
             std::smatch unit_match;
             long double unit_val = 0.0;
-            std::pair<std::intmax_t, std::intmax_t> prefix;
+            std::optional<std::pair<std::intmax_t, std::intmax_t>> prefix;
             std::string unit;
             if (std::regex_search(value, unit_match, unit_regex)) {
                 for (size_t i = 1; i < unit_match.size(); ++i) {
@@ -32,6 +32,9 @@ namespace CustomDataTypes {
                     case 2:
                         if (unit_match[i].length() > 0) {
                             prefix = utils::getRatio(unit_match[i].str().at(0));
+                            if (!prefix) {
+                                return std::nullopt;
+                            }
                         }
                         break;
                     case 3:
@@ -39,7 +42,7 @@ namespace CustomDataTypes {
                             unit = unit_match[i].str();
                             if (unit == utils::periodic_printable<T>::name) {
                                 using period_type = utils::periodic_info<T>::period;
-                                returnValue = T{ static_cast<utils::periodic_info<T>::rep>((unit_val * prefix.first * period_type::den) / (prefix.second * period_type::num)) };
+                                returnValue = T{ static_cast<utils::periodic_info<T>::rep>((unit_val * (*prefix).first * period_type::den) / ((*prefix).second * period_type::num)) };
                             }
                         }
                         break;
