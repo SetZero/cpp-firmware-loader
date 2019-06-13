@@ -38,10 +38,11 @@ public:
     [[nodiscard]] asio::serial_port_base::parity::type convertParity(serial::utils::Parity parity);
 
     template<typename T>
+   [[nodiscard]] asio::serial_port_base::stop_bits::type convertStopBit(T parity)
 #ifdef __cpp_concepts
-    requires std::is_floating_point_v<T>
+   requires std::is_floating_point_v<T>
 #endif
-   [[nodiscard]] asio::serial_port_base::stop_bits::type convertStopBit(T parity) {
+   {
         if (parity < 1.2) {
             return asio::serial_port_base::stop_bits::one;
         } else if (parity >= 1.2 && parity < 1.7) {
