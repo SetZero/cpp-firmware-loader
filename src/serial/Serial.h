@@ -41,7 +41,7 @@ public:
 #else
     template<typename U = int, typename = std::enable_if_t<mode == SerialMode::TXOnly || mode == SerialMode::Duplex, int>>
 #endif
-    void writeData(std::vector<std::byte> data) {
+    void writeData(const std::vector<std::byte>& data) {
         pimpl->writeData(data);
     }
 

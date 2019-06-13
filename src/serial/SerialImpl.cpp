@@ -44,7 +44,7 @@ void SerialImpl::writeData(std::byte data) {
 	}
 }
 
-void SerialImpl::writeData(std::vector<std::byte> data) {
+void SerialImpl::writeData(const std::vector<std::byte>& data) {
 	if (mOpen) {
 		asio::write(mPort, asio::buffer(data, data.size()));
 		mIOService.poll();

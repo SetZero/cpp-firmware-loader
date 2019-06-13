@@ -25,7 +25,7 @@ public:
 
     void writeData(std::byte data);
 
-    void writeData(std::vector<std::byte> data);
+    void writeData(const std::vector<std::byte>& data);
 
 	std::optional<std::string> reciveByte();
 
