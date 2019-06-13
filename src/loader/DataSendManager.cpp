@@ -49,10 +49,10 @@ namespace firmware::serial {
 
     void DataSendManager::sync() noexcept {
         if (mSerial.isOpen()) {
-            for (size_t i = 0; i < mManager.getJSONValue<json::config::JsonOptions::serialSyncByteAmount>(); i++) {
-                mSerial.writeData(mManager.getJSONValue<json::config::JsonOptions::serialSyncByte>());
-            }
-            mSerial.writeData(mManager.getJSONValue<json::config::JsonOptions::serialPreamble>());
+            const auto syncBytes = mManager.getJSONValue<json::config::JsonOptions::serialSyncByteAmount>();
+            std::vector<std::byte> tmpVector;
+            std::fill_n(std::begin(tmpVector), syncBytes, mManager.getJSONValue<json::config::JsonOptions::serialPreamble>());
+            mSerial.writeData(tmpVector);
         }
     }
 

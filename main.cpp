@@ -1,5 +1,5 @@
 
-#define DEBUG_BUILD false
+#define DEBUG_BUILD true
 
 #include <iostream>
 #include <chrono>
@@ -21,6 +21,12 @@
 #include "src/loader/HexReader.h"
 #include "src/utils/utils.h"
 
+[[nodiscard]] constexpr int pgmEnd() {
+#if defined(DEBUG_BUILD) && defined(_MSC_VER)
+    while (true) {}
+#endif
+    return 0;
+}
 
 int main(int argc, const char* argv[]) {
     using jsonOpts = firmware::json::config::JsonOptions;
@@ -28,7 +34,7 @@ int main(int argc, const char* argv[]) {
     Parse clParser{argc, argv};
     if(!clParser) {
         std::cout << clParser;
-        return 0;
+        return pgmEnd();
     }
 
 	using namespace CustomDataTypes::ComputerScience::literals;
@@ -48,23 +54,23 @@ int main(int argc, const char* argv[]) {
         std::cout << "Allowed Minimum: " << configManager.getJSONValue<jsonOpts::serialMinBaudRate>() << "\n\r";
         std::cout << "Allowed Maximum: " << configManager.getJSONValue<jsonOpts::serialMaxBaudRate>() << "\n\r";
         std::cout << "Given Value: " << clParser.baud();
-        return 0;
+        return pgmEnd();
     }
 
     firmware::serial::DataSendManager sendManager{configManager, clParser.port(), clParser.baud()};
 	if (!sendManager.isOpen()) {
 		std::cout << *sendManager.errorMessage() << std::endl;
-		return 0;
+		return pgmEnd();;
 	} else {
         std::cout << "Connection to " << clParser.port() << " successful!" << std::endl;
         if (configManager.getJSONValue<jsonOpts::binaryFormat>() == serial::utils::BinaryFormats::Unknown) {
             std::cout << "Unknown Format!" << std::endl;
-            return 0;
+            return pgmEnd();
         }
 		firmware::reader::HexReader reader{ clParser.binary(), configManager.getJSONValue<jsonOpts::deviceFlashAvailable>() };
 		if(!reader) {
             std::cout << *reader.errorMessage();
-            return 0;
+            return pgmEnd();
 		}
 
 		auto maxAvail = configManager.getJSONValue<jsonOpts::deviceFlashAvailable>();
@@ -79,9 +85,5 @@ int main(int argc, const char* argv[]) {
         std::cout << "Transmission took " << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1) << std::endl;
 	}
 
-#ifdef _MSC_VER
-	while (true) {}
-#endif
-
-    return 0;
+    return pgmEnd();
 }
