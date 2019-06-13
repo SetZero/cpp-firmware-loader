@@ -42,7 +42,6 @@ namespace firmware::serial {
         Serial<SerialMode::TXOnly> mSerial;
         const json::config::ConfigManager &mManager;
         std::deque<std::byte> mBuffer;
-        bool mOpen = false;
         bool mSynced = false;
         const std::size_t mBytesPerBurst;
     };
