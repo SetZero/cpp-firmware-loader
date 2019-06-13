@@ -51,7 +51,8 @@ namespace firmware::serial {
         if (mSerial.isOpen()) {
             const auto syncBytes = mManager.getJSONValue<json::config::JsonOptions::serialSyncByteAmount>();
             std::vector<std::byte> tmpVector;
-            std::fill_n(std::begin(tmpVector), syncBytes, mManager.getJSONValue<json::config::JsonOptions::serialPreamble>());
+            tmpVector.assign(syncBytes, mManager.getJSONValue<json::config::JsonOptions::serialSyncByte>());
+            tmpVector.push_back(mManager.getJSONValue<json::config::JsonOptions::serialPreamble>());
             mSerial.writeData(tmpVector);
         }
     }

@@ -46,3 +46,7 @@ After this append
 -DCMAKE_TOOLCHAIN_FILE=**path/to/vcpkg.cmake**
 ```
 to your cmake command line arguments
+
+## Documentation
+
+For Documentation please visit the [wiki](https://github.com/SetZero/cpp-firmware-loader/wiki)
