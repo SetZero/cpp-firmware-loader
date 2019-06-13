@@ -44,7 +44,7 @@ namespace parser {
         auto tmpValue = getJsonAsString(value);
         unsigned int tmp;
 
-        if (Poco::NumberParser::tryParseHex(tmpValue, tmp)) {
+        if (tmpValue.rfind("0x", 0) == 0 && Poco::NumberParser::tryParseHex(tmpValue, tmp)) {
             return static_cast<std::byte>(tmp);
         }
         else {

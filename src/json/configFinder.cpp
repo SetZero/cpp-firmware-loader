@@ -4,6 +4,8 @@
 
 #include "configFinder.h"
 
+namespace fs = std::filesystem;
+
 ConfigFinder::ConfigFinder(const std::string &deviceName) : fileLocation{findFile(deviceName + CONFIG_SUFFIX, CONFIG_FOLDER)} {}
 
 const utils::expected<const fs::path, const std::string>

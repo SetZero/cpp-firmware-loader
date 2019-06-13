@@ -10,6 +10,7 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include <algorithm>
 #include "../../includes/intelhexclass.h"
 #include "../json/ConfigManager.h"
 #include "../units/Byte.h"
@@ -45,9 +46,9 @@ namespace firmware::reader {
 #endif
         void sendNumericValue(firmware::serial::DataSendManager& manager, const T& value) const {
             auto splitValue = utils::splitNumer<std::byte>(value);
-            for (std::size_t i = 0; i < manager.bytesPerBurst(); i++) {
-                manager.bufferedWrite(splitValue[i]);
-            }
+            std::for_each_n(std::begin(splitValue), manager.bytesPerBurst(), [&](auto& element) {
+                    manager.bufferedWrite(element);
+                });
         }
 
         intelhex hex;
