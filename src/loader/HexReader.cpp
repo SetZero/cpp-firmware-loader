@@ -50,7 +50,8 @@ namespace firmware::reader {
     }
 
     void HexReader::sendMetadata(serial::DataSendManager& manager) const {
-        if (utils::byteMaxValue(manager.bytesPerBurst()) < HexReader::byte{ mFileSize }.count()) {
+        auto bpb = manager.bytesPerBurst();
+        if (utils::byteMaxValue(bpb) < HexReader::byte{ mFileSize }.count()) {
             std::cout << "Can't write filesize within one buffer length!" << std::endl;
             return;
         }

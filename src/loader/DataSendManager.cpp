@@ -80,6 +80,6 @@ namespace firmware::serial {
         }
         mSerial.writeData(tmp);
         //Bug: This will not wait for the transmission to be over :-/
-        std::this_thread::sleep_for(mManager.getJSONValue<json::config::JsonOptions::serialFlashBurstDelay>());
+        std::this_thread::sleep_for(mManager.getJSONValue<json::config::JsonOptions::serialFlashBurstDelay>()*4);
     }
 }
