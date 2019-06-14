@@ -7,8 +7,8 @@
 namespace firmware::serial {
     DataSendManager::DataSendManager(const json::config::ConfigManager &manager, const std::string &device,
                                      const unsigned int baudrate) :
-            mSerial{device, baudrate, manager.getJSONValue<json::config::JsonOptions::serialMode>()}, mManager{std::move(manager)}, 
-            mBytesPerBurst{ mManager.getJSONValue<json::config::JsonOptions::serialBytesPerBurst>() } {
+            mSerial{device, baudrate, manager.getJSONValue<json::config::JsonOptions::serialMode>()},
+            mBytesPerBurst{ manager.getJSONValue<json::config::JsonOptions::serialBytesPerBurst>() }, mManager{ std::move(manager) } {
         // preventing odd serial behaviour. It might be possible that this
         // can be removed later, if hw serial is disabled ?
         std::this_thread::sleep_for(std::chrono::milliseconds(200));
@@ -80,6 +80,10 @@ namespace firmware::serial {
         }
         mSerial.writeData(tmp);
         //Bug: This will not wait for the transmission to be over :-/
-        std::this_thread::sleep_for(mManager.getJSONValue<json::config::JsonOptions::serialFlashBurstDelay>()*4);
+        auto baud = mSerial.baudrate();
+        auto bitDuration = std::chrono::duration<double, std::ratio<1>>{ 1.0 / baud };
+
+        std::this_thread::sleep_for(bitDuration * tmp.size());
+        std::this_thread::sleep_for(mManager.getJSONValue<json::config::JsonOptions::serialFlashBurstDelay>());
     }
 }

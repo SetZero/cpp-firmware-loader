@@ -35,6 +35,10 @@ public:
 
 	[[nodiscard]] std::optional<std::string> const& errorMessage() const;
 
+    [[nodiscard]] constexpr int baudrate() const noexcept {
+        return mBaudrate;
+    }
+
     [[nodiscard]] asio::serial_port_base::parity::type convertParity(serial::utils::Parity parity);
 
     template<typename T>

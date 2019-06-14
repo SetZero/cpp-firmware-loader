@@ -27,6 +27,11 @@ public:
 	[[nodiscard]] bool isOpen() const {
 		return pimpl->isOpen();
 	}
+
+    [[nodiscard]] constexpr auto baudrate() const noexcept {
+        return pimpl->baudrate();
+    }
+
 #ifdef __cpp_concepts
     template<SerialMode pMode = mode> requires mode == SerialMode::TXOnly || mode == SerialMode::Duplex
 #else
