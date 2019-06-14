@@ -35,7 +35,7 @@ namespace utils {
    
 
     template <typename T>
-    constexpr T ipow(T num, unsigned int pow)
+    constexpr std::intmax_t ipow(T num, unsigned int pow)
     {
         return (pow >= sizeof(unsigned int) * 8) ? 0 :
             pow == 0 ? 1 : num * ipow(num, pow - 1);
@@ -43,7 +43,7 @@ namespace utils {
 
     template<typename T>
     [[nodiscard]] constexpr auto byteMaxValue(T byte) {
-        return ipow(2, byte * 8);
+        return std::pow(2, byte * 8);
     }
 
     template<typename T>

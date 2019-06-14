@@ -40,6 +40,7 @@ int main(int argc, const char* argv[]) {
 	using namespace CustomDataTypes::ComputerScience::literals;
     using namespace utils::printable;
 
+
     firmware::json::config::ConfigManager configManager{clParser.device()};
     std::cout << "Device: " << configManager.getJSONValue<jsonOpts::deviceVendor>()
         << " " << configManager.getJSONValue<jsonOpts::deviceArch>()

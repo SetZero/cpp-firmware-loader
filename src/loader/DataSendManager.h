@@ -11,6 +11,7 @@
 #include <thread>
 #include "../serial/Serial.h"
 #include "../json/ConfigManager.h"
+#include "../utils/utils.h"
 
 namespace firmware::serial {
     class DataSendManager {

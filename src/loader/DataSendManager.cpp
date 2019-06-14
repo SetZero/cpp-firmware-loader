@@ -11,7 +11,7 @@ namespace firmware::serial {
             mBytesPerBurst{ mManager.getJSONValue<json::config::JsonOptions::serialBytesPerBurst>() } {
         // preventing odd serial behaviour. It might be possible that this
         // can be removed later, if hw serial is disabled ?
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
     }
 
     DataSendManager::~DataSendManager() {
@@ -79,6 +79,7 @@ namespace firmware::serial {
             sync();
         }
         mSerial.writeData(tmp);
+        //Bug: This will not wait for the transmission to be over :-/
         std::this_thread::sleep_for(mManager.getJSONValue<json::config::JsonOptions::serialFlashBurstDelay>());
     }
 }
