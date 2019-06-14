@@ -19,7 +19,7 @@
   "serial": {
     "general": {
       "mode": "8N1",
-      "bytesPerBurst": 8,
+      "bytesPerBurst": 16,
       "minBaudrate": 9600,
       "maxBaudrate": 57600
     },
