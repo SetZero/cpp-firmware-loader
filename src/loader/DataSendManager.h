@@ -41,10 +41,10 @@ namespace firmware::serial {
         void sendBuffer();
 
         Serial<SerialMode::TXOnly> mSerial;
-        const json::config::ConfigManager &mManager;
         std::deque<std::byte> mBuffer;
         bool mSynced = false;
         const std::size_t mBytesPerBurst;
+        const json::config::ConfigManager &mManager;
     };
 }
 

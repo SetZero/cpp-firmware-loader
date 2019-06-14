@@ -35,7 +35,7 @@ public:
 
 	[[nodiscard]] std::optional<std::string> const& errorMessage() const;
 
-    [[nodiscard]] constexpr int baudrate() const noexcept {
+    [[nodiscard]] constexpr unsigned int baudrate() const noexcept {
         return mBaudrate;
     }
 
@@ -53,6 +53,8 @@ public:
             return asio::serial_port_base::stop_bits::onepointfive;
         } else if (parity >= 1.7) {
             return asio::serial_port_base::stop_bits::two;
+        } else {
+            return asio::serial_port_base::stop_bits::one;
         }
    }
 

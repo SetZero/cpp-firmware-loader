@@ -53,7 +53,7 @@ namespace firmware::reader {
             for(std::size_t i=0; i < std::min(manager.bytesPerBurst(), splitValue.size()); i++) {
                 manager.bufferedWrite(splitValue[i]);
             }
-            for (std::size_t i = 0; i < std::max(static_cast < std::intmax_t>(0), static_cast<std::intmax_t>(static_cast<std::intmax_t>(manager.bytesPerBurst()) - splitValue.size())); i++) {
+            for (std::intmax_t i = 0; i < std::max(static_cast < std::intmax_t>(0), static_cast<std::intmax_t>(static_cast<std::intmax_t>(manager.bytesPerBurst()) - static_cast<std::intmax_t>(splitValue.size()))); i++) {
                 manager.bufferedWrite(std::byte(0x00));
             }
         }
