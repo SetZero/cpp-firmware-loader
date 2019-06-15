@@ -295,21 +295,33 @@ namespace firmware::json::config {
            DeviceOptions<value>::converter;
         }*/
 #endif
-        [[nodiscard]] typename DeviceOptions<value>::type getJSONValue() const noexcept {
+        [[nodiscard]] typename DeviceOptions<value>::type getJSONValue() const {
             using optionStruct = DeviceOptions<value>;
             if constexpr (std::is_same_v<typename optionStruct::type, std::string>) {
-                return mParser->getJsonAsString(optionStruct::jsonKey);
+                auto val = mParser->getJsonAsString(optionStruct::jsonKey);
+                if(!val) {
+                    throw std::runtime_error(val.error());
+                }
+                return *val;
             }  else {
-                auto tmpValue = optionStruct::converter(mParser->getJsonAsString(optionStruct::jsonKey));
+                auto val = mParser->getJsonAsString(optionStruct::jsonKey);
+                if(!val) {
+                    throw std::runtime_error(val.error());
+                }
+                auto tmpValue = optionStruct::converter(*val);
                 if constexpr(!std::is_same_v<std::decay_t<decltype(tmpValue)>, typename optionStruct::type>) {
                     if constexpr(std::is_same_v<std::decay_t<decltype(tmpValue)>, utils::expected<typename optionStruct::type, std::string>>) {
                         //TODO: Error handling!
                         if (!tmpValue) {
-                            std::cout << tmpValue.error() << std::endl;
+                            throw std::runtime_error(tmpValue.error());
                         }
                         return *tmpValue;
                     } else {
-                        return mParser->getJSONValue<typename optionStruct::type>(optionStruct::jsonKey);
+                        auto jval = mParser->getJSONValue<typename optionStruct::type>(optionStruct::jsonKey);
+                        if(!jval) {
+                            throw std::runtime_error(jval.error());
+                        }
+                        return *jval;
                     }
                 } else {
                     return tmpValue;
