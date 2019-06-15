@@ -17,7 +17,7 @@ endif(UNIX)
 
 find_package(Poco COMPONENTS JSON XML CONFIG REQUIRED)
 
-add_executable(${PROJECT_NAME} main.cpp src/commandline/parse.h src/utils/enum_constants.h src/utils/EnvironmentChecks.h src/json/deviceParser.h src/json/configFinder.h src/serial/Serial.h src/serial/SerialImpl.cpp src/serial/SerialImpl.h src/json/configFinder.cpp src/json/deviceParser.cpp src/loader/DataSendManager.cpp src/loader/DataSendManager.h src/json/ConfigManager.cpp src/json/ConfigManager.h includes/intelhexclass.h includes/intelhexclass.cpp src/loader/HexReader.cpp src/loader/HexReader.h src/units/IECprefix.h src/utils/SerialUtils.h src/units/parse/unitParser.h src/utils/utils.h)
+add_executable(${PROJECT_NAME} main.cpp src/commandline/parse.h src/utils/enum_constants.h src/utils/EnvironmentChecks.h src/json/deviceParser.h src/json/configFinder.h src/serial/Serial.h src/serial/SerialImpl.cpp src/serial/SerialImpl.h src/json/configFinder.cpp src/json/deviceParser.cpp src/loader/DataSendManager.cpp src/loader/DataSendManager.h src/json/ConfigManager.cpp src/json/ConfigManager.h includes/intelhexclass.h includes/intelhexclass.cpp src/loader/HexReader.cpp src/loader/HexReader.h src/units/IECprefix.h src/utils/SerialUtils.h src/units/parse/unitParser.h)
 target_link_libraries(${PROJECT_NAME} Poco::JSON Poco::XML)
 
 add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
@@ -27,3 +27,7 @@ add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
 add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${CMAKE_SOURCE_DIR}/${CONFIG_FOLDER} $<TARGET_FILE_DIR:${PROJECT_NAME}>)
+
+
+add_executable(test_cases includes/intelhexclass.h includes/intelhexclass.cpp includes/intelhexclass.h includes/intelhexclass.h test/TestIntelHex.cpp)
+target_link_libraries(test_cases Poco::JSON Poco::XML)
