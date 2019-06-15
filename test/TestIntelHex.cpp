@@ -1,8 +1,6 @@
 //
 // Created by sebastian on 15.06.19.
 //
-
-#define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 #include <sstream>
 #include "../includes/intelhexclass.h"
