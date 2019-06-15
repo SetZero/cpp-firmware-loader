@@ -14,6 +14,7 @@
 #include "../units/Byte.h"
 #include "configFinder.h"
 #include "deviceParser.h"
+#include "../utils/fileUtils.h"
 #include "../utils/SerialUtils.h"
 #include "../units/parse/unitParser.h"
 
@@ -272,6 +273,8 @@ namespace firmware::json::config {
     public:
         explicit ConfigManager(const std::string &deviceName);
 
+        ConfigManager(const std::filesystem::path& filePath);
+
         template<JsonOptions value>
 #ifdef __cpp_concepts
         /*requires requires{
@@ -300,7 +303,15 @@ namespace firmware::json::config {
                 }
             }
         }
+        [[nodiscard]] const std::optional<std::string>& errorMessage() const noexcept {
+            return mError;
+        }
+
+        explicit operator bool() const {
+            return !static_cast<bool>(mError);
+        }
     private:
         std::unique_ptr<parser::DeviceParser> mParser = nullptr;
+        std::optional<std::string> mError = std::nullopt;
     };
 }

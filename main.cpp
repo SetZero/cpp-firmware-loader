@@ -21,9 +21,9 @@
 #include "src/loader/HexReader.h"
 #include "src/utils/utils.h"
 
-[[nodiscard]] constexpr int pgmEnd() {
+[[nodiscard]] int pgmEnd() {
 #if defined(DEBUG_BUILD) && defined(_MSC_VER)
-    while (true) {}
+    std::this_thread::sleep_until(std::chrono::system_clock::now() + std::chrono::hours(std::numeric_limits<int>::max()));
 #endif
     return 0;
 }
@@ -42,6 +42,10 @@ int main(int argc, const char* argv[]) {
 
 
     firmware::json::config::ConfigManager configManager{clParser.device()};
+    if (!configManager) {
+        std::cout << "Error: " << *configManager.errorMessage() << std::endl;
+        return pgmEnd();
+    }
     std::cout << "Device: " << configManager.getJSONValue<jsonOpts::deviceVendor>()
         << " " << configManager.getJSONValue<jsonOpts::deviceArch>()
         << " [" << configManager.getJSONValue<jsonOpts::deviceSubArch>()
@@ -51,7 +55,7 @@ int main(int argc, const char* argv[]) {
     if (clParser.baud() < configManager.getJSONValue<jsonOpts::serialMinBaudRate>() &&
         clParser.baud() > configManager.getJSONValue<jsonOpts::serialMaxBaudRate>()) 
     {
-        std::cout << "Given Baudrate is not within the allowed min and/or max\n\r";
+        std::cout << "Given Baudrate is not within the allowed min and max\n\r";
         std::cout << "Allowed Minimum: " << configManager.getJSONValue<jsonOpts::serialMinBaudRate>() << "\n\r";
         std::cout << "Allowed Maximum: " << configManager.getJSONValue<jsonOpts::serialMaxBaudRate>() << "\n\r";
         std::cout << "Given Value: " << clParser.baud();

@@ -9,7 +9,15 @@ namespace firmware::json::config {
         if (auto &content = config.getFileContents()) {
             mParser = std::make_unique<parser::DeviceParser>(*content);
         } else {
-            throw std::runtime_error(content.error());
+            mError = content.error();
+        }
+    }
+    ConfigManager::ConfigManager(const std::filesystem::path& filePath) {
+        auto fileContent = utils::readFile(filePath);
+        if (fileContent) {
+            mParser = std::make_unique<parser::DeviceParser>(*fileContent);
+        } else {
+            mError = fileContent.error();
         }
     }
 }

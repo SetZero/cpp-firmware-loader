@@ -37,20 +37,11 @@ const utils::expected<const fs::path, const std::string> ConfigFinder::getFileLo
 }
 
 const utils::expected<const std::string, const std::string> ConfigFinder::getFileContents() const noexcept {
-        try {
-			if (fileLocation) {
-				std::ifstream file{ fileLocation->string() };
-				std::stringstream buffer;
-				buffer << file.rdbuf();
-				return buffer.str();
-			}
-            std::stringstream ss;
-            ss << "Can't load content of an non-existent file! Error: \n" << fileLocation.error();
-            return  utils::make_unexpected(ss.str());
-        } catch (std::ios_base::failure& fail) {
-            std::stringstream ss;
-            ss << "The following error occured during file read operation:\n" << fail.what();
-            return utils::make_unexpected(ss.str());
-        }
-    }
+		if (fileLocation) {
+            return utils::readFile(*fileLocation);
+		}
+        std::stringstream ss;
+        ss << "Can't load content of an non-existent file! Error: \n" << fileLocation.error();
+        return  utils::make_unexpected(ss.str());
+}
 
