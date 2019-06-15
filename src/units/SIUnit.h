@@ -60,7 +60,7 @@ namespace CustomDataTypes {
 		template<typename Number, typename = std::enable_if_t<std::is_arithmetic<Number>::value>>
 		constexpr explicit operator Number() const & {
 			if (internalRepresentation < std::numeric_limits<Number>::max()) {
-				return count();
+				return static_cast<Number>(count());
 			}
 			else {
 				throw std::overflow_error("Invalid cast of Volt type!");

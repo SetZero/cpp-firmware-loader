@@ -83,7 +83,7 @@ namespace firmware::serial {
         auto baud = mSerial.baudrate();
         auto bitDuration = std::chrono::duration<double, std::ratio<1>>{ 1.0 / baud };
 
-        std::this_thread::sleep_for(bitDuration * tmp.size());
+        std::this_thread::sleep_for(bitDuration * tmp.size() * 10);
         std::this_thread::sleep_for(mManager.getJSONValue<json::config::JsonOptions::serialFlashBurstDelay>());
     }
 }

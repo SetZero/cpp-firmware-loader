@@ -385,7 +385,7 @@ public:
         explicit const_iterator(decltype(ihContent)::const_iterator content) : mIterator(content) {}
         const const_iterator& operator++() { mIterator++; return *this; }
         const const_iterator operator++(int) { const_iterator retval = *this; ++(*this); return retval; }
-        const const_iterator& operator--() { mIterator++; return *this; }
+        const const_iterator& operator--() { mIterator--; return *this; }
         const const_iterator operator--(int) { const_iterator retval = *this; --(*this); return retval; }
         bool operator==(const_iterator other) const { return mIterator == other.mIterator; }
         bool operator!=(const_iterator other) const { return !(*this == other); }
