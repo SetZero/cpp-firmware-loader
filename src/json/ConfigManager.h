@@ -117,15 +117,28 @@ namespace firmware::json::config {
         struct DeviceOptions<JsonOptions::deviceEEPROMTotal> {
             static constexpr auto jsonKey = "/device/eeprom/total";
             using type = CustomDataTypes::ComputerScience::byte;
-            //TODO: return byte...
-            static constexpr auto converter = [](const std::string& input) noexcept { return input; };
+            static constexpr auto converter = [](const std::string& input) noexcept -> utils::expected<type, std::string> {
+                auto val = CustomDataTypes::parseUnit<type>(input);
+                if (val) {
+                    return { *val };
+                } else {
+                    return utils::make_unexpected("Unable to convert deviceEEPROMTotal to byte value!");
+                }
+            };
         };
 
         template<>
         struct DeviceOptions<JsonOptions::deviceEEPROMAvailable> {
             static constexpr auto jsonKey = "/device/eeprom/available";
             using type = CustomDataTypes::ComputerScience::byte;
-            static constexpr auto converter = [](const std::string& input) noexcept { return input; };
+            static constexpr auto converter = [](const std::string& input) noexcept -> utils::expected<type, std::string> {
+                auto val = CustomDataTypes::parseUnit<type>(input);
+                if (val) {
+                    return { *val };
+                } else {
+                    return utils::make_unexpected("Unable to convert deviceEEPROMAvailable to byte value!");
+                }
+            };
         };
 
         template<>

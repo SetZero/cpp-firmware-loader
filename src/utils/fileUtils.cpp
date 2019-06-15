@@ -4,6 +4,9 @@ namespace utils {
     utils::expected<const std::string, const std::string> readFile(const std::filesystem::path& path) noexcept {
         try {
             std::ifstream file{ path.string() };
+            if(!file.good()) {
+                return utils::make_unexpected("Couldn't open the config file!");
+            }
             std::stringstream buffer;
             buffer << file.rdbuf();
             return buffer.str();

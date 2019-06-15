@@ -33,8 +33,10 @@ namespace CustomDataTypes {
                         if (unit_match[i].length() > 0) {
                             prefix = utils::getRatio(unit_match[i].str().at(0));
                             if (!prefix) {
-                                return std::nullopt;
+                                prefix = { { 1, 1 } };
                             }
+                        } else {
+                            prefix = { { 1, 1 } };
                         }
                         break;
                     case 3:
