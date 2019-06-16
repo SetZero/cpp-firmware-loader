@@ -27,7 +27,7 @@ namespace test {
         std::filesystem::remove_all(path);
     }
 
-    TEST_CASE("nested config folder 2", "[ConfigFinder test]") {
+    TEST_CASE("nested config folder 1", "[ConfigFinder test]") {
         auto path = std::filesystem::path{ std::filesystem::temp_directory_path() };
         path /= "fileware_loader_config";
 
@@ -68,7 +68,7 @@ namespace test {
         std::filesystem::remove_all(path);
     }
 
-    TEST_CASE("nested config folder", "[ConfigFinder test]") {
+    TEST_CASE("nested config folder 2", "[ConfigFinder test]") {
         auto path = std::filesystem::path{ std::filesystem::temp_directory_path() };
         path /= "fileware_loader_config";
 
