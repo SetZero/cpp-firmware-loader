@@ -58,35 +58,38 @@ namespace test {
         }
 
         firmware::json::config::ConfigManager manager{path};
-        REQUIRE(!static_cast<bool>(manager.errorMessage()));
-        REQUIRE(static_cast<bool>(manager));
+        SECTION("Init") {
+            REQUIRE(!static_cast<bool>(manager.errorMessage()));
+            REQUIRE(static_cast<bool>(manager));
+        }
 
         using namespace CustomDataTypes::ComputerScience::literals;
         using namespace std::chrono_literals;
-
-        REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::deviceID>() == "atmega328p");
-        REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::deviceVendor>() == "Microchip");
-        REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::deviceArch>() == "AVR");
-        REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::deviceSubArch>() == "ATMega");
-        REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::deviceName>() == "Atmega328p");
-        REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::deviceFlashTotal>() == 32_kB);
-        REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::deviceFlashAvailable>() == 30_kB);
-        REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::deviceEEPROMTotal>() == 1_kB);
-        REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::deviceEEPROMAvailable>() == 1023_B);
-        REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialMode>().dataBits == 8);
-        REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialMode>().parityBit == serial::utils::Parity::none);
-        REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialMode>().stopBits == 1);
-        REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialBytesPerBurst>() == 16);
-        REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialMinBaudRate>() == 9600);
-        REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialMaxBaudRate>() == 57600);
-        REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialEEPROMBurstDelay>() == 100ms);
-        REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialFlashBurstDelay>() == 9ms);
-        REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialSyncByteAmount>() == 3);
-        REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialSyncByte>() == std::byte{0xCC});
-        REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialPreamble>() == std::byte{0x55});
-        REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialResyncAfterBurst>());
-        REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::binaryFormat>() == serial::utils::BinaryFormats::IntelHex);
-        REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::unusedFlashByte>() == std::byte{0xFF});
+        SECTION("All values") {
+            REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::deviceID>() == "atmega328p");
+            REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::deviceVendor>() == "Microchip");
+            REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::deviceArch>() == "AVR");
+            REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::deviceSubArch>() == "ATMega");
+            REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::deviceName>() == "Atmega328p");
+            REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::deviceFlashTotal>() == 32_kB);
+            REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::deviceFlashAvailable>() == 30_kB);
+            REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::deviceEEPROMTotal>() == 1_kB);
+            REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::deviceEEPROMAvailable>() == 1023_B);
+            REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialMode>().dataBits == 8);
+            REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialMode>().parityBit == serial::utils::Parity::none);
+            REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialMode>().stopBits == 1);
+            REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialBytesPerBurst>() == 16);
+            REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialMinBaudRate>() == 9600);
+            REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialMaxBaudRate>() == 57600);
+            REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialEEPROMBurstDelay>() == 100ms);
+            REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialFlashBurstDelay>() == 9ms);
+            REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialSyncByteAmount>() == 3);
+            REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialSyncByte>() == std::byte{0xCC});
+            REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialPreamble>() == std::byte{0x55});
+            REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialResyncAfterBurst>());
+            REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::binaryFormat>() == serial::utils::BinaryFormats::IntelHex);
+            REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::unusedFlashByte>() == std::byte{0xFF});
+        }
     }
 
     TEST_CASE("Test Nonexistent File", "[Nonexistent file Test]") {
