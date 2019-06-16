@@ -79,6 +79,10 @@ std::optional<std::string> const& SerialImpl::errorMessage() const
 	return mErrorMessage;
 }
 
+unsigned int SerialImpl::baudrate() const noexcept {
+    return mBaudrate;
+}
+
 asio::serial_port_base::parity::type SerialImpl::convertParity(serial::utils::Parity parity)
 {
     switch (parity) {

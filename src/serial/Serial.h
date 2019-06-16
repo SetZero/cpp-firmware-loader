@@ -7,6 +7,7 @@
 #include <string>
 #include <string>
 #include "SerialImpl.h"
+#include "AbstractSerial.h"
 
 enum class SerialMode {
     RXOnly,
@@ -19,6 +20,9 @@ template<SerialMode mode>
 class Serial {
 public:
     explicit Serial(const std::string& device, const unsigned int baudrate, serial::utils::SerialConfiguration config) : pimpl{std::make_unique<SerialImpl>(device, baudrate, config)} { }
+
+    explicit Serial(std::unique_ptr<AbstractSerial> serialImplementation)
+        : pimpl{ std::move(serialImplementation) } {}
 
 	[[nodiscard]] std::optional<std::string> const& errorMessage() const {
 		return pimpl->errorMessage();
@@ -68,7 +72,7 @@ public:
         return pimpl->reciveBytes();
     }
 private:
-    const std::unique_ptr<SerialImpl> pimpl = nullptr;
+    const std::unique_ptr<AbstractSerial> pimpl = nullptr;
 };
 
 

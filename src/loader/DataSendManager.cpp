@@ -14,6 +14,11 @@ namespace firmware::serial {
         std::this_thread::sleep_for(std::chrono::milliseconds(200));
     }
 
+    DataSendManager::DataSendManager(const json::config::ConfigManager& manager, std::unique_ptr<AbstractSerial> serialImplementation) : 
+        mSerial {std::move(serialImplementation)},
+        mBytesPerBurst {manager.getJSONValue<json::config::JsonOptions::serialBytesPerBurst>()}, mManager{ std::move(manager) } {
+    }
+
     DataSendManager::~DataSendManager() {
         flush();
     }

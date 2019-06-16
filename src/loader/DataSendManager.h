@@ -10,6 +10,7 @@
 #include <chrono>
 #include <thread>
 #include "../serial/Serial.h"
+#include "../serial/AbstractSerial.h"
 #include "../json/ConfigManager.h"
 #include "../utils/utils.h"
 
@@ -17,6 +18,8 @@ namespace firmware::serial {
     class DataSendManager {
     public:
         DataSendManager(const json::config::ConfigManager &manager, const std::string &device, const unsigned int baudrate);
+
+        DataSendManager(const json::config::ConfigManager& manager, std::unique_ptr <AbstractSerial> serialImplementation);
 
         //TODO: rule of 5
         ~DataSendManager();

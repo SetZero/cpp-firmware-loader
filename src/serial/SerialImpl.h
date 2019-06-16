@@ -13,8 +13,9 @@
 #include <type_traits>
 #include <asio.hpp>
 #include "../utils/SerialUtils.h"
+#include "AbstractSerial.h"
 
-class SerialImpl {
+class SerialImpl : public AbstractSerial {
 public:
     SerialImpl(std::string device, unsigned int baudrate, serial::utils::SerialConfiguration config);
     ~SerialImpl();
@@ -23,30 +24,28 @@ public:
 	SerialImpl(SerialImpl&& o) = delete;
 	SerialImpl& operator=(SerialImpl&& other) = delete;
 
-    void writeData(std::byte data);
+    void writeData(std::byte data) override;
 
-    void writeData(const std::vector<std::byte>& data);
+    void writeData(const std::vector<std::byte>& data) override;
 
-	std::optional<std::string> reciveByte();
+	std::optional<std::string> reciveByte() override;
 
-	std::vector<std::byte> reciveBytes();
+	std::vector<std::byte> reciveBytes() override;
 
-	[[nodiscard]] bool isOpen() const;
+	[[nodiscard]] bool isOpen() const override;
 
-	[[nodiscard]] std::optional<std::string> const& errorMessage() const;
+	[[nodiscard]] const std::optional<std::string>&  errorMessage() const override;
 
-    [[nodiscard]] constexpr unsigned int baudrate() const noexcept {
-        return mBaudrate;
-    }
-
+    [[nodiscard]] unsigned int baudrate() const noexcept override;
+private:
     [[nodiscard]] asio::serial_port_base::parity::type convertParity(serial::utils::Parity parity);
 
     template<typename T>
-   [[nodiscard]] asio::serial_port_base::stop_bits::type convertStopBit(T parity)
+    [[nodiscard]] asio::serial_port_base::stop_bits::type convertStopBit(T parity)
 #ifdef __cpp_concepts
-   requires std::is_floating_point_v<T>
+        requires std::is_floating_point_v<T>
 #endif
-   {
+    {
         if (parity < 1.2) {
             return asio::serial_port_base::stop_bits::one;
         } else if (parity >= 1.2 && parity < 1.7) {
@@ -56,9 +55,9 @@ public:
         } else {
             return asio::serial_port_base::stop_bits::one;
         }
-   }
+    }
 
-private:
+
     const std::string mDevice;
     const unsigned int mBaudrate = 9600;
     asio::io_service mIOService;
