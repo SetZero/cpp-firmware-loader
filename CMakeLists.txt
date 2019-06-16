@@ -8,7 +8,7 @@ set(CONFIG_FOLDER "config_files")
 set(CMAKE_CXX_STANDARD 20)
 
 if(WIN32)
-	set(CMAKE_CXX_FLAGS "/O2 /W4")
+	set(CMAKE_CXX_FLAGS "/O2 /W4 /EHa")
 endif(WIN32)
 
 if(UNIX)

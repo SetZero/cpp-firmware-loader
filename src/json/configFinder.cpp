@@ -8,7 +8,7 @@ namespace fs = std::filesystem;
 
 ConfigFinder::ConfigFinder(const std::string &deviceName) : fileLocation{findFile(deviceName + CONFIG_SUFFIX, CONFIG_FOLDER)} {}
 
-ConfigFinder::ConfigFinder(const std::string &deviceName, const std::filesystem::path& baseBath) : fileLocation{findFile(deviceName + CONFIG_SUFFIX, (baseBath))}  {}
+ConfigFinder::ConfigFinder(const std::string &deviceName, const std::filesystem::path& baseBath) : fileLocation{findFile(deviceName + CONFIG_SUFFIX, (baseBath.string()))}  {}
 
 const utils::expected<const fs::path, const std::string>
 ConfigFinder::findFile(const std::string &filename, const std::string &folder) noexcept {
