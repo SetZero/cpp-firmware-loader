@@ -103,9 +103,23 @@ namespace test {
     TEST_CASE("Test empty File", "[empty file Test]") {
         auto path = std::filesystem::path{ std::filesystem::temp_directory_path() };
         path /= "FiremwareLoaderTests/empty.txt";
-        std::ofstream output(path);
+        std::ofstream output{path};
 
         firmware::json::config::ConfigManager manager{path};
         REQUIRE(!static_cast<bool>(manager));
+    }
+
+    TEST_CASE("Test empty JSON", "[empty json Test]") {
+        auto path = std::filesystem::path{ std::filesystem::temp_directory_path() };
+        path /= "FiremwareLoaderTests/empty.json";
+        std::filesystem::create_directories(path.parent_path());
+        {
+            std::ofstream stream{path};
+            stream << "{}";
+            stream.close();
+        }
+        firmware::json::config::ConfigManager manager{path};
+        REQUIRE(static_cast<bool>(manager));
+        REQUIRE_THROWS_AS(manager.getJSONValue<firmware::json::config::JsonOptions::deviceID>(), std::runtime_error);
     }
 }

@@ -8,6 +8,8 @@ namespace fs = std::filesystem;
 
 ConfigFinder::ConfigFinder(const std::string &deviceName) : fileLocation{findFile(deviceName + CONFIG_SUFFIX, CONFIG_FOLDER)} {}
 
+ConfigFinder::ConfigFinder(const std::string &deviceName, const std::filesystem::path& baseBath) : fileLocation{findFile(deviceName + CONFIG_SUFFIX, (baseBath))}  {}
+
 const utils::expected<const fs::path, const std::string>
 ConfigFinder::findFile(const std::string &filename, const std::string &folder) noexcept {
 
@@ -44,4 +46,7 @@ const utils::expected<const std::string, const std::string> ConfigFinder::getFil
         ss << "Can't load content of an non-existent file! Error: \n" << fileLocation.error();
         return  utils::make_unexpected(ss.str());
 }
+
+
+
 

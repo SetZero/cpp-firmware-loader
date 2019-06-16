@@ -3,6 +3,8 @@
 //
 
 #include "deviceParser.h"
+#include "../utils/expected.h"
+
 namespace parser {
     DeviceParser::DeviceParser(const std::string &json) {
         json::Parser parser;
@@ -22,33 +24,40 @@ namespace parser {
         return result_set;
     }
 
-    const std::string DeviceParser::getJsonAsString(const std::string &value) {
-        std::string returnValue;
-        auto search = jsonValueMap.find(value);
+    const utils::expected<std::string, std::string> DeviceParser::getJsonAsString(const std::string &value) {
+        try {
+            std::string returnValue;
+            auto search = jsonValueMap.find(value);
 
-        if (search == jsonValueMap.end()) {
-            Poco::Dynamic::Var jValue = parsedJSON.extract<json::Object::Ptr>();
-            for (auto &str : getPathValue(value)) {
-                auto jObj = jValue.extract<json::Object::Ptr>();
-                jValue = jObj->get(str);
+            if (search == jsonValueMap.end()) {
+                Poco::Dynamic::Var jValue = parsedJSON.extract<json::Object::Ptr>();
+                for (auto &str : getPathValue(value)) {
+                    auto jObj = jValue.extract<json::Object::Ptr>();
+                    jValue = jObj->get(str);
+                }
+                jsonValueMap.insert({value, jValue.toString()});
+                returnValue = jValue.toString();
+            } else {
+                returnValue = search->second;
             }
-            jsonValueMap.insert({value, jValue.toString()});
-            returnValue = jValue.toString();
-        } else {
-            returnValue = search->second;
+            return returnValue;
+        } catch (Poco::InvalidAccessException& e) {
+            return utils::make_unexpected(e.what());
         }
-        return returnValue;
     }
 
-    std::byte DeviceParser::getJSONByteValue(const std::string &value) {
+    utils::expected<std::byte, std::string> DeviceParser::getJSONByteValue(const std::string &value) {
         auto tmpValue = getJsonAsString(value);
+        if(!tmpValue) {
+            return utils::make_unexpected(tmpValue.error());
+        }
         unsigned int tmp;
 
-        if (tmpValue.rfind("0x", 0) == 0 && Poco::NumberParser::tryParseHex(tmpValue, tmp)) {
+        if (tmpValue->rfind("0x", 0) == 0 && Poco::NumberParser::tryParseHex(*tmpValue, tmp)) {
             return static_cast<std::byte>(tmp);
         }
         else {
-            return static_cast<std::byte>(Poco::NumberParser::parse(tmpValue));
+            return static_cast<std::byte>(Poco::NumberParser::parse(*tmpValue));
         }
     }
 }
