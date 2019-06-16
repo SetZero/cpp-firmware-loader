@@ -120,6 +120,8 @@ namespace test {
         }
         firmware::json::config::ConfigManager manager{path};
         REQUIRE(static_cast<bool>(manager));
+#ifdef __cpp_exceptions
         REQUIRE_THROWS_AS(manager.getJSONValue<firmware::json::config::JsonOptions::deviceID>(), std::runtime_error);
+#endif
     }
 }
