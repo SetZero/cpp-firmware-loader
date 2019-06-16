@@ -29,5 +29,5 @@ add_custom_command(TARGET ${PROJECT_NAME} PRE_BUILD
         ${CMAKE_SOURCE_DIR}/${CONFIG_FOLDER} $<TARGET_FILE_DIR:${PROJECT_NAME}>)
 
 
-add_executable(test_cases includes/intelhexclass.h includes/intelhexclass.cpp includes/intelhexclass.h includes/intelhexclass.h test/TestIntelHex.cpp test/main.cpp test/TestConfigManager.cpp src/json/ConfigManager.cpp src/json/ConfigManager.h src/json/ConfigManager.cpp src/json/ConfigManager.cpp src/json/configFinder.h src/json/configFinder.cpp src/utils/fileUtils.cpp src/utils/fileUtils.h src/json/deviceParser.h src/json/deviceParser.cpp)
+add_executable(test_cases includes/intelhexclass.h includes/intelhexclass.cpp includes/intelhexclass.h includes/intelhexclass.h test/TestIntelHex.cpp test/main.cpp test/TestConfigManager.cpp src/json/ConfigManager.cpp src/json/ConfigManager.h src/json/ConfigManager.cpp src/json/ConfigManager.cpp src/json/configFinder.h src/json/configFinder.cpp src/utils/fileUtils.cpp src/utils/fileUtils.h src/json/deviceParser.h src/json/deviceParser.cpp test/TestConfigFinder.cpp)
 target_link_libraries(test_cases Poco::JSON Poco::XML)

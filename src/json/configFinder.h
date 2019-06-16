@@ -22,6 +22,8 @@ private:
 public:
     explicit ConfigFinder(const std::string& deviceName);
 
+    ConfigFinder(const std::string& deviceName, const std::filesystem::path& baseBath);
+
     [[nodiscard]] const utils::expected<const std::filesystem::path, const std::string> findFile(const std::string& filename, const std::string& folder) noexcept;
 
     [[nodiscard]] const utils::expected<const std::filesystem::path, const std::string> getFileLocation() const noexcept;
