@@ -37,7 +37,7 @@ namespace firmware::serial {
     }
 
 
-    void DataSendManager::bufferedWrite(std::vector<decltype(mBuffer)::value_type> data) {
+    void DataSendManager::bufferedWrite(const std::vector<decltype(mBuffer)::value_type>& data) {
         mBuffer.insert(std::begin(mBuffer), std::begin(data), std::end(data));
         while (mBuffer.size() >= mManager.getJSONValue<json::config::JsonOptions::serialBytesPerBurst>()) {
             sendBuffer();

@@ -28,7 +28,7 @@ public:
 
     [[nodiscard]] virtual std::optional<std::string> const& errorMessage() const = 0;
 
-    [[nodiscard]] virtual  constexpr unsigned int baudrate() const noexcept = 0;
+    [[nodiscard]] virtual  unsigned int baudrate() const noexcept = 0;
 };
 
 

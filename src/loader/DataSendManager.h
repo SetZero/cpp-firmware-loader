@@ -30,7 +30,7 @@ namespace firmware::serial {
 
         [[nodiscard]] std::size_t const & bytesPerBurst() const noexcept;
 
-        void bufferedWrite(std::vector<std::byte> data);
+        void bufferedWrite(const std::vector<std::byte>& data);
 
         void bufferedWrite(std::byte data);
 
@@ -47,7 +47,7 @@ namespace firmware::serial {
         std::deque<std::byte> mBuffer;
         bool mSynced = false;
         const std::size_t mBytesPerBurst;
-        const json::config::ConfigManager &mManager;
+        const json::config::ConfigManager& mManager;
     };
 }
 

@@ -35,7 +35,7 @@ namespace parser {
                     auto jObj = jValue.extract<json::Object::Ptr>();
                     jValue = jObj->get(str);
                 }
-                jsonValueMap.insert({value, jValue.toString()});
+                jsonValueMap.insert(std::begin(jsonValueMap), {value, jValue.toString()});
                 returnValue = jValue.toString();
             } else {
                 returnValue = search->second;
