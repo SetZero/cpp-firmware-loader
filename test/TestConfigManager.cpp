@@ -25,6 +25,7 @@ const std::string jsonString = R"({
     "general": {
       "mode": "8N1",
       "bytesPerBurst": 16,
+      "metadataByteSize": 2,
       "minBaudrate": 9600,
       "maxBaudrate": 57600
     },
@@ -79,6 +80,7 @@ namespace test {
             REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialMode>().parityBit == serial::utils::Parity::none);
             REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialMode>().stopBits == 1);
             REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialBytesPerBurst>() == 16);
+            REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialMetadataSize>() == 2);
             REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialMinBaudRate>() == 9600);
             REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialMaxBaudRate>() == 57600);
             REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialEEPROMBurstDelay>() == 100ms);

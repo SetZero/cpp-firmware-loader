@@ -8,15 +8,20 @@ namespace firmware::serial {
     DataSendManager::DataSendManager(const json::config::ConfigManager &manager, const std::string &device,
                                      const unsigned int baudrate) :
             mSerial{device, baudrate, manager.getJSONValue<json::config::JsonOptions::serialMode>()},
-            mBytesPerBurst{ manager.getJSONValue<json::config::JsonOptions::serialBytesPerBurst>() }, mManager{ std::move(manager) } {
+            mBytesPerBurst{ manager.getJSONValue<json::config::JsonOptions::serialBytesPerBurst>() },
+            mMetadataSize{ manager.getJSONValue<json::config::JsonOptions::serialMetadataSize>() },
+            mManager{ std::move(manager) } {
         // preventing odd serial behaviour. It might be possible that this
         // can be removed later, if hw serial is disabled ?
         std::this_thread::sleep_for(std::chrono::milliseconds(200));
     }
 
     DataSendManager::DataSendManager(const json::config::ConfigManager& manager, std::unique_ptr<AbstractSerial> serialImplementation) : 
-        mSerial {std::move(serialImplementation)},
-        mBytesPerBurst {manager.getJSONValue<json::config::JsonOptions::serialBytesPerBurst>()}, mManager{ std::move(manager) } {
+            mSerial {std::move(serialImplementation)},
+            mBytesPerBurst {manager.getJSONValue<json::config::JsonOptions::serialBytesPerBurst>()},
+            mMetadataSize{ manager.getJSONValue<json::config::JsonOptions::serialMetadataSize>() },
+            mManager{ std::move(manager) } {
+        std::this_thread::sleep_for(std::chrono::milliseconds(200));
     }
 
     DataSendManager::~DataSendManager() {
@@ -36,15 +41,40 @@ namespace firmware::serial {
         return mBytesPerBurst;
     }
 
+    std::size_t const& DataSendManager::metadataSize() const noexcept {
+        return mMetadataSize;
+    }
+
+    void DataSendManager::metadataWrite(std::byte data) {
+        mBuffer.push_back(data);
+        while (mBuffer.size() >= metadataSize()) {
+            sendBuffer(metadataSize());
+        }
+    }
+
+    void DataSendManager::metadataWrite(const std::vector<std::byte>& data) {
+        mBuffer.insert(std::begin(mBuffer), std::begin(data), std::end(data));
+        while (mBuffer.size() >= metadataSize()) {
+            sendBuffer(metadataSize());
+        }
+    }
 
     void DataSendManager::bufferedWrite(const std::vector<decltype(mBuffer)::value_type>& data) {
         mBuffer.insert(std::begin(mBuffer), std::begin(data), std::end(data));
-        while (mBuffer.size() >= mManager.getJSONValue<json::config::JsonOptions::serialBytesPerBurst>()) {
+        while (mBuffer.size() >= bytesPerBurst()) {
+            sendBuffer();
+        }
+    }
+
+    void DataSendManager::bufferedWrite(std::byte data) {
+        mBuffer.push_back(data);
+        if (mBuffer.size() >= mManager.getJSONValue<json::config::JsonOptions::serialBytesPerBurst>()) {
             sendBuffer();
         }
     }
 
     void DataSendManager::flush() noexcept {
+        if (mBuffer.empty()) return;
         const auto remainingBit = mManager.getJSONValue<json::config::JsonOptions::serialBytesPerBurst>() - mBuffer.size();
         if (remainingBit < mManager.getJSONValue<json::config::JsonOptions::serialBytesPerBurst>()) {
             std::fill_n(std::back_inserter(mBuffer), remainingBit, mManager.getJSONValue<json::config::JsonOptions::unusedFlashByte>());
@@ -62,21 +92,18 @@ namespace firmware::serial {
         }
     }
 
-    void DataSendManager::bufferedWrite(std::byte data) {
-        mBuffer.push_back(data);
-        if (mBuffer.size() >= mManager.getJSONValue<json::config::JsonOptions::serialBytesPerBurst>()) {
-            sendBuffer();
-        }
-    }
-
     DataSendManager &operator<<(DataSendManager &parse, std::byte data) {
         parse.bufferedWrite(data);
         return parse;
     }
 
     void DataSendManager::sendBuffer() {
+        sendBuffer(static_cast<long>(mManager.getJSONValue<json::config::JsonOptions::serialBytesPerBurst>()));
+    }
+
+    void DataSendManager::sendBuffer(std::size_t bufferLength) {
         std::vector<decltype(mBuffer)::value_type> tmp;
-        auto it = std::next(std::begin(mBuffer), static_cast<long>(mManager.getJSONValue<json::config::JsonOptions::serialBytesPerBurst>()));
+        auto it = std::next(std::begin(mBuffer), bufferLength);
         std::move(mBuffer.begin(), it, std::back_inserter(tmp));
 
         mBuffer.erase(std::begin(mBuffer), it);

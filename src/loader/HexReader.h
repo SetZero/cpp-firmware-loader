@@ -50,11 +50,11 @@ namespace firmware::reader {
             /*std::for_each_n(std::begin(splitValue), manager.bytesPerBurst(), [&](auto& element) {
                     manager.bufferedWrite(element);
                 });*/
-            for(std::size_t i=0; i < std::min(manager.bytesPerBurst(), splitValue.size()); i++) {
-                manager.bufferedWrite(splitValue[i]);
+            for(std::size_t i=0; i < std::min(manager.metadataSize(), splitValue.size()); i++) {
+                manager.metadataWrite(splitValue[i]);
             }
-            for (std::intmax_t i = 0; i < std::max(static_cast < std::intmax_t>(0), static_cast<std::intmax_t>(static_cast<std::intmax_t>(manager.bytesPerBurst()) - static_cast<std::intmax_t>(splitValue.size()))); i++) {
-                manager.bufferedWrite(std::byte(0x00));
+            for (std::intmax_t i = 0; i < std::max(static_cast < std::intmax_t>(0), static_cast<std::intmax_t>(static_cast<std::intmax_t>(manager.metadataSize()) - static_cast<std::intmax_t>(splitValue.size()))); i++) {
+                manager.metadataWrite(std::byte(0x00));
             }
         }
 

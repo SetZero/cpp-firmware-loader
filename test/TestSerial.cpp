@@ -28,6 +28,7 @@ const std::string jsonString = R"({
     "general": {
       "mode": "8N1",
       "bytesPerBurst": 2,
+      "metadataByteSize": 2,
       "minBaudrate": 9600,
       "maxBaudrate": 57600
     },

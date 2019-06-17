@@ -20,6 +20,7 @@
     "general": {
       "mode": "8N1",
       "bytesPerBurst": 16,
+      "metadataByteSize": 2,
       "minBaudrate": 9600,
       "maxBaudrate": 57600
     },

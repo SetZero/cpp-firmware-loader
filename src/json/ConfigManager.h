@@ -33,6 +33,7 @@ namespace firmware::json::config {
         deviceEEPROMAvailable,
         serialMode,
         serialBytesPerBurst,
+        serialMetadataSize,
         serialMinBaudRate,
         serialMaxBaudRate,
         serialEEPROMBurstDelay,
@@ -146,7 +147,7 @@ namespace firmware::json::config {
             static constexpr auto jsonKey = "/serial/general/mode";
             using type = serial::utils::SerialConfiguration;
             static constexpr auto converter = [](const std::string& input) -> utils::expected<type, std::string> {
-                std::regex regex(R"(([0-9]+)(Y|N)([0-9]+.?(?:[0-9]+)?))", std::regex_constants::ECMAScript);
+                const std::regex regex(R"(([0-9]+)(Y|N)([0-9]+.?(?:[0-9]+)?))", std::regex_constants::ECMAScript);
                 std::string::const_iterator searchStart(input.cbegin());
                 std::smatch matches;
                 while (regex_search(searchStart, input.cend(), matches, regex)) {
@@ -184,6 +185,13 @@ namespace firmware::json::config {
         template<>
         struct DeviceOptions<JsonOptions::serialBytesPerBurst> {
             static constexpr auto jsonKey = "/serial/general/bytesPerBurst";
+            using type = std::size_t;
+            static constexpr auto converter = [](const std::string& input) noexcept { return input; };
+        };
+
+        template<>
+        struct DeviceOptions<JsonOptions::serialMetadataSize> {
+            static constexpr auto jsonKey = "/serial/general/metadataByteSize";
             using type = std::size_t;
             static constexpr auto converter = [](const std::string& input) noexcept { return input; };
         };

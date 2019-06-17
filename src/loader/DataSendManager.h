@@ -30,6 +30,12 @@ namespace firmware::serial {
 
         [[nodiscard]] std::size_t const & bytesPerBurst() const noexcept;
 
+        [[nodiscard]] std::size_t const& metadataSize() const noexcept;
+
+        void metadataWrite(std::byte data);
+
+        void metadataWrite(const std::vector<std::byte>& data);
+
         void bufferedWrite(const std::vector<std::byte>& data);
 
         void bufferedWrite(std::byte data);
@@ -43,10 +49,13 @@ namespace firmware::serial {
 
         void sendBuffer();
 
+        void sendBuffer(std::size_t bufferLength);
+
         Serial<SerialMode::TXOnly> mSerial;
         std::deque<std::byte> mBuffer;
         bool mSynced = false;
         const std::size_t mBytesPerBurst;
+        const std::size_t mMetadataSize;
         const json::config::ConfigManager& mManager;
     };
 }
