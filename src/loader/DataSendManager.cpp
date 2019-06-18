@@ -45,16 +45,16 @@ namespace firmware::serial {
         return mSerial.isOpen();
     }
 
-    std::optional<std::string> const &DataSendManager::errorMessage() const noexcept {
+    const std::optional<std::string>& DataSendManager::errorMessage() const noexcept {
         return mSerial.errorMessage();
     }
 
-    std::size_t const& DataSendManager::bytesPerBurst() const noexcept
+    std::size_t DataSendManager::bytesPerBurst() const noexcept
     {
         return mBytesPerBurst;
     }
 
-    std::size_t const& DataSendManager::metadataSize() const noexcept {
+    std::size_t DataSendManager::metadataSize() const noexcept {
         return mMetadataSize;
     }
 

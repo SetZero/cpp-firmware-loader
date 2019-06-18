@@ -22,7 +22,7 @@ namespace firmware::serial {
 
     class DataSendManager {
     public:
-        DataSendManager(const json::config::ConfigManager &manager, const CommunicationData& data);
+        DataSendManager(const json::config::ConfigManager& manager, const CommunicationData& data);
 
         DataSendManager(const json::config::ConfigManager& manager, const CommunicationData& data, std::chrono::milliseconds startupWaitTime);
 
@@ -35,9 +35,9 @@ namespace firmware::serial {
 
         [[nodiscard]] std::optional<std::string> const &errorMessage() const noexcept;
 
-        [[nodiscard]] std::size_t const & bytesPerBurst() const noexcept;
+        [[nodiscard]] std::size_t bytesPerBurst() const noexcept;
 
-        [[nodiscard]] std::size_t const& metadataSize() const noexcept;
+        [[nodiscard]] std::size_t metadataSize() const noexcept;
 
         void metadataWrite(std::byte data);
 
@@ -49,7 +49,7 @@ namespace firmware::serial {
 
         void flush() noexcept;
 
-        friend DataSendManager &operator<<(DataSendManager &parse, std::byte data);
+        friend DataSendManager &operator<<(const DataSendManager& parse, std::byte data);
 
     private:
         void sync() noexcept;
