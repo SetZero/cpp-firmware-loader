@@ -33,6 +33,7 @@ const std::string jsonString = R"({
       "maxBaudrate": 57600
     },
     "write": {
+      "waitTimeForReset":  "1s",
       "eepromBurstDelay": "100ms",
       "flashBurstDelay": "9ms"
     },
@@ -76,7 +77,7 @@ namespace test {
         firmware::json::config::ConfigManager manager{path};
         const auto& val = dynamic_cast<SerialTestImpl*>(serialImplPtr.get())->getVectorContents();
 
-        auto sendManager = firmware::serial::DataSendManager{manager, std::move(serialImplPtr)};
+        auto sendManager = firmware::serial::DataSendManager{manager, std::move(serialImplPtr), false};
         sendManager.bufferedWrite({std::byte{0}, std::byte{1}, std::byte{2}, std::byte{3}});
         //sendManager.bufferedWrite(std::byte{0});
 
@@ -106,7 +107,7 @@ namespace test {
         firmware::json::config::ConfigManager manager{path};
         const auto& val = dynamic_cast<SerialTestImpl*>(serialImplPtr.get())->getVectorContents();
 
-        auto sendManager = firmware::serial::DataSendManager{manager, std::move(serialImplPtr)};
+        auto sendManager = firmware::serial::DataSendManager{manager, std::move(serialImplPtr), false};
         sendManager.bufferedWrite({std::byte{0}, std::byte{1}, std::byte{2}});
         //sendManager.bufferedWrite(std::byte{0});
 

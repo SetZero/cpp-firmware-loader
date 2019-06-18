@@ -30,6 +30,7 @@ const std::string jsonString = R"({
       "maxBaudrate": 57600
     },
     "write": {
+      "waitTimeForReset":  "1s",
       "eepromBurstDelay": "100ms",
       "flashBurstDelay": "9ms"
     },
@@ -83,6 +84,7 @@ namespace test {
             REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialMetadataSize>() == 2);
             REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialMinBaudRate>() == 9600);
             REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialMaxBaudRate>() == 57600);
+            REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialWaitTimeForReset>() == 1000ms);
             REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialEEPROMBurstDelay>() == 100ms);
             REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialFlashBurstDelay>() == 9ms);
             REQUIRE(manager.getJSONValue<firmware::json::config::JsonOptions::serialSyncByteAmount>() == 3);

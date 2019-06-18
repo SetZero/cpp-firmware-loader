@@ -25,8 +25,9 @@
       "maxBaudrate": 57600
     },
     "write": {
-      "eepromBurstDelay": "100ms",
-      "flashBurstDelay": "9ms"
+        "waitTimeForReset":  "1s",
+        "eepromBurstDelay": "100ms",
+        "flashBurstDelay": "9ms"
     },
     "sync": {
       "syncByteAmount": 3,

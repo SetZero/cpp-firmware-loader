@@ -13,15 +13,19 @@ namespace firmware::serial {
             mManager{ std::move(manager) } {
         // preventing odd serial behaviour. It might be possible that this
         // can be removed later, if hw serial is disabled ?
-        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        //std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        initialSync();
     }
 
-    DataSendManager::DataSendManager(const json::config::ConfigManager& manager, std::unique_ptr<AbstractSerial> serialImplementation) : 
+    DataSendManager::DataSendManager(const json::config::ConfigManager& manager, std::unique_ptr<AbstractSerial> serialImplementation, bool startupSync) :
             mSerial {std::move(serialImplementation)},
             mBytesPerBurst {manager.getJSONValue<json::config::JsonOptions::serialBytesPerBurst>()},
             mMetadataSize{ manager.getJSONValue<json::config::JsonOptions::serialMetadataSize>() },
             mManager{ std::move(manager) } {
-        std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        //std::this_thread::sleep_for(std::chrono::milliseconds(200));
+        if (startupSync) {
+            initialSync();
+        }
     }
 
     DataSendManager::~DataSendManager() {
@@ -117,5 +121,12 @@ namespace firmware::serial {
 
         std::this_thread::sleep_for(bitDuration * tmp.size() * 10);
         std::this_thread::sleep_for(mManager.getJSONValue<json::config::JsonOptions::serialFlashBurstDelay>());
+    }
+    void DataSendManager::initialSync() {
+        auto start = std::chrono::system_clock::now();
+        while (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - start) < 
+            std::chrono::milliseconds{ mManager.getJSONValue<firmware::json::config::JsonOptions::serialWaitTimeForReset>() }) {
+            mSerial.writeData(std::byte{ mManager.getJSONValue<json::config::JsonOptions::serialSyncByte>() });
+        }
     }
 }

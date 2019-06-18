@@ -36,6 +36,7 @@ namespace firmware::json::config {
         serialMetadataSize,
         serialMinBaudRate,
         serialMaxBaudRate,
+        serialWaitTimeForReset,
         serialEEPROMBurstDelay,
         serialFlashBurstDelay,
         serialSyncByteAmount,
@@ -208,6 +209,21 @@ namespace firmware::json::config {
             static constexpr auto jsonKey = "/serial/general/maxBaudrate";
             using type = std::size_t;
             static constexpr auto converter = [](const std::string& input) noexcept { return input; };
+        };
+
+
+        template<>
+        struct DeviceOptions<JsonOptions::serialWaitTimeForReset> {
+            static constexpr auto jsonKey = "/serial/write/waitTimeForReset";
+            using type = std::chrono::milliseconds;
+            static constexpr auto converter = [](const std::string& input) noexcept -> utils::expected<type, std::string> {
+                auto val = CustomDataTypes::parseUnit<type>(input);
+                if (val) {
+                    return { *val };
+                } else {
+                    return utils::make_unexpected("Unable to convert serialWaitTimeForReset to milliseconds value!");
+                }
+            };
         };
 
         template<>

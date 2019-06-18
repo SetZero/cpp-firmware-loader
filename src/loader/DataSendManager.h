@@ -19,7 +19,7 @@ namespace firmware::serial {
     public:
         DataSendManager(const json::config::ConfigManager &manager, const std::string &device, const unsigned int baudrate);
 
-        DataSendManager(const json::config::ConfigManager& manager, std::unique_ptr <AbstractSerial> serialImplementation);
+        DataSendManager(const json::config::ConfigManager& manager, std::unique_ptr <AbstractSerial> serialImplementation, bool startupSync = true);
 
         //TODO: rule of 5
         ~DataSendManager();
@@ -50,6 +50,8 @@ namespace firmware::serial {
         void sendBuffer();
 
         void sendBuffer(std::size_t bufferLength);
+
+        void initialSync();
 
         Serial<SerialMode::TXOnly> mSerial;
         std::deque<std::byte> mBuffer;
