@@ -111,12 +111,12 @@ namespace firmware::serial {
     }
 
     void DataSendManager::sendBuffer() {
-        sendBuffer(static_cast<long>(mManager.getJSONValue<json::config::JsonOptions::serialBytesPerBurst>()));
+        sendBuffer(static_cast<std::size_t>(mManager.getJSONValue<json::config::JsonOptions::serialBytesPerBurst>()));
     }
 
     void DataSendManager::sendBuffer(std::size_t bufferLength) {
         std::vector<decltype(mBuffer)::value_type> tmp;
-        auto it = std::next(std::begin(mBuffer), bufferLength);
+        auto it = std::next(std::begin(mBuffer), static_cast<decltype(mBuffer)::iterator::difference_type>(bufferLength));
         std::move(mBuffer.begin(), it, std::back_inserter(tmp));
 
         mBuffer.erase(std::begin(mBuffer), it);
