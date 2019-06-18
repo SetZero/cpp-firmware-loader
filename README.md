@@ -50,3 +50,11 @@ to your cmake command line arguments
 ## Documentation
 
 For Documentation please visit the [wiki](https://github.com/SetZero/cpp-firmware-loader/wiki)
+
+## Related Projects
+
+|Project Name|Description|Link|
+|---|---|---|
+|C++ Bootloader|The Bootloader needed for this Project| [Link](https://github.com/SetZero/avr-cpp-bootloader)|
+|C++ Timing Analysis|Timing Analysis Programm which is needed to get a generic data transmission via C++ Code without a timer| [Link](https://github.com/SetZero/cpp-timing-analysis)|
+|C++ Firmware Loader|This Repository| [Link](https://github.com/SetZero/cpp-firmware-loader)|
