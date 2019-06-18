@@ -30,7 +30,7 @@ namespace firmware::serial {
             mSerial {std::move(serialImplementation)},
             mBytesPerBurst {manager.getJSONValue<json::config::JsonOptions::serialBytesPerBurst>()},
             mMetadataSize{ manager.getJSONValue<json::config::JsonOptions::serialMetadataSize>() },
-            mStartupWaitTime{ mManager.getJSONValue<firmware::json::config::JsonOptions::serialWaitTimeForReset>() },
+            mStartupWaitTime{ manager.getJSONValue<firmware::json::config::JsonOptions::serialWaitTimeForReset>() },
             mManager{ std::move(manager) } {
         if (startupSync) {
             initialSync();
