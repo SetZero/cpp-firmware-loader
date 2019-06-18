@@ -15,9 +15,16 @@
 #include "../utils/utils.h"
 
 namespace firmware::serial {
+    struct CommunicationData {
+        const std::string& device;
+        const unsigned int baudrate;
+    };
+
     class DataSendManager {
     public:
-        DataSendManager(const json::config::ConfigManager &manager, const std::string &device, const unsigned int baudrate);
+        DataSendManager(const json::config::ConfigManager &manager, const CommunicationData& data);
+
+        DataSendManager(const json::config::ConfigManager& manager, const CommunicationData& data, std::chrono::milliseconds startupWaitTime);
 
         DataSendManager(const json::config::ConfigManager& manager, std::unique_ptr <AbstractSerial> serialImplementation, bool startupSync = true);
 
@@ -58,6 +65,7 @@ namespace firmware::serial {
         bool mSynced = false;
         const std::size_t mBytesPerBurst;
         const std::size_t mMetadataSize;
+        const std::chrono::milliseconds mStartupWaitTime;
         const json::config::ConfigManager& mManager;
     };
 }

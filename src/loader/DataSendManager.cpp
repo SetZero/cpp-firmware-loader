@@ -5,11 +5,11 @@
 #include "DataSendManager.h"
 
 namespace firmware::serial {
-    DataSendManager::DataSendManager(const json::config::ConfigManager &manager, const std::string &device,
-                                     const unsigned int baudrate) :
-            mSerial{device, baudrate, manager.getJSONValue<json::config::JsonOptions::serialMode>()},
+    DataSendManager::DataSendManager(const json::config::ConfigManager &manager, const CommunicationData& data) :
+            mSerial{data.device, data.baudrate, manager.getJSONValue<json::config::JsonOptions::serialMode>()},
             mBytesPerBurst{ manager.getJSONValue<json::config::JsonOptions::serialBytesPerBurst>() },
             mMetadataSize{ manager.getJSONValue<json::config::JsonOptions::serialMetadataSize>() },
+            mStartupWaitTime{ manager.getJSONValue<firmware::json::config::JsonOptions::serialWaitTimeForReset>() },
             mManager{ std::move(manager) } {
         // preventing odd serial behaviour. It might be possible that this
         // can be removed later, if hw serial is disabled ?
@@ -17,12 +17,21 @@ namespace firmware::serial {
         initialSync();
     }
 
+    DataSendManager::DataSendManager(const json::config::ConfigManager& manager, const CommunicationData& data, std::chrono::milliseconds startupWaitTime) :
+        mSerial{ data.device, data.baudrate, manager.getJSONValue<json::config::JsonOptions::serialMode>() },
+        mBytesPerBurst{ manager.getJSONValue<json::config::JsonOptions::serialBytesPerBurst>() },
+        mMetadataSize{ manager.getJSONValue<json::config::JsonOptions::serialMetadataSize>() },
+        mStartupWaitTime{ startupWaitTime },
+        mManager{ std::move(manager) } {
+        initialSync();
+    }
+
     DataSendManager::DataSendManager(const json::config::ConfigManager& manager, std::unique_ptr<AbstractSerial> serialImplementation, bool startupSync) :
             mSerial {std::move(serialImplementation)},
             mBytesPerBurst {manager.getJSONValue<json::config::JsonOptions::serialBytesPerBurst>()},
             mMetadataSize{ manager.getJSONValue<json::config::JsonOptions::serialMetadataSize>() },
+            mStartupWaitTime{ mManager.getJSONValue<firmware::json::config::JsonOptions::serialWaitTimeForReset>() },
             mManager{ std::move(manager) } {
-        //std::this_thread::sleep_for(std::chrono::milliseconds(200));
         if (startupSync) {
             initialSync();
         }
@@ -123,9 +132,10 @@ namespace firmware::serial {
         std::this_thread::sleep_for(mManager.getJSONValue<json::config::JsonOptions::serialFlashBurstDelay>());
     }
     void DataSendManager::initialSync() {
+        using namespace utils::printable;
+        std::cout << "Waiting for " << mStartupWaitTime.count() << "ms ..." << std::endl;
         auto start = std::chrono::system_clock::now();
-        while (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - start) < 
-            std::chrono::milliseconds{ mManager.getJSONValue<firmware::json::config::JsonOptions::serialWaitTimeForReset>() }) {
+        while (std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - start) <  mStartupWaitTime) {
             mSerial.writeData(std::byte{ mManager.getJSONValue<json::config::JsonOptions::serialSyncByte>() });
         }
     }

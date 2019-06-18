@@ -4,6 +4,7 @@
 
 #pragma once
 #include <clara.hpp>
+#include <optional>
 #include "../utils/enum_constants.h"
 
 class Parse {
@@ -12,6 +13,7 @@ private:
 	std::string deviceName;
     std::string comPortLocation;
     std::string binaryLocation;
+    std::string mWaitTime;
     unsigned int baudrate = 9600;
     bool showHelp = false;
     clara::Parser cli;
@@ -32,7 +34,10 @@ public:
                            ("Specify the port which is connected to the device (mandatory)")
                    | clara::Opt(baudrate, "baud")
                    ["-b"]["--baud"]
-                           ("Baudrate for communication with the chip (default: " + std::to_string(baudrate) + ")");
+                           ("Baudrate for communication with the chip (default: " + std::to_string(baudrate) + ")")
+                   | clara::Opt(mWaitTime, "waittime")
+                   ["-w"]["--start-waittime"]
+                           ("Wait for this timespan to start with the transmission, during this time the program will only sent sync bytes");
 
         auto result = cli.parse( clara::Args( argc, argv ) );
         if(!result) {
@@ -63,6 +68,10 @@ public:
 
     [[nodiscard]] unsigned int baud() const noexcept {
         return baudrate;
+    }
+
+    [[nodiscard]] std::string waitTime() const noexcept {
+        return mWaitTime;
     }
 
     explicit operator bool() const {

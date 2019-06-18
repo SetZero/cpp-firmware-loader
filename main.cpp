@@ -62,9 +62,18 @@ int main(int argc, const char* argv[]) {
         return pgmEnd();
     }
 
-    firmware::serial::DataSendManager sendManager{configManager, clParser.port(), clParser.baud()};
-	if (!sendManager.isOpen()) {
-		std::cout << *sendManager.errorMessage() << std::endl;
+    std::unique_ptr<firmware::serial::DataSendManager> sendManager = nullptr;
+    if (!clParser.waitTime().empty()) {
+        if (auto timeVal = CustomDataTypes::parseUnit<std::chrono::milliseconds>(clParser.waitTime())) {
+            sendManager = std::make_unique<firmware::serial::DataSendManager>( configManager, firmware::serial::CommunicationData{clParser.port(), clParser.baud()}, *timeVal );
+        }
+    }
+    if (sendManager == nullptr) {
+        sendManager = std::make_unique<firmware::serial::DataSendManager>(configManager, firmware::serial::CommunicationData{ clParser.port(), clParser.baud() });
+    }
+
+	if (!sendManager->isOpen()) {
+		std::cout << *(sendManager->errorMessage()) << std::endl;
 		return pgmEnd();;
 	} else {
         std::cout << "Connection to " << clParser.port() << " successful!" << std::endl;
@@ -84,8 +93,8 @@ int main(int argc, const char* argv[]) {
 		        static_cast<long double>(static_cast<decltype(reader.getFileSize())>(maxAvail).count())) << "%)" << std::endl;
         std::cout << "Start Address: 0x" << std::hex << reader.getStartAddress() << std::dec << std::endl;
         auto t1 = std::chrono::high_resolution_clock::now();
-        sendManager << reader;
-		sendManager.flush();
+        *sendManager << reader;
+		sendManager->flush();
         auto t2 = std::chrono::high_resolution_clock::now();
         std::cout << "Transmission took " << std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1) << std::endl;
 	}
