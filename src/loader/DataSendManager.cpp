@@ -37,9 +37,9 @@ namespace firmware::serial {
         }
     }
 
-    DataSendManager::~DataSendManager() {
+    /*DataSendManager::~DataSendManager() {
         flush();
-    }
+    }*/
 
     bool DataSendManager::isOpen() const noexcept {
         return mSerial.isOpen();

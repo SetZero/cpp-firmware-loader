@@ -29,7 +29,7 @@ namespace firmware::serial {
         DataSendManager(const json::config::ConfigManager& manager, std::unique_ptr <AbstractSerial> serialImplementation, bool startupSync = true);
 
         //TODO: rule of 5
-        ~DataSendManager();
+        //~DataSendManager();
 
         [[nodiscard]] bool isOpen() const noexcept;
 

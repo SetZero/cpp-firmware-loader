@@ -16,6 +16,8 @@
 
 class AbstractSerial {
 public:
+    virtual ~AbstractSerial() {};
+
     virtual void writeData(std::byte data) = 0;
 
     virtual void writeData(const std::vector<std::byte>& data) = 0;
