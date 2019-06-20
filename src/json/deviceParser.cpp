@@ -11,7 +11,7 @@ namespace parser {
         parsedJSON = parser.parse(json);
     }
 
-    const std::vector<std::string> DeviceParser::getPathValue(const std::string &value) {
+    const std::vector<std::string> DeviceParser::getPathValue(const std::string &value) const {
         std::regex regex(R"(\/?([A-Za-z0-9]+)\/?)", std::regex_constants::ECMAScript);
         std::string::const_iterator searchStart(value.cbegin());
         std::smatch matches;
@@ -24,7 +24,7 @@ namespace parser {
         return result_set;
     }
 
-    const utils::expected<std::string, std::string> DeviceParser::getJsonAsString(const std::string &value) {
+    const utils::expected<std::string, std::string> DeviceParser::getJsonAsString(const std::string &value) const {
         try {
             std::string returnValue;
             auto search = jsonValueMap.find(value);
@@ -46,7 +46,7 @@ namespace parser {
         }
     }
 
-    utils::expected<std::byte, std::string> DeviceParser::getJSONByteValue(const std::string &value) {
+    utils::expected<std::byte, std::string> DeviceParser::getJSONByteValue(const std::string &value) const {
         auto tmpValue = getJsonAsString(value);
         if(!tmpValue) {
             return utils::make_unexpected(tmpValue.error());

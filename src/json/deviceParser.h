@@ -16,7 +16,7 @@ namespace parser {
     #ifdef __cpp_concepts
         requires std::is_arithmetic_v<T> || std::is_same_v<T, std::byte>
     #endif
-        const utils::expected<T, std::string> getJSONValue(const std::string& value) {
+        const utils::expected<T, std::string> getJSONValue(const std::string& value) const {
             auto tmpValue = getJsonAsString(value);
             if(!tmpValue) {
                 return utils::make_unexpected(tmpValue.error());
@@ -35,14 +35,14 @@ namespace parser {
             //return T{Poco::NumberParser::parse(tmpValue)};
         }
 
-        [[nodiscard]] const utils::expected<std::string, std::string> getJsonAsString(const std::string& value);
+        [[nodiscard]] const utils::expected<std::string, std::string> getJsonAsString(const std::string& value) const;
 
-        [[nodiscard]] utils::expected<std::byte, std::string> getJSONByteValue(const std::string& value);
+        [[nodiscard]] utils::expected<std::byte, std::string> getJSONByteValue(const std::string& value) const;
     private:
-        [[nodiscard]]  const std::vector<std::string> getPathValue(const std::string& value);
+        [[nodiscard]]  const std::vector<std::string> getPathValue(const std::string& value) const;
 
         Poco::Dynamic::Var parsedJSON;
-        std::unordered_map<std::string, std::string> jsonValueMap;
+        mutable std::unordered_map<std::string, std::string> jsonValueMap;
     };
 
 }
