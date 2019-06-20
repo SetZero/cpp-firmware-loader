@@ -360,7 +360,7 @@ namespace firmware::json::config {
             return !static_cast<bool>(mError);
         }
     private:
-        std::unique_ptr<parser::DeviceParser> mParser = nullptr;
+        std::optional<parser::DeviceParser> mParser = std::nullopt;
         std::optional<std::string> mError = std::nullopt;
     };
 }

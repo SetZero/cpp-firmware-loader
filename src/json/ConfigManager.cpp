@@ -8,7 +8,7 @@ namespace firmware::json::config {
         ConfigFinder config{deviceName};
         if (auto &content = config.getFileContents()) {
             if(!content->empty()) {
-                mParser = std::make_unique<parser::DeviceParser>(*content);
+                mParser.emplace(*content);
             } else {
                 mError = "config should not be empty!";
             }
@@ -20,7 +20,7 @@ namespace firmware::json::config {
         auto fileContent = utils::readFile(filePath);
         if (fileContent) {
             if(!fileContent->empty()) {
-                mParser = std::make_unique<parser::DeviceParser>(*fileContent);
+                mParser.emplace(*fileContent);
             } else {
                 mError = "config should not be empty!";
             }
