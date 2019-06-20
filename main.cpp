@@ -67,7 +67,8 @@ int main(int argc, const char* argv[]) {
         if (auto timeVal = CustomDataTypes::parseUnit<std::chrono::milliseconds>(clParser.waitTime())) {
             sendManager.emplace(configManager, firmware::serial::CommunicationData{ clParser.port(), clParser.baud() }, *timeVal);
         }
-    } else if (sendManager == std::nullopt) {
+    }
+    if (sendManager == std::nullopt) {
         sendManager.emplace(configManager, firmware::serial::CommunicationData{ clParser.port(), clParser.baud() });
     }
 
