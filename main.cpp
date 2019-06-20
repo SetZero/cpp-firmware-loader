@@ -62,19 +62,18 @@ int main(int argc, const char* argv[]) {
         return pgmEnd();
     }
 
-    std::unique_ptr<firmware::serial::DataSendManager> sendManager = nullptr;
+    std::optional<firmware::serial::DataSendManager> sendManager;
     if (!clParser.waitTime().empty()) {
         if (auto timeVal = CustomDataTypes::parseUnit<std::chrono::milliseconds>(clParser.waitTime())) {
-            sendManager = std::make_unique<firmware::serial::DataSendManager>( configManager, firmware::serial::CommunicationData{clParser.port(), clParser.baud()}, *timeVal );
+            sendManager.emplace(configManager, firmware::serial::CommunicationData{ clParser.port(), clParser.baud() }, *timeVal);
         }
-    }
-    if (sendManager == nullptr) {
-        sendManager = std::make_unique<firmware::serial::DataSendManager>(configManager, firmware::serial::CommunicationData{ clParser.port(), clParser.baud() });
+    } else if (sendManager == std::nullopt) {
+        sendManager.emplace(configManager, firmware::serial::CommunicationData{ clParser.port(), clParser.baud() });
     }
 
 	if (!sendManager->isOpen()) {
 		std::cout << *(sendManager->errorMessage()) << std::endl;
-		return pgmEnd();;
+		return pgmEnd();
 	} else {
         std::cout << "Connection to " << clParser.port() << " successful!" << std::endl;
         if (configManager.getJSONValue<jsonOpts::binaryFormat>() == serial::utils::BinaryFormats::Unknown) {
