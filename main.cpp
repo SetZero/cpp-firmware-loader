@@ -63,12 +63,9 @@ int main(int argc, const char* argv[]) {
     }
 
     std::optional<firmware::serial::DataSendManager> sendManager;
-    if (!clParser.waitTime().empty()) {
-        if (auto timeVal = CustomDataTypes::parseUnit<std::chrono::milliseconds>(clParser.waitTime())) {
-            sendManager.emplace(configManager, firmware::serial::CommunicationData{ clParser.port(), clParser.baud() }, *timeVal);
-        }
-    }
-    if (sendManager == std::nullopt) {
+    if (auto timeVal = CustomDataTypes::parseUnit<std::chrono::milliseconds>(clParser.waitTime())) {
+        sendManager.emplace(configManager, firmware::serial::CommunicationData{ clParser.port(), clParser.baud() }, *timeVal);
+    } else if (sendManager == std::nullopt) {
         sendManager.emplace(configManager, firmware::serial::CommunicationData{ clParser.port(), clParser.baud() });
     }
 

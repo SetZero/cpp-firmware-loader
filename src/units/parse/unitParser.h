@@ -12,6 +12,8 @@ namespace CustomDataTypes {
     //TODO: Add support for eg KiB
     template<typename T>
     std::optional<T> parseUnit(const std::string& value) {
+        if (value.empty()) return std::nullopt;
+
         std::optional<T> returnValue = std::nullopt;
         try {
             static std::regex unit_regex(
