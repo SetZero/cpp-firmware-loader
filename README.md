@@ -43,7 +43,7 @@ cd vcpkg
 
 After this append 
 ```
--DCMAKE_TOOLCHAIN_FILE=**path/to/vcpkg.cmake**
+-DCMAKE_TOOLCHAIN_FILE=**/CURRENT/DIR/WITH/vcpkg/scripts/buildsystems/vcpkg.cmake**
 ```
 to your cmake command line arguments
 
