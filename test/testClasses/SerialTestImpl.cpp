@@ -29,7 +29,7 @@ bool SerialTestImpl::isOpen() const {
     return true;
 }
 
-std::optional<std::string> const &SerialTestImpl::errorMessage() const {
+std::optional<std::string> SerialTestImpl::errorMessage() const {
     return mError;
 }
 
