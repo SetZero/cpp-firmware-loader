@@ -74,7 +74,7 @@ bool SerialImpl::isOpen() const
 	return mOpen;
 }
 
-std::optional<std::string> const& SerialImpl::errorMessage() const
+std::optional<std::string> SerialImpl::errorMessage() const
 {
 	return mErrorMessage;
 }

@@ -24,7 +24,7 @@ public:
     explicit Serial(std::unique_ptr<AbstractSerial> serialImplementation)
         : pimpl{ std::move(serialImplementation) } {}
 
-	[[nodiscard]] std::optional<std::string> const& errorMessage() const {
+	[[nodiscard]] std::optional<std::string> errorMessage() const {
 		return pimpl->errorMessage();
 	}
 

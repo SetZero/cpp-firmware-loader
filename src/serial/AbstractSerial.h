@@ -28,7 +28,7 @@ public:
 
     [[nodiscard]] virtual bool isOpen() const = 0;
 
-    [[nodiscard]] virtual std::optional<std::string> const& errorMessage() const = 0;
+    [[nodiscard]] virtual std::optional<std::string> errorMessage() const = 0;
 
     [[nodiscard]] virtual  unsigned int baudrate() const noexcept = 0;
 };

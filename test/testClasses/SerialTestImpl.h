@@ -21,7 +21,7 @@ public:
 
     [[nodiscard]] bool isOpen() const override;
 
-    [[nodiscard]] std::optional<std::string> const& errorMessage() const override;
+    [[nodiscard]] std::optional<std::string> errorMessage() const override;
 
     [[nodiscard]]  unsigned int baudrate() const noexcept override;
 
