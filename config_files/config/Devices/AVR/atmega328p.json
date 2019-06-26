@@ -27,7 +27,7 @@
     "write": {
         "waitTimeForReset":  "1s",
         "eepromBurstDelay": "100ms",
-        "flashBurstDelay": "9ms"
+        "flashBurstDelay": "20ms"
     },
     "sync": {
       "syncByteAmount": 3,
