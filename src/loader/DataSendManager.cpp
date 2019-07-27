@@ -132,6 +132,10 @@ namespace firmware::serial {
         std::this_thread::sleep_for(mManager.getJSONValue<json::config::JsonOptions::serialFlashBurstDelay>());
     }
     void DataSendManager::initialSync() {
+        if (!mSerial.isOpen()) {
+            std::cout << *mSerial.errorMessage() << std::endl;
+            return;
+        }
         using namespace utils::printable;
         std::cout << "Waiting for " << mStartupWaitTime.count() << "ms ..." << std::endl;
         auto start = std::chrono::system_clock::now();
