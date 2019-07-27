@@ -70,7 +70,6 @@ int main(int argc, const char* argv[]) {
     }
 
 	if (!sendManager->isOpen()) {
-		std::cout << "Error: " << *(sendManager->errorMessage()) << std::endl;
 		return pgmEnd();
 	} else {
         std::cout << "Connection to " << clParser.port() << " successful!" << std::endl;

@@ -33,7 +33,7 @@ namespace firmware::serial {
 
         [[nodiscard]] bool isOpen() const noexcept;
 
-        [[nodiscard]] std::optional<std::string> const &errorMessage() const noexcept;
+        [[nodiscard]] std::optional<std::string> errorMessage() const noexcept;
 
         [[nodiscard]] std::size_t bytesPerBurst() const noexcept;
 

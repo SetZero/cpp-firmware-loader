@@ -72,7 +72,7 @@ public:
         return pimpl->reciveBytes();
     }
 private:
-    const std::unique_ptr<AbstractSerial> pimpl = nullptr;
+    const std::unique_ptr<AbstractSerial> pimpl;
 };
 
 

@@ -17,7 +17,7 @@
 
 class SerialImpl : public AbstractSerial {
 public:
-    SerialImpl(std::string device, unsigned int baudrate, serial::utils::SerialConfiguration config);
+    SerialImpl(const std::string& device, unsigned int baudrate, serial::utils::SerialConfiguration config);
     ~SerialImpl();
 	SerialImpl(const SerialImpl& a) = delete;
 	SerialImpl& operator=(SerialImpl other) = delete;

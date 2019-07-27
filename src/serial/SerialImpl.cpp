@@ -4,7 +4,7 @@
 
 #include "SerialImpl.h"
 
-SerialImpl::SerialImpl(std::string device, unsigned int baudrate, serial::utils::SerialConfiguration config) : 
+SerialImpl::SerialImpl(const std::string& device, unsigned int baudrate, serial::utils::SerialConfiguration config) :
     mDevice{ device }, mBaudrate{ baudrate }, mPort{ mIOService } {
 	try {
 		mPort.open(device);
